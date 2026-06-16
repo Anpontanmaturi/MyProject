@@ -2,6 +2,7 @@
 
 #include "Graphics/skinned_mesh.h"
 #include "Graphics/gltf_model.h"
+#include "Collision/collision_manager.h"
 
 class Stage
 {
@@ -27,6 +28,7 @@ public:
 
 private:
 	std::unique_ptr<SkinnedMesh> model;
+	CollisionMesh	collision_mesh;
 	DirectX::XMFLOAT3 position = {};
 	DirectX::XMFLOAT3 rotation = {};
 	DirectX::XMFLOAT3 scale = { 1, 1, 1 };

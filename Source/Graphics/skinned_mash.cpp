@@ -715,35 +715,6 @@ void SkinnedMesh::render(ID3D11DeviceContext* immediate_context, const XMFLOAT4X
 			}
 		}
 
-#if 0
-		XMStoreFloat4x4(&data.bone_transforms[0], XMMatrixIdentity());
-		XMStoreFloat4x4(&data.bone_transforms[1], XMMatrixRotationRollPitchYaw(0, 0, XMConvertToRadians(+45)));
-		XMStoreFloat4x4(&data.bone_transforms[2], XMMatrixRotationRollPitchYaw(0, 0, XMConvertToRadians(-45)));
-#endif
-
-#if 0
-		// Bind pose transform(Offset matrix);Convert from the model(mesh) space to the bone space
-		XMMATRIX B[3];
-		B[0] = XMLoadFloat4x4(&mesh.bind_pose.bones.at(0).offset_transform);	
-		B[1] = XMLoadFloat4x4(&mesh.bind_pose.bones.at(1).offset_transform);	
-		B[2] = XMLoadFloat4x4(&mesh.bind_pose.bones.at(2).offset_transform);
-
-		// Animation bone tranform:Convert from the bone space to the model(mesh) or the parent bone space
-		XMMATRIX A[3];
-		// from A0 space to model space
-		A[0] = XMMatrixRotationRollPitchYaw(XMConvertToRadians(90), 0, 0);
-
-		// from A1 space to parent bone(A0) space
-		A[1] = XMMatrixRotationRollPitchYaw(0, 0, XMConvertToRadians(45)) * XMMatrixTranslation(0, 2, 0);
-
-		// from A2 space to parent bone(A1) space
-		A[2] = XMMatrixRotationRollPitchYaw(0, 0, XMConvertToRadians(-45)) * XMMatrixTranslation(0, 2, 0);
-
-		XMStoreFloat4x4(&data.bone_transforms[0], B[0] * A[0]);
-		XMStoreFloat4x4(&data.bone_transforms[1], B[1] * A[1] * A[0]);
-		XMStoreFloat4x4(&data.bone_transforms[2], B[2] * A[2] * A[1] * A[0]);
-#endif
-
 		for (const mesh::subset& subset : mesh.subsets)
 		{
 			const material& material{ materials.at(subset.material_unique_id) };
@@ -761,19 +732,5 @@ void SkinnedMesh::render(ID3D11DeviceContext* immediate_context, const XMFLOAT4X
 
 			immediate_context->DrawIndexed(subset.index_count, subset.start_index_location, 0);
 		}
-
-		//XMStoreFloat4(&data.material_color,
-		//	XMLoadFloat4(&material_color) * XMLoadFloat4(&materials.cbegin()->second.Kd));
-		//immediate_context->UpdateSubresource(constant_buffer.Get(), 0, 0, &data, 0, 0);
-		//immediate_context->VSSetConstantBuffers(0, 1, constant_buffer.GetAddressOf());
-		//
-		////19
-		//immediate_context->PSSetShaderResources(0, 1,
-		//	materials.cbegin()->second.shader_resource_views[0].GetAddressOf());
-		//
-		//
-		//D3D11_BUFFER_DESC buffer_desc;
-		//mesh.index_buffer->GetDesc(&buffer_desc);
-		//immediate_context->DrawIndexed(buffer_desc.ByteWidth / sizeof(uint32_t), 0, 0);
 	}
 }

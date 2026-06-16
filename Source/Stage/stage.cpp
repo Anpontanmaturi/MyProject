@@ -4,11 +4,14 @@ Stage::Stage(ID3D11Device* device)
 {
 	const char* filename = "..\\Data\\Model\\ExampleStage\\ExampleStage.fbx";
 	model = std::make_unique<SkinnedMesh>(device, filename);
+	collision_mesh.mesh = model.get();
+	collision_mesh.transform = &transform;
+	CollisionManager::Instance().Register(&collision_mesh);
 }
 
 Stage::~Stage()
 {
-
+	CollisionManager::Instance().Unregister(&collision_mesh);
 }
 
 void Stage::update_transform()

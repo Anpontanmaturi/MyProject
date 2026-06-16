@@ -202,6 +202,7 @@
     <ClCompile Include="Source\Camera\camera.cpp" />
     <ClCompile Include="Source\Camera\free_camera_controller.cpp" />
     <ClCompile Include="Source\Camera\game_camera_controller.cpp" />
+    <ClCompile Include="Source\Collision\collision_manager.cpp" />
     <ClCompile Include="Source\Graphics\fullscreen_quad.cpp" />
     <ClCompile Include="Source\Graphics\geometric_primitive.cpp" />
     <ClCompile Include="Source\Graphics\gltf_model.cpp" />
@@ -233,6 +234,7 @@
     <ClInclude Include="Source\Camera\camera.h" />
     <ClInclude Include="Source\Camera\free_camera_controller.h" />
     <ClInclude Include="Source\Camera\game_camera_controller.h" />
+    <ClInclude Include="Source\Collision\collision_manager.h" />
     <ClInclude Include="Source\Graphics\fullscreen_quad.h" />
     <ClInclude Include="Source\Graphics\geometric_primitive.h" />
     <ClInclude Include="Source\Graphics\gltf_model.h" />

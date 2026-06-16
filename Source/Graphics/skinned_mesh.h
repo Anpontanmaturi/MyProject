@@ -68,6 +68,16 @@ namespace DirectX
 	}
 }
 
+// Raycast‘Î‰ž
+enum axis_sytem
+{
+	rhs_y_up,
+	lhs_y_up,
+	rhs_z_up,
+	lhs_z_up,
+
+	axis_system_enum_count
+};
 
 
 // 24
@@ -321,20 +331,11 @@ public:
 	};
 	std::unordered_map<uint64_t, material> materials;
 
-	void fetch_meshes(FbxScene* fbx_scene, std::vector<mesh>& meshes);
-	
 	void create_com_objects(ID3D11Device* device, const char* fbx_filename);
-
-	void fetch_materials(FbxScene* fbx_scene, std::unordered_map<uint64_t, material>& materials);
 
 	void render(ID3D11DeviceContext* immediate_context, const DirectX::XMFLOAT4X4& world,
 		const DirectX::XMFLOAT4& material_color,
 		const Animation::keyframe* keyframe);
-
-	void fetch_skeleton(FbxMesh* fbx_mesh, Skeleton& bind_pose);
-
-	void fetch_animations(FbxScene* fbx_scene, std::vector<Animation>& animation_clips,
-		float sampling_rate);
 
 	void update_animation(Animation::keyframe& keyframe);
 
@@ -344,4 +345,28 @@ public:
 
 protected:
 	Scene scene_view;
+
+	void fetch_meshes(FbxScene* fbx_scene, std::vector<mesh>& meshes);
+	
+	void fetch_materials(FbxScene* fbx_scene, std::unordered_map<uint64_t, material>& materials);
+
+	void fetch_skeleton(FbxMesh* fbx_mesh, Skeleton& bind_pose);
+
+	void fetch_animations(FbxScene* fbx_scene, std::vector<Animation>& animation_clips,
+		float sampling_rate);
+
+// Raycast‘Î‰ž
+private:
+	const DirectX::XMFLOAT4X4 coordinate_system_transforms[axis_system_enum_count]{
+		{-1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 },	// 0:RHS Y-UP
+		{ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 },	// 1:LHS Y-UP
+		{-1, 0, 0, 0, 0, 0,-1, 0, 0, 1, 0, 0, 0, 0, 0, 1 },	// 2:RHS Z-UP
+		{ 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1 },	// 3:LHS Z-UP
+	};
+	axis_sytem axis = rhs_y_up;
+
+public:
+	const DirectX::XMFLOAT4X4& get_coordinate_system_transform() const { return coordinate_system_transforms[axis]; }
 };
+
+

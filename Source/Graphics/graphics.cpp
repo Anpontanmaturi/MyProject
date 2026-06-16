@@ -31,8 +31,8 @@ Graphics::Graphics(HWND hWnd)
 	D3D_FEATURE_LEVEL feature_levels{ D3D_FEATURE_LEVEL_11_0 };
 	DXGI_SWAP_CHAIN_DESC swap_chain_desc{};
 	swap_chain_desc.BufferCount = 1;
-	swap_chain_desc.BufferDesc.Width = screen_width;
-	swap_chain_desc.BufferDesc.Height = screen_height;
+	swap_chain_desc.BufferDesc.Width = static_cast<UINT>(screen_width);
+	swap_chain_desc.BufferDesc.Height = static_cast<UINT>(screen_height);
 	swap_chain_desc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	swap_chain_desc.BufferDesc.RefreshRate.Numerator = 60;
 	swap_chain_desc.BufferDesc.RefreshRate.Denominator = 1;

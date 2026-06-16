@@ -81,3 +81,5 @@ Intermediate/
 Saved/
 .vs/
 *.sln
+.log
+.tlog
