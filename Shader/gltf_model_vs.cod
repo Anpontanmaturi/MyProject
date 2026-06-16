@@ -84,7 +84,7 @@ dcl_temps 6
 //   o1.x <- <main return value>.w_position.x; o1.y <- <main return value>.w_position.y; o1.z <- <main return value>.w_position.z; o1.w <- <main return value>.w_position.w; 
 //   o0.x <- <main return value>.position.x; o0.y <- <main return value>.position.y; o0.z <- <main return value>.position.z; o0.w <- <main return value>.position.w
 //
-#line 7 "C:\Users\2240070\Desktop\my_project\HLSL\gltf_model_vs.hlsl"
+#line 7 "C:\Users\2240070\Desktop\MyProject\HLSL\gltf_model_vs.hlsl"
 itof r0.x, l(1)  // r0.x <- vin.position.w
 
 #line 8

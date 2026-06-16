@@ -54,7 +54,7 @@ dcl_temps 2
 //   v4.x <- pin.texcoord.x; v4.y <- pin.texcoord.y; 
 //   o0.x <- <main return value>.x; o0.y <- <main return value>.y; o0.z <- <main return value>.z; o0.w <- <main return value>.w
 //
-#line 50 "C:\Users\2240070\Desktop\my_project\HLSL\gltf_model_ps.hlsl"
+#line 50 "C:\Users\2240070\Desktop\MyProject\HLSL\gltf_model_ps.hlsl"
 dp3 r0.x, v2.xyzx, v2.xyzx
 rsq r0.x, r0.x
 mul r0.xyz, r0.xxxx, v2.xyzx  // r0.x <- N.x; r0.y <- N.y; r0.z <- N.z

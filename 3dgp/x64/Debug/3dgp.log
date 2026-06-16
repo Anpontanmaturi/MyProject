@@ -1,3 +1,78 @@
-﻿  skinned_mash.cpp
-C:\Users\2240070\Desktop\my_project\Source\Graphics\skinned_mash.cpp(310,30): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-  3dgp.vcxproj -> C:\Users\2240070\Desktop\my_project\x64\Debug\3dgp.exe
+﻿  compilation code save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\blur_ps.cod
+  compilation object save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\blur_ps.cso
+  compilation code save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\fullscreen_quad_ps.cod
+  compilation object save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\fullscreen_quad_ps.cso
+  compilation code save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\fullscreen_quad_vs.cod
+  compilation object save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\fullscreen_quad_vs.cso
+  compilation code save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\geometric_primitive_ps.cod
+  compilation object save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\geometric_primitive_ps.cso
+  compilation code save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\geometric_primitive_vs.cod
+  compilation object save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\geometric_primitive_vs.cso
+  compilation code save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\gltf_model_ps.cod
+  compilation object save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\gltf_model_ps.cso
+  compilation code save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\gltf_model_vs.cod
+  compilation object save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\gltf_model_vs.cso
+  compilation code save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\luminance_extraction_ps.cod
+  compilation object save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\luminance_extraction_ps.cso
+  compilation code save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\skinned_mesh_ps.cod
+  compilation object save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\skinned_mesh_ps.cso
+  compilation code save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\skinned_mesh_vs.cod
+  compilation object save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\skinned_mesh_vs.cso
+  compilation code save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\sprite_ps.cod
+  compilation object save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\sprite_ps.cso
+  compilation code save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\sprite_vs.cod
+  compilation object save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\sprite_vs.cso
+  compilation code save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\static_mesh_ps.cod
+  compilation object save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\static_mesh_ps.cso
+  compilation code save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\static_mesh_vs.cod
+  compilation object save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\static_mesh_vs.cso
+  compilation code save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\wireframe.cod
+  compilation object save succeeded; see C:\Users\2240070\Desktop\MyProject\Shader\wireframe.cso
+  imgui.cpp
+  imgui_draw.cpp
+  imgui_impl_dx11.cpp
+  imgui_impl_win32.cpp
+  imgui_ja_gryph_ranges.cpp
+  imgui_widgets.cpp
+  camera.cpp
+  free_camera_controller.cpp
+  game_camera_controller.cpp
+  fullscreen_quad.cpp
+  geometric_primitive.cpp
+  gltf_model.cpp
+  graphics.cpp
+C:\Users\2240070\Desktop\MyProject\Source\Graphics\gltf_model.h(9,10): error C1083: include ファイルを開けません。'../tinygltf-release/tiny_gltf.h':No such file or directory
+  (ソース ファイル 'Source/Graphics/gltf_model.cpp' をコンパイルしています)
+  
+C:\Users\2240070\Desktop\MyProject\Source\Graphics\gltf_model.h(9,10): error C1083: include ファイルを開けません。'../tinygltf-release/tiny_gltf.h':No such file or directory
+  (ソース ファイル 'Source/Graphics/graphics.cpp' をコンパイルしています)
+  
+  shader.cpp
+  skinned_mash.cpp
+C:\Users\2240070\Desktop\MyProject\Source\Graphics\skinned_mash.cpp(310,30): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+  sprite.cpp
+C:\Users\2240070\Desktop\MyProject\Source\Graphics\sprite.cpp(155,34): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+  sprite_batch.cpp
+C:\Users\2240070\Desktop\MyProject\Source\Graphics\sprite_batch.cpp(16,41): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
+  static_mesh.cpp
+  texture.cpp
+  game_pad.cpp
+  コードを生成中...
+  コンパイル中...
+  input.cpp
+  mouse.cpp
+  main.cpp
+C:\Users\2240070\Desktop\MyProject\Source\Graphics\gltf_model.h(9,10): error C1083: include ファイルを開けません。'../tinygltf-release/tiny_gltf.h':No such file or directory
+  (ソース ファイル 'Source/main.cpp' をコンパイルしています)
+  
+  stage.cpp
+C:\Users\2240070\Desktop\MyProject\Source\Graphics\gltf_model.h(9,10): error C1083: include ファイルを開けません。'../tinygltf-release/tiny_gltf.h':No such file or directory
+  (ソース ファイル 'Source/Stage/stage.cpp' をコンパイルしています)
+  
+  framebuffer.cpp
+  framework.cpp
+C:\Users\2240070\Desktop\MyProject\Source\Graphics\gltf_model.h(9,10): error C1083: include ファイルを開けません。'../tinygltf-release/tiny_gltf.h':No such file or directory
+  (ソース ファイル 'Source/System/framework.cpp' をコンパイルしています)
+  
+  mathf.cpp
+  コードを生成中...
