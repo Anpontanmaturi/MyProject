@@ -1,0 +1,19 @@
+﻿  imgui.cpp
+  imgui_draw.cpp
+  imgui_impl_dx11.cpp
+  imgui_impl_win32.cpp
+  imgui_ja_gryph_ranges.cpp
+  imgui_widgets.cpp
+  main.cpp
+  framework.cpp
+  shader.cpp
+  sprite.cpp
+C:\Users\2240070\Desktop\描画エンジン開発\学生配布\x3dgp.00\sprite.cpp(333,34): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+  sprite_batch.cpp
+C:\Users\2240070\Desktop\描画エンジン開発\学生配布\x3dgp.00\sprite_batch.cpp(33,41): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
+  texture.cpp
+  コード生成しています。
+  Previous IPDB not found, fall back to full compilation.
+  All 1553 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  コード生成が終了しました。
+  3dgp.vcxproj -> C:\Users\2240070\Desktop\描画エンジン開発\学生配布\x3dgp.00\x64\Release\3dgp.exe
