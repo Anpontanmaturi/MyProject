@@ -1,13 +1,3 @@
-﻿  imgui.cpp
-  graphics.cpp
-C:\Users\2240070\Desktop\MyProject\Source\Graphics\graphics.cpp(34,37): warning C4244: '=': 'float' から 'UINT' への変換です。データが失われる可能性があります。
-C:\Users\2240070\Desktop\MyProject\Source\Graphics\graphics.cpp(35,38): warning C4244: '=': 'float' から 'UINT' への変換です。データが失われる可能性があります。
-C:\Users\2240070\Desktop\MyProject\Source\Graphics\graphics.cpp(541,50): warning C4244: '引数': 'float' から 'ImGuiColorEditFlags' への変換です。データが失われる可能性があります。
-  shader.cpp
-  game_pad.cpp
-  stage.cpp
-  framebuffer.cpp
-  mathf.cpp
-  コードを生成中...
-     ライブラリ C:\Users\2240070\Desktop\MyProject\x64\Debug\3dgp.lib とオブジェクト C:\Users\2240070\Desktop\MyProject\x64\Debug\3dgp.exp を作成中
+﻿  graphics.cpp
+C:\Users\2240070\Desktop\MyProject\Source\Graphics\graphics.cpp(542,50): warning C4244: '引数': 'float' から 'ImGuiColorEditFlags' への変換です。データが失われる可能性があります。
   3dgp.vcxproj -> C:\Users\2240070\Desktop\MyProject\x64\Debug\3dgp.exe

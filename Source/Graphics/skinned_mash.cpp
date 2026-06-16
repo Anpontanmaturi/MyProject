@@ -98,9 +98,77 @@ void fetch_bone_influences(const FbxMesh* fbx_mesh,
 	}
 }
 
-SkinnedMesh::SkinnedMesh(ID3D11Device* device, const char* fbx_filename, bool triangulate, float sampling_rate)
+void SkinnedMesh::fetch_scene(const char* fbx_filename, bool triangulate, float sampling_rate)
 {
-	// 30
+	FbxManager* fbx_manager{ FbxManager::Create() };
+	FbxScene* fbx_scene{ FbxScene::Create(fbx_manager, "") };
+	FbxImporter* fbx_importer{ FbxImporter::Create(fbx_manager, "") };
+	bool import_status{ false };
+	import_status = fbx_importer->Initialize(fbx_filename);
+	_ASSERT_EXPR_A(import_status, fbx_importer->GetStatus().GetErrorString());
+	import_status = fbx_importer->Import(fbx_scene);
+	_ASSERT_EXPR_A(import_status, fbx_importer->GetStatus().GetErrorString());
+
+	FbxGeometryConverter fbx_converter(fbx_manager);
+	if (triangulate)
+	{
+		fbx_converter.Triangulate(fbx_scene, true/*replace*/, false/*legacy*/);
+		fbx_converter.RemoveBadPolygonsFromMeshes(fbx_scene);
+	}
+
+	// Serialize an entire scene graph into sequence container
+	std::function<void(FbxNode*)> traverse{ [&](FbxNode* fbx_node) {
+#if 0
+		if (fbx_node->GetNodeAttribute())
+		{
+			switch (fbx_node->GetNodeAttribute()->GetAttributeType())
+			{
+			case FbxNodeAttribute::EType::eNull:
+			case FbxNodeAttribute::EType::eMesh:
+			case FbxNodeAttribute::EType::eSkeleton:
+			case FbxNodeAttribute::EType::eUnknown:
+			case FbxNodeAttribute::EType::eMarker:
+			case FbxNodeAttribute::EType::eCamera:
+			case FbxNodeAttribute::EType::eLight:
+				scene::node& node{ scene_view.nodes.emplace_back() };
+				node.attribute = fbx_node->GetNodeAttribute()->GetAttributeType();
+				node.name = fbx_node->GetName();
+				node.unique_id = fbx_node->GetUniqueID();
+				node.parent_index = scene_view.indexof(fbx_node->GetParent() ? fbx_node->GetParent()->GetUniqueID() : 0);
+				break;
+			}
+		}
+#else
+		Scene::node& node{ scene_view.nodes.emplace_back() };
+		node.attribute = fbx_node->GetNodeAttribute() ? fbx_node->GetNodeAttribute()->GetAttributeType() : FbxNodeAttribute::EType::eUnknown;
+		node.name = fbx_node->GetName();
+		node.unique_id = fbx_node->GetUniqueID();
+		node.parent_index = scene_view.indexof(fbx_node->GetParent() ? fbx_node->GetParent()->GetUniqueID() : 0);
+#endif
+		for (int child_index = 0; child_index < fbx_node->GetChildCount(); ++child_index)
+		{
+			traverse(fbx_node->GetChild(child_index));
+		}
+	} };
+	traverse(fbx_scene->GetRootNode());
+
+	fetch_meshes(fbx_scene, meshes);
+
+	fetch_materials(fbx_scene, materials);
+
+#if 0
+	float sampling_rate{ 0 };
+#endif
+	fetch_animations(fbx_scene, animation_clips, sampling_rate);
+
+	fbx_manager->Destroy();
+}
+
+SkinnedMesh::SkinnedMesh(ID3D11Device* device, const char* fbx_filename, bool triangulate, float sampling_rate, axis_sytem axis)
+{
+	// Raycast対応
+	this->axis = axis;
+
 	std::filesystem::path cereal_filename(fbx_filename);
 	cereal_filename.replace_extension("cereal");
 	if (std::filesystem::exists(cereal_filename.c_str()))
@@ -111,77 +179,40 @@ SkinnedMesh::SkinnedMesh(ID3D11Device* device, const char* fbx_filename, bool tr
 	}
 	else
 	{
-		// 
-		FbxManager* fbx_manager{ FbxManager::Create() };
-		FbxScene* fbx_scene{ FbxScene::Create(fbx_manager,"") };
+		fetch_scene(fbx_filename, triangulate, sampling_rate);
 
-		FbxImporter* fbx_importer{ FbxImporter::Create(fbx_manager,"") };
-		bool import_status{ false };
-		import_status = fbx_importer->Initialize(fbx_filename);
-		_ASSERT_EXPR_A(import_status, fbx_importer->GetStatus().GetErrorString());
-
-		import_status = fbx_importer->Import(fbx_scene);
-		_ASSERT_EXPR_A(import_status, fbx_importer->GetStatus().GetErrorString());
-
-		FbxGeometryConverter fbx_converter(fbx_manager);
-		if (triangulate)
-		{
-			fbx_converter.Triangulate(fbx_scene, true/*replace*/, false/*legacy*/);
-			fbx_converter.RemoveBadPolygonsFromMeshes(fbx_scene);
-		}
-
-		std::function<void(FbxNode*)> traverse{ [&](FbxNode* fbx_node) {
-			Scene::node& node{scene_view.nodes.emplace_back()};
-			node.attribute = fbx_node->GetNodeAttribute() ?
-				fbx_node->GetNodeAttribute()->GetAttributeType() : FbxNodeAttribute::EType::eUnknown;
-			node.name = fbx_node->GetName();
-			node.unique_id = fbx_node->GetUniqueID();
-			node.parent_index = scene_view.indexof(fbx_node->GetParent() ?
-				fbx_node->GetParent()->GetUniqueID() : 0);
-			for (int child_index = 0; child_index < fbx_node->GetChildCount(); ++child_index)
-			{
-				traverse(fbx_node->GetChild(child_index));
-			}
-		} };
-		traverse(fbx_scene->GetRootNode());
-
-		fetch_meshes(fbx_scene, meshes);
-
-		fetch_materials(fbx_scene, materials);
-
-		fetch_animations(fbx_scene, animation_clips, sampling_rate);
-
-#if 0
-		for (const scene::node& node : scene_view.nodes)
-		{
-			FbxNode* fbx_node{ fbx_scene->FindNodeByName(node.name.c_str()) };
-			// Display node data in the output window as debug
-			std::string node_name = fbx_node->GetName();
-			uint64_t uid = fbx_node->GetUniqueID();
-			uint64_t parent_uid = fbx_node->GetParent() ? fbx_node->GetParent()->GetUniqueID() : 0;
-			int32_t type = fbx_node->GetNodeAttribute() ? fbx_node->GetNodeAttribute()->GetAttributeType() :
-				0;
-			std::stringstream debug_string;
-			debug_string << node_name << ":" << uid << ":" << parent_uid << ":" << type << "¥n";
-			OutputDebugStringA(debug_string.str().c_str());
-		}
-#endif
-		fbx_manager->Destroy();
-		
-		// 30
 		std::ofstream ofs(cereal_filename.c_str(), std::ios::binary);
 		cereal::BinaryOutputArchive serialization(ofs);
+		serialization(scene_view, meshes, materials, animation_clips);
+	}
 
-		std::vector<Animation> clips_serialize;
-		for (const auto& clip : animation_clips)
+	create_com_objects(device, fbx_filename);
+}
+
+SkinnedMesh::SkinnedMesh(ID3D11Device* device, const char* fbx_filename, std::vector<std::string>& animation_filenames, bool triangulate, float sampling_rate, axis_sytem axis)
+{
+	this->axis = axis;
+
+	std::filesystem::path cereal_filename(fbx_filename);
+	cereal_filename.replace_extension("cereal");
+	if (std::filesystem::exists(cereal_filename.c_str()))
+	{
+		std::ifstream ifs(cereal_filename.c_str(), std::ios::binary);
+		cereal::BinaryInputArchive deserialization(ifs);
+		deserialization(scene_view, meshes, materials, animation_clips);
+	}
+	else
+	{
+		fetch_scene(fbx_filename, triangulate, sampling_rate);
+
+		for (const std::string animation_filename : animation_filenames)
 		{
-			if (!clip.appended)
-			{
-				clips_serialize.push_back(clip);
-			}
+			append_animations(animation_filename.c_str(), sampling_rate);
 		}
 
-		serialization(scene_view, meshes, materials, clips_serialize);
+		std::ofstream ofs(cereal_filename.c_str(), std::ios::binary);
+		cereal::BinaryOutputArchive serialization(ofs);
+		serialization(scene_view, meshes, materials, animation_clips);
 	}
 
 	create_com_objects(device, fbx_filename);

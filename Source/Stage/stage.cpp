@@ -2,8 +2,8 @@
 
 Stage::Stage(ID3D11Device* device)
 {
-	const char* filename = "..\\Data\\Model\\ExampleStage\\ExampleStage.fbx";
-	model = std::make_unique<SkinnedMesh>(device, filename);
+	const char* filename = ".\\Data\\Model\\ExampleStage\\ExampleStage.fbx";
+	model = std::make_unique<SkinnedMesh>(device, filename, true, 0.0f, axis_sytem::rhs_y_up);
 	collision_mesh.mesh = model.get();
 	collision_mesh.transform = &transform;
 	CollisionManager::Instance().Register(&collision_mesh);

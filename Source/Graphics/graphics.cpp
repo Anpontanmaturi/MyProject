@@ -296,8 +296,8 @@ Graphics::Graphics(HWND hWnd)
 	geometric_primitives[0] = std::make_unique<GeometricPrimitive>(device.Get());
 
 	//sprite_batches[0] = std::make_unique<sprite_batch>(device.Get(), L".\\resources\\screenshot.jpg", 1);
-	framebuffers[0] = std::make_unique<Framebuffer>(device.Get(), 1280, 720);
-	framebuffers[1] = std::make_unique<Framebuffer>(device.Get(), 1280 / 2, 720 / 2);
+	/*framebuffers[0] = std::make_unique<Framebuffer>(device.Get(), 1280, 720);
+	framebuffers[1] = std::make_unique<Framebuffer>(device.Get(), 1280 / 2, 720 / 2);*/
 
 	stage = std::make_unique<Stage>(device.Get());
 
@@ -341,24 +341,25 @@ void Graphics::render(float elapsed_time, const DirectX::XMFLOAT4& camera_pos)
 	immediate_context->PSSetSamplers(1, 1, sampler_states[static_cast<size_t>(SAMPLER_STATE::LINEAR)].GetAddressOf());
 	immediate_context->PSSetSamplers(2, 1, sampler_states[static_cast<size_t>(SAMPLER_STATE::ANISOTROPIC)].GetAddressOf());
 
-	framebuffers[0]->clear(immediate_context.Get());
-	framebuffers[0]->activate(immediate_context.Get());
+	/*framebuffers[0]->clear(immediate_context.Get());
+	framebuffers[0]->activate(immediate_context.Get());*/
 
-	immediate_context->RSSetState(rasterizer_states[static_cast<size_t>(RASTER_STATE::CULL_NONE)].Get()); // ラスタライザ
-	immediate_context->OMSetDepthStencilState(depth_stencil_states[static_cast<size_t>(DEPTH_STATE::ZT_OFF_ZW_OFF)].Get(), 1); // 深度ステンシル
-	immediate_context->OMSetBlendState(blend_states[static_cast<size_t>(BLEND_STATE::NONE)].Get(), nullptr, 0xFFFFFFFF);// ブレンディング
-	if (sprite_batches[0])
-	{
-		sprite_batches[0]->begin(immediate_context.Get());
-		sprite_batches[0]->render(immediate_context.Get(),
-			0, 0, screen_width, screen_height,
-			1, 1, 1, 1, 0);
-		sprite_batches[0]->end(immediate_context.Get());
-	}
+	//immediate_context->RSSetState(rasterizer_states[static_cast<size_t>(RASTER_STATE::CULL_NONE)].Get()); // ラスタライザ
+	//immediate_context->OMSetDepthStencilState(depth_stencil_states[static_cast<size_t>(DEPTH_STATE::ZT_OFF_ZW_OFF)].Get(), 1); // 深度ステンシル
+	//immediate_context->OMSetBlendState(blend_states[static_cast<size_t>(BLEND_STATE::NONE)].Get(), nullptr, 0xFFFFFFFF);// ブレンディング
+	//if (sprite_batches[0])
+	//{
+	//	sprite_batches[0]->begin(immediate_context.Get());
+	//	sprite_batches[0]->render(immediate_context.Get(),
+	//		0, 0, screen_width, screen_height,
+	//		1, 1, 1, 1, 0);
+	//	sprite_batches[0]->end(immediate_context.Get());
+	//}
 	// skinned_mesh
+
 	immediate_context->RSSetState(rasterizer_states[static_cast<size_t>(RASTER_STATE::SOLID)].Get());
 	immediate_context->OMSetDepthStencilState(depth_stencil_states[static_cast<size_t>(DEPTH_STATE::ZT_ON_ZW_ON)].Get(), 1);
-	immediate_context->OMSetBlendState(blend_states[static_cast<size_t>(BLEND_STATE::NONE)].Get(), nullptr, 0xFFFFFFFF);
+	immediate_context->OMSetBlendState(blend_states[static_cast<size_t>(BLEND_STATE::ALPHA)].Get(), nullptr, 0xFFFFFFFF);
 
 	// ビュー・プロジェクション変換行列を計算し、定数バッファにセット
 	D3D11_VIEWPORT viewport;
@@ -378,7 +379,7 @@ void Graphics::render(float elapsed_time, const DirectX::XMFLOAT4& camera_pos)
 	DirectX::XMStoreFloat4x4(&data.view_projection, V * P);
 	//data.light_direction = { 0, 0, 1, 0 };
 	data.light_direction = light_direction;
-
+	
 	data.camera_position = camera_position;
 
 	immediate_context->UpdateSubresource(constant_buffers[0].Get(), 0, 0, &data, 0, 0);
@@ -390,7 +391,6 @@ void Graphics::render(float elapsed_time, const DirectX::XMFLOAT4& camera_pos)
 	immediate_context->PSSetConstantBuffers(2, 1, constant_buffers[1].GetAddressOf());
 
 	immediate_context->OMSetDepthStencilState(depth_stencil_states[static_cast<size_t>(DEPTH_STATE::ZT_ON_ZW_ON)].Get(), 0);
-	immediate_context->RSSetState(rasterizer_states[static_cast<size_t>(RASTER_STATE::SOLID)].Get());
 
 	// モデル座標系をワールド座標系に変換する行列を計算
 	{
@@ -411,7 +411,7 @@ void Graphics::render(float elapsed_time, const DirectX::XMFLOAT4& camera_pos)
 		DirectX::XMFLOAT4X4 world;
 		DirectX::XMStoreFloat4x4(&world, C * S * R * T);
 
-		if (skinned_meshes[0]) {
+		/*if (skinned_meshes[0]) {
 #if 1
 			if (!skinned_meshes[0]->animation_clips.empty())
 			{
@@ -454,7 +454,7 @@ void Graphics::render(float elapsed_time, const DirectX::XMFLOAT4& camera_pos)
 			{
 				skinned_meshes[0]->render(immediate_context.Get(), world, material_color, nullptr);
 			}
-		}
+		}*/
 	}
 
 	// gltf_model
@@ -481,15 +481,15 @@ void Graphics::render(float elapsed_time, const DirectX::XMFLOAT4& camera_pos)
 		}
 	}
 
-	framebuffers[0]->deactivate(immediate_context.Get());
+	//framebuffers[0]->deactivate(immediate_context.Get());
 
-	framebuffers[1]->clear(immediate_context.Get());
-	framebuffers[1]->activate(immediate_context.Get());
+	//framebuffers[1]->clear(immediate_context.Get());
+	//framebuffers[1]->activate(immediate_context.Get());
 	immediate_context->RSSetState(rasterizer_states[static_cast<size_t>(RASTER_STATE::CULL_NONE)].Get());
 	immediate_context->OMSetDepthStencilState(depth_stencil_states[static_cast<size_t>(DEPTH_STATE::ZT_OFF_ZW_OFF)].Get(), 1);
-	bit_block_transfer->blit(immediate_context.Get(),
+	/*bit_block_transfer->blit(immediate_context.Get(),
 		framebuffers[0]->shader_resource_views[0].GetAddressOf(), 0, 1, pixel_shaders[0].Get());
-	framebuffers[1]->deactivate(immediate_context.Get());
+	framebuffers[1]->deactivate(immediate_context.Get());*/
 
 #if 0
 	bit_block_transfer->blit(immediate_context.Get(),
@@ -498,9 +498,10 @@ void Graphics::render(float elapsed_time, const DirectX::XMFLOAT4& camera_pos)
 
 	immediate_context->OMSetDepthStencilState(depth_stencil_states[static_cast<size_t>(DEPTH_STATE::ZT_OFF_ZW_OFF)].Get(), 0);
 	immediate_context->RSSetState(rasterizer_states[static_cast<size_t>(RASTER_STATE::CULL_NONE)].Get());
-	ID3D11ShaderResourceView* shader_resource_views[2]
+
+	/*ID3D11ShaderResourceView* shader_resource_views[2]
 	{ framebuffers[0]->shader_resource_views[0].Get(),framebuffers[1]->shader_resource_views[0].Get() };
-	bit_block_transfer->blit(immediate_context.Get(), shader_resource_views, 0, 2, pixel_shaders[1].Get());
+	bit_block_transfer->blit(immediate_context.Get(), shader_resource_views, 0, 2, pixel_shaders[1].Get());*/
 
 #if 0
 	bit_block_transfer->blit(immediate_context.Get(),

@@ -254,7 +254,8 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> input_layout;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> constant_buffer;
 public:
-	SkinnedMesh(ID3D11Device* device, const char* fbx_filename, bool triangulate = false, float sampling_rate = 0.0f);
+	SkinnedMesh(ID3D11Device* device, const char* fbx_filename, bool triangulate = false, float sampling_rate = 0.0f, axis_sytem axis = rhs_y_up);
+	SkinnedMesh(ID3D11Device* device, const char* fbx_filename, std::vector<std::string>& animation_filenames, bool triangulate = false, float sampling_rate = 0, axis_sytem axis = rhs_y_up/*Raycast‘Î‰ž*/);
 
 	virtual ~SkinnedMesh() = default;
 
@@ -354,6 +355,9 @@ protected:
 
 	void fetch_animations(FbxScene* fbx_scene, std::vector<Animation>& animation_clips,
 		float sampling_rate);
+
+	void fetch_scene(const char* fbx_filename, bool triangulate, float sampling_rate);
+
 
 // Raycast‘Î‰ž
 private:
