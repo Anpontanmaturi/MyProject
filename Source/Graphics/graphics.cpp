@@ -1,5 +1,9 @@
 #include "graphics.h"
 #include "Graphics/shader.h"
+
+#include "texture.h"
+#include "Camera/camera.h"
+
 #include <cassert>
 
 Graphics* Graphics::instance = nullptr;
@@ -286,29 +290,15 @@ Graphics::Graphics(HWND hWnd)
 	buffer_desc.StructureByteStride = 0;
 	hr = device->CreateBuffer(&buffer_desc, nullptr, constant_buffers[1].GetAddressOf());
 	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
-
-	{
-		// 変数の初期値を決める
-		factors[1] = 100.000f;
-		factors[2] = 0.5f;
-	}
-	// geometric_primitive オブジェクトを生成
-	geometric_primitives[0] = std::make_unique<GeometricPrimitive>(device.Get());
-
-	//sprite_batches[0] = std::make_unique<sprite_batch>(device.Get(), L".\\resources\\screenshot.jpg", 1);
-	/*framebuffers[0] = std::make_unique<Framebuffer>(device.Get(), 1280, 720);
-	framebuffers[1] = std::make_unique<Framebuffer>(device.Get(), 1280 / 2, 720 / 2);*/
-
+	
 	stage = std::make_unique<Stage>(device.Get());
 
-	/*skinned_meshes[0] = std::make_unique<skinned_mesh>(device.Get(),
-		".\\resources\\nico.fbx", false, 0.0f);
-	skinned_meshes[0]->append_animations(".\\resources\\AimTest\\Aim_space.fbx", 0);*/
-
-	bit_block_transfer = std::make_unique<FullscreenQuad>(device.Get());
-	create_ps_from_cso(device.Get(), "Shader\\luminance_extraction_ps.cso", pixel_shaders[0].GetAddressOf());
-	create_ps_from_cso(device.Get(), "Shader\\blur_ps.cso", pixel_shaders[1].GetAddressOf());
-
+	Camera& camera = Camera::Instance();
+	camera.set_lookat(
+		{ 10, 10, -10 },
+		{ 10, 0, 0 },
+		{ 0, 1, 0 });
+	camera.set_perspectice_fov(DirectX::XM_PIDIV4, viewport.Width / viewport.Height, 0.1f, 1000.0f);
 }
 
 Graphics::~Graphics()
@@ -319,10 +309,43 @@ Graphics::~Graphics()
 	}
 }
 
-void Graphics::render(float elapsed_time, const DirectX::XMFLOAT4& camera_pos)
+void Graphics::update(float elapsed_time)
 {
-	debug_gui();
+	stage->update_transform();
+	camera_controller.set_target({ 0, 0, 0 });
+	camera_controller.update(elapsed_time);
 
+#ifdef USE_IMGUI
+	ImGui::Begin("ImGUI");
+	{
+		if (ImGui::CollapsingHeader("light", nullptr, ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			ImGui::DragFloat3("direction", &light_direction.x, 0.01f);
+		}
+		/*if (ImGui::CollapsingHeader("GometricPrimitive", nullptr, ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			ImGui::DragFloat3("pos", &translation.x, 0.01f);
+			ImGui::DragFloat3("angle", &rotation.x, 0.01f);
+			ImGui::DragFloat3("scale", &scaling.x, 0.01f);
+			ImGui::ColorEdit4("color", &material_color.x, 0.01f);
+		}
+		ImGui::SliderFloat("factors[0]", &factors[0], -1.500f, 1.500f);
+		ImGui::SliderFloat("factors[1]", &factors[1], 0.000f, 500.000f);
+		ImGui::SliderFloat("factors[2]", &factors[2], 0.00f, 1.00f);
+		ImGui::Separator();
+		ImGui::SliderFloat("luminance_threshold", &parameter_constants.luminance_threshold, 0.0f, +2.0f);
+		ImGui::SliderFloat("gaussian_sigma", &parameter_constants.gaussian_sigma, 0.0f, +2.0f);
+		ImGui::SliderFloat("bloom_intensity", &parameter_constants.bloom_intensity, 0.0f, +2.0f);
+		ImGui::SliderFloat("exposure", &parameter_constants.exposure, 0.0f, +2.0f);
+		ImGui::Separator();
+		ImGui::DragFloat("gltf_scale", &gltf_scale, 0.01f);*/
+	}
+	ImGui::End();
+#endif
+}
+
+void Graphics::render(float elapsed_time)
+{
 	ID3D11RenderTargetView* null_render_target_views[D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT]{};
 	immediate_context->OMSetRenderTargets(_countof(null_render_target_views), null_render_target_views, 0);
 	ID3D11ShaderResourceView* null_shader_resource_views[D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT]{};
@@ -341,173 +364,27 @@ void Graphics::render(float elapsed_time, const DirectX::XMFLOAT4& camera_pos)
 	immediate_context->PSSetSamplers(1, 1, sampler_states[static_cast<size_t>(SAMPLER_STATE::LINEAR)].GetAddressOf());
 	immediate_context->PSSetSamplers(2, 1, sampler_states[static_cast<size_t>(SAMPLER_STATE::ANISOTROPIC)].GetAddressOf());
 
-	/*framebuffers[0]->clear(immediate_context.Get());
-	framebuffers[0]->activate(immediate_context.Get());*/
-
-	//immediate_context->RSSetState(rasterizer_states[static_cast<size_t>(RASTER_STATE::CULL_NONE)].Get()); // ラスタライザ
-	//immediate_context->OMSetDepthStencilState(depth_stencil_states[static_cast<size_t>(DEPTH_STATE::ZT_OFF_ZW_OFF)].Get(), 1); // 深度ステンシル
-	//immediate_context->OMSetBlendState(blend_states[static_cast<size_t>(BLEND_STATE::NONE)].Get(), nullptr, 0xFFFFFFFF);// ブレンディング
-	//if (sprite_batches[0])
-	//{
-	//	sprite_batches[0]->begin(immediate_context.Get());
-	//	sprite_batches[0]->render(immediate_context.Get(),
-	//		0, 0, screen_width, screen_height,
-	//		1, 1, 1, 1, 0);
-	//	sprite_batches[0]->end(immediate_context.Get());
-	//}
-	// skinned_mesh
-
 	immediate_context->RSSetState(rasterizer_states[static_cast<size_t>(RASTER_STATE::SOLID)].Get());
 	immediate_context->OMSetDepthStencilState(depth_stencil_states[static_cast<size_t>(DEPTH_STATE::ZT_ON_ZW_ON)].Get(), 1);
 	immediate_context->OMSetBlendState(blend_states[static_cast<size_t>(BLEND_STATE::ALPHA)].Get(), nullptr, 0xFFFFFFFF);
 
-	// ビュー・プロジェクション変換行列を計算し、定数バッファにセット
-	D3D11_VIEWPORT viewport;
-	UINT num_viewports{ 1 };
-	immediate_context->RSGetViewports(&num_viewports, &viewport);
-
-	float aspect_ratio{ viewport.Width / viewport.Height };
-	DirectX::XMMATRIX P{ DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(30),
-		aspect_ratio,0.1f,100.0f) };
-
-	DirectX::XMVECTOR eye{ DirectX::XMLoadFloat4(&camera_position) };
-	DirectX::XMVECTOR focus{ DirectX::XMVectorSet(0.0f, 0.0f, 0.0f ,1.0f) };
-	DirectX::XMVECTOR up{ DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f) };
-	DirectX::XMMATRIX V{ DirectX::XMMatrixLookAtLH(eye, focus, up) };
+	Camera& camera = Camera::Instance();
+	const DirectX::XMFLOAT3& camera_position = camera.get_eye();
+	DirectX::XMMATRIX V = DirectX::XMLoadFloat4x4(&camera.get_view());
+	DirectX::XMMATRIX P = DirectX::XMLoadFloat4x4(&camera.get_projection());
 
 	scene_constants data{};
 	DirectX::XMStoreFloat4x4(&data.view_projection, V * P);
-	//data.light_direction = { 0, 0, 1, 0 };
 	data.light_direction = light_direction;
-	
-	data.camera_position = camera_position;
-
+	data.camera_position.x = camera_position.x;
+	data.camera_position.y = camera_position.y;
+	data.camera_position.z = camera_position.z;
+	data.camera_position.w = 0;
 	immediate_context->UpdateSubresource(constant_buffers[0].Get(), 0, 0, &data, 0, 0);
 	immediate_context->VSSetConstantBuffers(1, 1, constant_buffers[0].GetAddressOf());
-
 	immediate_context->PSSetConstantBuffers(1, 1, constant_buffers[0].GetAddressOf());
 
-	immediate_context->UpdateSubresource(constant_buffers[1].Get(), 0, 0, &parameter_constants, 0, 0);
-	immediate_context->PSSetConstantBuffers(2, 1, constant_buffers[1].GetAddressOf());
-
-	immediate_context->OMSetDepthStencilState(depth_stencil_states[static_cast<size_t>(DEPTH_STATE::ZT_ON_ZW_ON)].Get(), 0);
-
-	// モデル座標系をワールド座標系に変換する行列を計算
-	{
-		const DirectX::XMFLOAT4X4 coordinate_sysstem_transforms[]{
-			{-1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},		// 0:RHS Y-UP
-			{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},		// 1:LHS Y-UP
-			{-1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1},		// 2:RHS Z-UP
-			{1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1},		// 3:LHS Z-UP
-		};
-		// To change the units from centimeters to meters, set 'scale_factor' to 0.01.
-		const float scale_factor = 0.01f;
-		DirectX::XMMATRIX C{ DirectX::XMLoadFloat4x4(&coordinate_sysstem_transforms[0])
-			* DirectX::XMMatrixScaling(scale_factor,scale_factor,scale_factor) };
-
-		DirectX::XMMATRIX S{ DirectX::XMMatrixScaling(scaling.x, scaling.y, scaling.z) };
-		DirectX::XMMATRIX R{ DirectX::XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z) };
-		DirectX::XMMATRIX T{ DirectX::XMMatrixTranslation(translation.x, translation.y, translation.z) };
-		DirectX::XMFLOAT4X4 world;
-		DirectX::XMStoreFloat4x4(&world, C * S * R * T);
-
-		/*if (skinned_meshes[0]) {
-#if 1
-			if (!skinned_meshes[0]->animation_clips.empty())
-			{
-				int clip_index{ 0 };
-				int frame_index{ 0 };
-				static float animation_tick{ 0 };
-
-
-				Animation& animation{ skinned_meshes[0]->animation_clips.at(clip_index) };
-				frame_index = static_cast<int>(animation_tick * animation.sampling_rate);
-				if (frame_index > animation.sequence.size() - 1)
-				{
-					frame_index = 0;
-					animation_tick = 0;
-				}
-				else
-				{
-					animation_tick += elapsed_time;
-				}
-				Animation::keyframe& keyframe{ animation.sequence.at(frame_index) };
-#if 0
-				DirectX::XMStoreFloat4(&keyframe.nodes.at(30).rotation,
-					DirectX::XMQuaternionRotationAxis(DirectX::XMVectorSet(1, 0, 0, 0), factors[0]));
-				keyframe.nodes.at(30).translation.x = factors[1];
-				skinned_meshes[0]->update_animation(keyframe);
-#endif
-
-#else
-			animation::keyframe keyframe;
-			const animation::keyframe* keyframes[2]{
-				&skinned_meshes[0]->animation_clips.at(0).sequence.at(40),
-				&skinned_meshes[0]->animation_clips.at(0).sequence.at(80)
-			};
-			skinned_meshes[0]->blend_animations(keyframes, factors[2], keyframe);
-			skinned_meshes[0]->update_animation(keyframe);
-#endif
-			skinned_meshes[0]->render(immediate_context.Get(), world, material_color, &keyframe);
-			}
-			else
-			{
-				skinned_meshes[0]->render(immediate_context.Get(), world, material_color, nullptr);
-			}
-		}*/
-	}
-
-	// gltf_model
-	{
-		const DirectX::XMFLOAT4X4 coordinate_sysstem_transforms[]{
-			{-1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},		// 0:RHS Y-UP
-			{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},		// 1:LHS Y-UP
-			{-1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1},		// 2:RHS Z-UP
-			{1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1},		// 3:LHS Z-UP
-		};
-		const float scale_factor = 0.1f;
-		DirectX::XMMATRIX C{ DirectX::XMLoadFloat4x4(&coordinate_sysstem_transforms[0])
-			* DirectX::XMMatrixScaling(scale_factor,scale_factor,scale_factor) };
-
-		DirectX::XMMATRIX S{ DirectX::XMMatrixScaling(scaling.x, scaling.y, scaling.z) };
-		DirectX::XMMATRIX R{ DirectX::XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z) };
-		DirectX::XMMATRIX T{ DirectX::XMMatrixTranslation(translation.x, translation.y, translation.z) };
-		DirectX::XMFLOAT4X4 world;
-
-		DirectX::XMStoreFloat4x4(&world, C * S * R * T);
-		if (gltf_models[0])
-		{
-			gltf_models[0]->render(immediate_context.Get(), world);
-		}
-	}
-
-	//framebuffers[0]->deactivate(immediate_context.Get());
-
-	//framebuffers[1]->clear(immediate_context.Get());
-	//framebuffers[1]->activate(immediate_context.Get());
-	immediate_context->RSSetState(rasterizer_states[static_cast<size_t>(RASTER_STATE::CULL_NONE)].Get());
-	immediate_context->OMSetDepthStencilState(depth_stencil_states[static_cast<size_t>(DEPTH_STATE::ZT_OFF_ZW_OFF)].Get(), 1);
-	/*bit_block_transfer->blit(immediate_context.Get(),
-		framebuffers[0]->shader_resource_views[0].GetAddressOf(), 0, 1, pixel_shaders[0].Get());
-	framebuffers[1]->deactivate(immediate_context.Get());*/
-
-#if 0
-	bit_block_transfer->blit(immediate_context.Get(),
-		framebuffers[1]->shader_resource_views[0].GetAddressOf(), 0, 1);
-#endif
-
-	immediate_context->OMSetDepthStencilState(depth_stencil_states[static_cast<size_t>(DEPTH_STATE::ZT_OFF_ZW_OFF)].Get(), 0);
-	immediate_context->RSSetState(rasterizer_states[static_cast<size_t>(RASTER_STATE::CULL_NONE)].Get());
-
-	/*ID3D11ShaderResourceView* shader_resource_views[2]
-	{ framebuffers[0]->shader_resource_views[0].Get(),framebuffers[1]->shader_resource_views[0].Get() };
-	bit_block_transfer->blit(immediate_context.Get(), shader_resource_views, 0, 2, pixel_shaders[1].Get());*/
-
-#if 0
-	bit_block_transfer->blit(immediate_context.Get(),
-		framebuffers[0]->shader_resource_views[0].GetAddressOf(), 0, 1);
-#endif
-
+	// 3Dオブジェクトの描画
 	stage->render(immediate_context.Get());
 
 #ifdef USE_IMGUI
@@ -519,39 +396,4 @@ void Graphics::render(float elapsed_time, const DirectX::XMFLOAT4& camera_pos)
 	UINT sync_interval{ 0 };
 	swap_chain->Present(sync_interval, 0);
 
-}
-
-void Graphics::debug_gui()
-{
-#ifdef USE_IMGUI
-	ImGui::Begin("ImGUI");
-	{
-		if (ImGui::CollapsingHeader("camera", nullptr, ImGuiTreeNodeFlags_DefaultOpen))
-		{
-			ImGui::DragFloat3("position", &camera_position.x, 0.01f);
-		}
-		if (ImGui::CollapsingHeader("light", nullptr, ImGuiTreeNodeFlags_DefaultOpen))
-		{
-			ImGui::DragFloat3("direction", &light_direction.x, 0.01f);
-		}
-		if (ImGui::CollapsingHeader("GometricPrimitive", nullptr, ImGuiTreeNodeFlags_DefaultOpen))
-		{
-			ImGui::DragFloat3("pos", &translation.x, 0.01f);
-			ImGui::DragFloat3("angle", &rotation.x, 0.01f);
-			ImGui::DragFloat3("scale", &scaling.x, 0.01f);
-			ImGui::ColorEdit4("color", &material_color.x, 0.01f);
-		}
-		ImGui::SliderFloat("factors[0]", &factors[0], -1.500f, 1.500f);
-		ImGui::SliderFloat("factors[1]", &factors[1], 0.000f, 500.000f);
-		ImGui::SliderFloat("factors[2]", &factors[2], 0.00f, 1.00f);
-		ImGui::Separator();
-		ImGui::SliderFloat("luminance_threshold", &parameter_constants.luminance_threshold, 0.0f, +2.0f);
-		ImGui::SliderFloat("gaussian_sigma", &parameter_constants.gaussian_sigma, 0.0f, +2.0f);
-		ImGui::SliderFloat("bloom_intensity", &parameter_constants.bloom_intensity, 0.0f, +2.0f);
-		ImGui::SliderFloat("exposure", &parameter_constants.exposure, 0.0f, +2.0f);
-		ImGui::Separator();
-		ImGui::DragFloat("gltf_scale", &gltf_scale, 0.01f);
-	}
-	ImGui::End();
-#endif
 }

@@ -1,5 +1,6 @@
 #include "framework.h"
 #include "Graphics/shader.h"
+#include "Input/game_pad.h"
 
 Framework::Framework(HWND hwnd) : hwnd(hwnd)
 {
@@ -8,18 +9,21 @@ Framework::Framework(HWND hwnd) : hwnd(hwnd)
 
 void Framework::update(float elapsed_time/*Elapsed seconds from last frame*/)
 {
+	GamePad::Instance().update();
+
 #ifdef USE_IMGUI
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 #endif
+	Graphics::Instance().update(elapsed_time);
 }
 
 void Framework::render(float elapsed_time/*Elapsed seconds from last frame*/)
 {
 	if (graphics_system)
 	{
-		graphics_system->render(elapsed_time, camera_position);
+		graphics_system->render(elapsed_time);
 	}
 }
 

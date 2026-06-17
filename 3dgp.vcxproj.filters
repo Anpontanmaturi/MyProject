@@ -96,22 +96,10 @@
     <ClCompile Include="Source\Camera\camera.cpp">
       <Filter>Source\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Camera\game_camera_controller.cpp">
-      <Filter>Source\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Camera\free_camera_controller.cpp">
-      <Filter>Source\Camera</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Graphics\graphics.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Source\Input\game_pad.cpp">
-      <Filter>Source\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Input\input.cpp">
-      <Filter>Source\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Input\mouse.cpp">
       <Filter>Source\Input</Filter>
     </ClCompile>
     <ClCompile Include="Source\Stage\stage.cpp">
@@ -119,6 +107,21 @@
     </ClCompile>
     <ClCompile Include="Source\Collision\collision_manager.cpp">
       <Filter>Source\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera\camera_controller.cpp">
+      <Filter>Source\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input\input.cpp">
+      <Filter>Source\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input\mouse.cpp">
+      <Filter>Source\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Character\player.cpp">
+      <Filter>Source\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Character\animator.cpp">
+      <Filter>Source\Character</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -191,22 +194,10 @@
     <ClInclude Include="Source\Camera\camera.h">
       <Filter>Source\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Camera\game_camera_controller.h">
-      <Filter>Source\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Camera\free_camera_controller.h">
-      <Filter>Source\Camera</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Graphics\graphics.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Input\game_pad.h">
-      <Filter>Source\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Input\input.h">
-      <Filter>Source\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Input\mouse.h">
       <Filter>Source\Input</Filter>
     </ClInclude>
     <ClInclude Include="Source\Stage\stage.h">
@@ -214,6 +205,21 @@
     </ClInclude>
     <ClInclude Include="Source\Collision\collision_manager.h">
       <Filter>Source\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Camera\camera_controller.h">
+      <Filter>Source\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\input.h">
+      <Filter>Source\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\mouse.h">
+      <Filter>Source\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Character\player.h">
+      <Filter>Source\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Character\animator.h">
+      <Filter>Source\Character</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

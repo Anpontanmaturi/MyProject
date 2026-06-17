@@ -26,6 +26,12 @@ public:
 	GamePad() {}
 	~GamePad() {}
 
+	static GamePad& Instance()
+	{
+		static GamePad instance;
+		return instance;
+	}
+
 	void update();
 
 	// ƒXƒƒbƒgİ’è

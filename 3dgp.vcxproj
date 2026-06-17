@@ -200,8 +200,9 @@
     <ClCompile Include="imgui\imgui_ja_gryph_ranges.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="Source\Camera\camera.cpp" />
-    <ClCompile Include="Source\Camera\free_camera_controller.cpp" />
-    <ClCompile Include="Source\Camera\game_camera_controller.cpp" />
+    <ClCompile Include="Source\Camera\camera_controller.cpp" />
+    <ClCompile Include="Source\Character\animator.cpp" />
+    <ClCompile Include="Source\Character\player.cpp" />
     <ClCompile Include="Source\Collision\collision_manager.cpp" />
     <ClCompile Include="Source\Graphics\fullscreen_quad.cpp" />
     <ClCompile Include="Source\Graphics\geometric_primitive.cpp" />
@@ -232,8 +233,9 @@
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="Source\Camera\camera.h" />
-    <ClInclude Include="Source\Camera\free_camera_controller.h" />
-    <ClInclude Include="Source\Camera\game_camera_controller.h" />
+    <ClInclude Include="Source\Camera\camera_controller.h" />
+    <ClInclude Include="Source\Character\animator.h" />
+    <ClInclude Include="Source\Character\player.h" />
     <ClInclude Include="Source\Collision\collision_manager.h" />
     <ClInclude Include="Source\Graphics\fullscreen_quad.h" />
     <ClInclude Include="Source\Graphics\geometric_primitive.h" />

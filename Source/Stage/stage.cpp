@@ -11,7 +11,7 @@ Stage::Stage(ID3D11Device* device)
 
 Stage::~Stage()
 {
-	CollisionManager::Instance().Unregister(&collision_mesh);
+	CollisionManager::Instance().unregister(&collision_mesh);
 }
 
 void Stage::update_transform()

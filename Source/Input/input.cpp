@@ -3,7 +3,7 @@
 Input* Input::instance = nullptr;
 
 // コンストラクタ
-Input::Input(HWND hwnd)
+Input::Input(HWND hwnd) : mouse(hwnd)
 {
 	instance = this;
 }
@@ -12,4 +12,5 @@ Input::Input(HWND hwnd)
 void Input::update()
 {
 	gamepad.update();
+	mouse.update();
 }

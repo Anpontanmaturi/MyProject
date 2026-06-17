@@ -33,12 +33,12 @@ public:
 
 public:
 	void Register(CollisionMesh* mesh);
-	void Unregister(CollisionMesh* mesh);
+	void unregister(CollisionMesh* mesh);
 
-	bool Raycast(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult& hit_result) const;
+	bool raycast(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult& hit_result) const;
 
 private:
-	bool Raycast(const CollisionMesh* mesh, const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult* hit_result) const;
+	bool raycast(const CollisionMesh* mesh, const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult* hit_result) const;
 
 private:
 	std::vector<CollisionMesh*> meshes;

@@ -5,8 +5,7 @@ C:\Users\2240070\Desktop\MyProject\imgui\imgui_impl_win32.cpp;C:\Users\2240070\D
 C:\Users\2240070\Desktop\MyProject\imgui\imgui_ja_gryph_ranges.cpp;C:\Users\2240070\Desktop\MyProject\3dgp\x64\Debug\imgui_ja_gryph_ranges.obj
 C:\Users\2240070\Desktop\MyProject\imgui\imgui_widgets.cpp;C:\Users\2240070\Desktop\MyProject\3dgp\x64\Debug\imgui_widgets.obj
 C:\Users\2240070\Desktop\MyProject\Source\Camera\camera.cpp;C:\Users\2240070\Desktop\MyProject\3dgp\x64\Debug\camera.obj
-C:\Users\2240070\Desktop\MyProject\Source\Camera\free_camera_controller.cpp;C:\Users\2240070\Desktop\MyProject\3dgp\x64\Debug\free_camera_controller.obj
-C:\Users\2240070\Desktop\MyProject\Source\Camera\game_camera_controller.cpp;C:\Users\2240070\Desktop\MyProject\3dgp\x64\Debug\game_camera_controller.obj
+C:\Users\2240070\Desktop\MyProject\Source\Camera\camera_controller.cpp;C:\Users\2240070\Desktop\MyProject\3dgp\x64\Debug\camera_controller.obj
 C:\Users\2240070\Desktop\MyProject\Source\Collision\collision_manager.cpp;C:\Users\2240070\Desktop\MyProject\3dgp\x64\Debug\collision_manager.obj
 C:\Users\2240070\Desktop\MyProject\Source\Graphics\fullscreen_quad.cpp;C:\Users\2240070\Desktop\MyProject\3dgp\x64\Debug\fullscreen_quad.obj
 C:\Users\2240070\Desktop\MyProject\Source\Graphics\geometric_primitive.cpp;C:\Users\2240070\Desktop\MyProject\3dgp\x64\Debug\geometric_primitive.obj

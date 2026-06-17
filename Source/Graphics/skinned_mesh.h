@@ -79,8 +79,6 @@ enum axis_sytem
 	axis_system_enum_count
 };
 
-
-// 24
 struct Skeleton
 {
 	struct bone

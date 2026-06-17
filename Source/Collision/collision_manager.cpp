@@ -9,7 +9,7 @@ void CollisionManager::Register(CollisionMesh* mesh)
 	meshes.emplace_back(mesh);
 }
 
-void CollisionManager::Unregister(CollisionMesh* mesh)
+void CollisionManager::unregister(CollisionMesh* mesh)
 {
 	auto it = std::find(meshes.begin(), meshes.end(), mesh);
 	if (it != meshes.end())
@@ -18,14 +18,14 @@ void CollisionManager::Unregister(CollisionMesh* mesh)
 	}
 }
 
-bool CollisionManager::Raycast(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult& hit_result) const
+bool CollisionManager::raycast(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult& hit_result) const
 {
 	bool hit = false;
 	hit_result.distance = FLT_MAX;
 	for (const CollisionMesh* mesh : meshes)
 	{
 		HitResult  temp_result;
-		if (Raycast(mesh, start, end, &temp_result))
+		if (raycast(mesh, start, end, &temp_result))
 		{
 			if (temp_result.distance < hit_result.distance)
 			{
@@ -37,7 +37,7 @@ bool CollisionManager::Raycast(const DirectX::XMFLOAT3& start, const DirectX::XM
 	return hit;
 }
 
-bool CollisionManager::Raycast(const CollisionMesh* mesh, const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult* hit_result) const
+bool CollisionManager::raycast(const CollisionMesh* mesh, const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult* hit_result) const
 {
 	XMVECTOR RayStart = XMLoadFloat3(&start);
 	XMVECTOR RayEnd = XMLoadFloat3(&end);

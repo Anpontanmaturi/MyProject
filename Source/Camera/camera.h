@@ -5,7 +5,7 @@
 class Camera
 {
 private:
-	Camera() {}
+	Camera();
 	~Camera() {}
 public:
 	// インスタンス取得

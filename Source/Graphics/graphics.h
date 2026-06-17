@@ -4,16 +4,7 @@
 #include <memory>
 #include <directxmath.h>
 
-// 必要なアセットヘッダーをここに集約
 #include "System/misc.h"
-#include "sprite.h"
-#include "sprite_batch.h"
-#include "geometric_primitive.h"
-#include "static_mesh.h"
-#include "skinned_mesh.h"
-#include "System/framebuffer.h"
-#include "fullscreen_quad.h"
-#include "gltf_model.h"
 
 #ifdef USE_IMGUI
 #include "../imgui/imgui.h"
@@ -24,7 +15,18 @@ extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam
 extern ImWchar glyphRangesJapanese[];
 #endif
 
+// 必要なアセットヘッダーをここに集約
+#include "sprite.h"
+#include "sprite_batch.h"
+#include "geometric_primitive.h"
+#include "static_mesh.h"
+#include "skinned_mesh.h"
+#include "System/framebuffer.h"
+#include "fullscreen_quad.h"
+#include "gltf_model.h"
 #include "Stage/stage.h"
+
+#include "Camera/camera_controller.h"
 
 // グラフィックス
 class Graphics
@@ -33,7 +35,8 @@ public:
 	Graphics(HWND hWnd);
 	~Graphics();
 
-	void render(float elapsed_time, const DirectX::XMFLOAT4& camera_pos);
+	void render(float elapsed_time);
+	void update(float elapsed_time);
 
 	Graphics(const Graphics&) = delete;
 	Graphics& operator=(const Graphics&) = delete;
@@ -82,8 +85,9 @@ public:
 	};
 	parameter_constants parameter_constants;
 
-	// モデルの実体生成
 	std::unique_ptr<Stage> stage;
+
+	CameraController camera_controller;
 
 	// スマートポインターを使った変数宣言
 	std::unique_ptr<Sprite> sprites[8];
@@ -95,21 +99,13 @@ public:
 	std::unique_ptr<GltfModel> gltf_models[8];
 	std::unique_ptr<FullscreenQuad> bit_block_transfer;
 
-
-
 private:
 	static Graphics* instance;
-	void debug_gui(); // デバッグ用GUIの表示
 
 	float gltf_scale = 1.0f;
 	float factors[3] = {};
 
-	DirectX::XMFLOAT4 camera_position = { 0.0f,0.0f,-10.0f,1.0f };
 	DirectX::XMFLOAT4 light_direction = { 0.0f,0.0f,1.0f,1.0f };
-	DirectX::XMFLOAT3 translation{ 0.0f, 0.0f, 0.0f };
-	DirectX::XMFLOAT3 scaling{ 1.0f, 1.0f, 1.0f };
-	DirectX::XMFLOAT3 rotation{ 0.0f, 0.0f, 0.0f };
-	DirectX::XMFLOAT4 material_color{ 1.0f, 1.0f, 1.0f, 1.0f };
 
 	float	screen_width = {};
 	float	screen_height = {};

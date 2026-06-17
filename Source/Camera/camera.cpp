@@ -1,5 +1,21 @@
 #include "camera.h"
 
+Camera::Camera()
+{
+	// カメラ設定
+	set_perspectice_fov(
+		DirectX::XMConvertToRadians(45),	// 画角
+		1280.0f / 720.0f,					// 画面アスペクト比
+		0.1f,								// ニアクリップ
+		1000.0f								// ファークリップ
+	);
+	set_lookat(
+		{ 0, 0, -5 },		// 視点
+		{ 0, 0, 0 },		// 注視点
+		{ 0, 1, 0 }			// 上ベクトル
+	);
+}
+
 // 指定方向を向く
 void Camera::set_lookat(const DirectX::XMFLOAT3& eye, const DirectX::XMFLOAT3& focus, const DirectX::XMFLOAT3& up)
 {
