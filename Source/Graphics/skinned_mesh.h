@@ -100,7 +100,6 @@ struct Skeleton
 
 		bool is_orphan() const { return parent_index < 0; };
 
-		// 30
 		template<class T>
 		void serialize(T& archive)
 		{
@@ -330,31 +329,31 @@ public:
 	};
 	std::unordered_map<uint64_t, material> materials;
 
-	void create_com_objects(ID3D11Device* device, const char* fbx_filename);
+	void CreateComObjects(ID3D11Device* device, const char* fbx_filename);
 
-	void render(ID3D11DeviceContext* immediate_context, const DirectX::XMFLOAT4X4& world,
+	void Render(ID3D11DeviceContext* immediate_context, const DirectX::XMFLOAT4X4& world,
 		const DirectX::XMFLOAT4& material_color,
 		const Animation::keyframe* keyframe);
 
-	void update_animation(Animation::keyframe& keyframe);
+	void UpdateAnimation(Animation::keyframe& keyframe);
 
-	bool append_animations(const char* animation_filename, float sampling_rate);
-	void blend_animations(const Animation::keyframe* keyframes[2],
+	bool AppendAnimations(const char* animation_filename, float sampling_rate);
+	void BlendAnimations(const Animation::keyframe* keyframes[2],
 		float factor, Animation::keyframe& keyframe);
 
 protected:
 	Scene scene_view;
 
-	void fetch_meshes(FbxScene* fbx_scene, std::vector<mesh>& meshes);
+	void FetchMeshes(FbxScene* fbx_scene, std::vector<mesh>& meshes);
 	
-	void fetch_materials(FbxScene* fbx_scene, std::unordered_map<uint64_t, material>& materials);
+	void FetchMaterials(FbxScene* fbx_scene, std::unordered_map<uint64_t, material>& materials);
 
-	void fetch_skeleton(FbxMesh* fbx_mesh, Skeleton& bind_pose);
+	void FetchSkeleton(FbxMesh* fbx_mesh, Skeleton& bind_pose);
 
-	void fetch_animations(FbxScene* fbx_scene, std::vector<Animation>& animation_clips,
+	void FetchAnimations(FbxScene* fbx_scene, std::vector<Animation>& animation_clips,
 		float sampling_rate);
 
-	void fetch_scene(const char* fbx_filename, bool triangulate, float sampling_rate);
+	void FetchScene(const char* fbx_filename, bool triangulate, float sampling_rate);
 
 
 // Raycast‘Î‰ž
@@ -368,7 +367,7 @@ private:
 	axis_sytem axis = rhs_y_up;
 
 public:
-	const DirectX::XMFLOAT4X4& get_coordinate_system_transform() const { return coordinate_system_transforms[axis]; }
+	const DirectX::XMFLOAT4X4& GetCoordinateSystemTransform() const { return coordinate_system_transforms[axis]; }
 };
 
 

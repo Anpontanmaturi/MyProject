@@ -17,7 +17,7 @@ Mouse::Mouse(HWND hWnd) : hWnd(hWnd)
 }
 
 // 更新
-void Mouse::update()
+void Mouse::Update()
 {
 	// スイッチ情報
 	MouseButtons new_button_state = 0;

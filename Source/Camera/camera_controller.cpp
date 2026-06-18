@@ -6,8 +6,8 @@
 void CameraController::update(float elapsed_time)
 {
 	GamePad& game_pad = GamePad::Instance();
-	float ax = game_pad.get_axis_rx();
-	float ay = game_pad.get_axis_ry();
+	float ax = game_pad.GetAxisRX();
+	float ay = game_pad.GetAxisRY();
 	// ƒJƒƒ‰‚Ì‰ñ“]‘¬“x
 	float speed = roll_speed * elapsed_time;
 

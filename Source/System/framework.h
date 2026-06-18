@@ -57,10 +57,10 @@ public:
 			}
 			else
 			{
-				tictoc.tick();
-				calculate_frame_stats();
-				update(tictoc.time_interval());
-				render(tictoc.time_interval());
+				tictoc.Tick();
+				CalculateFrameStats();
+				Update(tictoc.TimeInterval());
+				Render(tictoc.TimeInterval());
 			}
 		}
 
@@ -79,7 +79,7 @@ public:
 		}
 #endif
 
-		return uninitialize() ? static_cast<int>(msg.wParam) : 0;
+		return Uninitialize() ? static_cast<int>(msg.wParam) : 0;
 	}
 
 	LRESULT CALLBACK handle_message(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
@@ -110,10 +110,10 @@ public:
 			}
 			break;
 		case WM_ENTERSIZEMOVE:
-			tictoc.stop();
+			tictoc.Stop();
 			break;
 		case WM_EXITSIZEMOVE:
-			tictoc.start();
+			tictoc.Start();
 			break;
 		default:
 			return DefWindowProc(hwnd, msg, wparam, lparam);
@@ -122,9 +122,9 @@ public:
 	}
 
 private:
-	void update(float elapsed_time/*Elapsed seconds from last frame*/);
-	void render(float elapsed_time/*Elapsed seconds from last frame*/);
-	bool uninitialize();
+	void Update(float elapsed_time/*Elapsed seconds from last frame*/);
+	void Render(float elapsed_time/*Elapsed seconds from last frame*/);
+	bool Uninitialize();
 
 	DirectX::XMFLOAT4 camera_position = { 0.0f,0.0f,-10.0f,1.0f };
 	DirectX::XMFLOAT4 light_direction = { 0.0f,0.0f,1.0f,1.0f };
@@ -137,7 +137,7 @@ private:
 	HighResolutionTimer tictoc;
 	uint32_t frames_per_second{ 0 };
 	float count_by_seconds{ 0.0f };
-	void calculate_frame_stats()
+	void CalculateFrameStats()
 	{
 		if (++frames_per_second, (tictoc.time_stamp() - count_by_seconds) >= 1.0f)
 		{

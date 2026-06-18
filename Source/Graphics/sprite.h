@@ -17,19 +17,19 @@ public:
 	Microsoft::WRL::ComPtr<ID3D11Buffer> vertex_buffer;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> shader_resource_view;
 
-	void render(ID3D11DeviceContext* immediate_context,
+	void Render(ID3D11DeviceContext* immediate_context,
 		float dx, float dy,			//矩形の左上の座標（スクリーン座標系）
 		float dw, float dh,			//矩形のサイズ（スクリーン座標系
 		float r, float g, float b, float a,
 		float angle/*degree*/
 	);
-	void render(ID3D11DeviceContext* immediate_context,
+	void Render(ID3D11DeviceContext* immediate_context,
 		float dx, float dy, float dw, float dh,
 		float r, float g, float b, float a,
 		float angle/*degree*/,
 		float sx, float sy, float sw, float sh
 	);
-	void render(ID3D11DeviceContext* immediate_context, float dx, float dy, float dw, float dh);
+	void Render(ID3D11DeviceContext* immediate_context, float dx, float dy, float dw, float dh);
 	
 	Sprite(ID3D11Device *device, const wchar_t* filename);
 	~Sprite();
@@ -42,7 +42,7 @@ public:
 	};	
 
 	// フォント画像ファイルを使用し任意の文字列を画面に出力する機能を追加する
-	void textout(ID3D11DeviceContext* immediate_context, std::string s,
+	void Textout(ID3D11DeviceContext* immediate_context, std::string s,
 		float x, float y, float w, float h, float r, float g, float b, float a);
 };
 

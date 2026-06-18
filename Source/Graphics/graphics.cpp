@@ -311,7 +311,7 @@ Graphics::~Graphics()
 
 void Graphics::update(float elapsed_time)
 {
-	stage->update_transform();
+	stage->UpdateTransform();
 	camera_controller.set_target({ 0, 0, 0 });
 	camera_controller.update(elapsed_time);
 
@@ -385,7 +385,7 @@ void Graphics::render(float elapsed_time)
 	immediate_context->PSSetConstantBuffers(1, 1, constant_buffers[0].GetAddressOf());
 
 	// 3Dオブジェクトの描画
-	stage->render(immediate_context.Get());
+	stage->Render(immediate_context.Get());
 
 #ifdef USE_IMGUI
 	ImGui::Render();

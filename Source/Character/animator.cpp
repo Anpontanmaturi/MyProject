@@ -42,7 +42,7 @@ void Animator::Update(float elapsed_time)
 				&current_clip->sequence.at(frame_index),
 				&current_clip->sequence.at((frame_index + 1) % current_clip->sequence.size())
 			};
-			mesh->blend_animations(keyframes, factor, blended_keyframe);
+			mesh->BlendAnimations(keyframes, factor, blended_keyframe);
 			current_keyframe = &blended_keyframe;
 		}
 	}
@@ -63,12 +63,12 @@ void Animator::Update(float elapsed_time)
 			&previous_keyframe,
 			current_keyframe
 		};
-		mesh->blend_animations(keyframes, blend_factor, blended_keyframe);
+		mesh->BlendAnimations(keyframes, blend_factor, blended_keyframe);
 		current_keyframe = &blended_keyframe;
 	}
 
 	// メッシュに現在のポーズを適用
-	mesh->update_animation(*current_keyframe);
+	mesh->UpdateAnimation(*current_keyframe);
 }
 
 void Animator::Play(int clip_index, bool loop, float blend_duration)

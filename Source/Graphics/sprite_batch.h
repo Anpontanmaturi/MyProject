@@ -17,23 +17,23 @@ public:
 	Microsoft::WRL::ComPtr<ID3D11Buffer> vertex_buffer;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> shader_resource_view;
 
-	void render(ID3D11DeviceContext* immediate_context,
+	void Render(ID3D11DeviceContext* immediate_context,
 		float dx, float dy,			//矩形の左上の座標（スクリーン座標系）
 		float dw, float dh,			//矩形のサイズ（スクリーン座標系
 		float r, float g, float b, float a,
 		float angle/*degree*/
 	);
-	void render(ID3D11DeviceContext* immediate_context,
+	void Render(ID3D11DeviceContext* immediate_context,
 		float dx, float dy, float dw, float dh,
 		float r, float g, float b, float a,
 		float angle/*degree*/,
 		float sx, float sy, float sw, float sh
 	);
-	void render(ID3D11DeviceContext* immediate_context, 
+	void Render(ID3D11DeviceContext* immediate_context, 
 		float dx, float dy, float dw, float dh);
 
-	void begin(ID3D11DeviceContext* immediate_context);
-	void end(ID3D11DeviceContext* immediate_context);
+	void Begin(ID3D11DeviceContext* immediate_context);
+	void End(ID3D11DeviceContext* immediate_context);
 
 	SpriteBatch(ID3D11Device* device, const wchar_t* filename, size_t max_sprites);
 	~SpriteBatch();

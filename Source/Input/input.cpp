@@ -9,8 +9,8 @@ Input::Input(HWND hwnd) : mouse(hwnd)
 }
 
 // XVˆ—
-void Input::update()
+void Input::Update()
 {
-	gamepad.update();
-	mouse.update();
+	gamepad.Update();
+	mouse.Update();
 }

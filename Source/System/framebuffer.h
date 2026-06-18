@@ -14,10 +14,10 @@ public:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> shader_resource_views[2];
 	D3D11_VIEWPORT viewport;
 
-	void clear(ID3D11DeviceContext* immediate_context,
+	void Clear(ID3D11DeviceContext* immediate_context,
 		float r = 0, float g = 0, float b = 0, float a = 1, float depth = 1);
-	void activate(ID3D11DeviceContext* immediate_context);
-	void deactivate(ID3D11DeviceContext* immediate_context);
+	void Activate(ID3D11DeviceContext* immediate_context);
+	void Deactivate(ID3D11DeviceContext* immediate_context);
 
 private:
 	UINT viewport_count{ D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE };

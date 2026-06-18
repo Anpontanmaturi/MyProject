@@ -32,37 +32,37 @@ public:
 		return instance;
 	}
 
-	void update();
+	void Update();
 
 	// スロット設定
-	void set_slot(int slot) { this->slot = slot; }
+	void SetSlot(int slot) { this->slot = slot; }
 
 	// ボタン入力状態の取得
-	GamePadButtons get_button() const { return button_state[0]; }
+	GamePadButtons GetButton() const { return button_state[0]; }
 
 	// ボタン押下状態の取得
-	GamePadButtons get_button_down() const { return button_down; }
+	GamePadButtons GetButtonDown() const { return button_down; }
 
 	// ボタン押上状態の取得
-	GamePadButtons get_button_up() const { return button_up; }
+	GamePadButtons GetButtonUp() const { return button_up; }
 
 	// 左スティックX軸入力状態の取得
-	float get_axis_lx() const { return axis_lx; }
+	float GetAxisLX() const { return axis_lx; }
 
 	// 左スティックY軸入力状態の取得
-	float get_axis_ly() const { return axis_ly; }
+	float GetAxisLY() const { return axis_ly; }
 
 	// 右スティックX軸入力状態の取得
-	float get_axis_rx() const { return axis_rx; }
+	float GetAxisRX() const { return axis_rx; }
 
 	// 右スティックY軸入力状態の取得
-	float get_axis_ry() const { return axis_ry; }
+	float GetAxisRY() const { return axis_ry; }
 
 	// 左トリガー入力状態の取得
-	float get_trigger_l() const { return trigger_l; }
+	float GetTriggerL() const { return trigger_l; }
 
 	// 右トリガー入力状態の取得
-	float get_trigger_r() const { return trigger_r; }
+	float GetTriggerR() const { return trigger_r; }
 
 private:
 	GamePadButtons		button_state[2] = { 0 };

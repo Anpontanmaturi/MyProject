@@ -39,8 +39,8 @@ public:
 	};
 	std::vector<node> nodes;
 
-	void fetch_nodes(const tinygltf::Model& gltf_model);
-	void cumulate_transforms(std::vector<node>& nodes);
+	void FetchNodes(const tinygltf::Model& gltf_model);
+	void CumulateTransforms(std::vector<node>& nodes);
 
 	struct buffer_view
 	{
@@ -70,9 +70,8 @@ public:
 	std::vector<mesh> meshes;
 	std::vector<Microsoft::WRL::ComPtr<ID3D11Buffer>> buffers;
 
-	void fetch_meshes(ID3D11Device* device, const tinygltf::Model& gltf_model);
+	void FetchMeshes(ID3D11Device* device, const tinygltf::Model& gltf_model);
 
-	// 34 
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> vertex_shader;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> pixel_shader;
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> input_layout;
@@ -86,7 +85,7 @@ public:
 	};
 	Microsoft::WRL::ComPtr<ID3D11Buffer> primitive_cbuffer;
 
-	void render(ID3D11DeviceContext* immediate_context, const DirectX::XMFLOAT4X4& world);
+	void Render(ID3D11DeviceContext* immediate_context, const DirectX::XMFLOAT4X4& world);
 
 	struct texture_info
 	{
@@ -134,5 +133,5 @@ public:
 	std::vector<material> materials;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> material_resource_view;
 
-	void fetch_materials(ID3D11Device* device, const tinygltf::Model& gltf_model);
+	void FetchMaterials(ID3D11Device* device, const tinygltf::Model& gltf_model);
 };

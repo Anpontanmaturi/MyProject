@@ -16,29 +16,29 @@ public:
 	Mouse(HWND hwnd);
 	~Mouse() {}
 
-	void update();
+	void Update();
 
 	// ボタンの状態を取得
-	MouseButtons get_button() const { return button_state[0]; } // 入力
-	MouseButtons get_button_down() const { return button_down; } // 押下
-	MouseButtons get_button_up() const { return button_up; }		// 押上
+	MouseButtons GetButton() const { return button_state[0]; } // 入力
+	MouseButtons GetButtonDown() const { return button_down; } // 押下
+	MouseButtons GetButtonUp() const { return button_up; }		// 押上
 
 	// マウスホイール値の設定・取得
-	void set_wheel(int wheel) { this->wheel[0] += wheel; }
-	int get_wheel()const { return wheel[1]; }
+	void SetWheel(int wheel) { this->wheel[0] += wheel; }
+	int GetWheel()const { return wheel[1]; }
 
 	// マウスカーソル座標取得
-	int get_position_x() const { return position_x[0]; }
-	int get_position_y() const { return position_y[0]; }
+	int GetPositionX() const { return position_x[0]; }
+	int GetPositionY() const { return position_y[0]; }
 	// 前回の座標
-	int get_old_position_x() const { return position_x[1]; }
-	int get_old_position_y() const { return position_y[1]; }
+	int GetOldPositionX() const { return position_x[1]; }
+	int GetOldPositionY() const { return position_y[1]; }
 
 	// スクリーン系の設定・取得
-	void set_screen_width(int width) { screen_width = width; }
-	void set_screen_height(int height) { screen_height = height; }
-	int get_screen_width() const { return screen_width; }
-	int get_screen_height() const { return screen_height; }
+	void SetScreenWidth(int width) { screen_width = width; }
+	void SetScreenHeight(int height) { screen_height = height; }
+	int GetScreenWidth() const { return screen_width; }
+	int GetScreenHeight() const { return screen_height; }
 
 private:
 	MouseButtons	button_state[2] = {};

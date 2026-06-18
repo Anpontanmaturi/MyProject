@@ -9,7 +9,7 @@ void CollisionManager::Register(CollisionMesh* mesh)
 	meshes.emplace_back(mesh);
 }
 
-void CollisionManager::unregister(CollisionMesh* mesh)
+void CollisionManager::Unregister(CollisionMesh* mesh)
 {
 	auto it = std::find(meshes.begin(), meshes.end(), mesh);
 	if (it != meshes.end())
@@ -18,14 +18,14 @@ void CollisionManager::unregister(CollisionMesh* mesh)
 	}
 }
 
-bool CollisionManager::raycast(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult& hit_result) const
+bool CollisionManager::Raycast(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult& hit_result) const
 {
 	bool hit = false;
 	hit_result.distance = FLT_MAX;
 	for (const CollisionMesh* mesh : meshes)
 	{
 		HitResult  temp_result;
-		if (raycast(mesh, start, end, &temp_result))
+		if (Raycast(mesh, start, end, &temp_result))
 		{
 			if (temp_result.distance < hit_result.distance)
 			{
@@ -37,7 +37,7 @@ bool CollisionManager::raycast(const DirectX::XMFLOAT3& start, const DirectX::XM
 	return hit;
 }
 
-bool CollisionManager::raycast(const CollisionMesh* mesh, const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult* hit_result) const
+bool CollisionManager::Raycast(const CollisionMesh* mesh, const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult* hit_result) const
 {
 	XMVECTOR RayStart = XMLoadFloat3(&start);
 	XMVECTOR RayEnd = XMLoadFloat3(&end);
@@ -49,7 +49,7 @@ bool CollisionManager::raycast(const CollisionMesh* mesh, const DirectX::XMFLOAT
 	if (distance == 0.0f) return false;
 
 	XMMATRIX W = XMLoadFloat4x4(mesh->transform);
-	XMMATRIX C = XMLoadFloat4x4(&mesh->mesh->get_coordinate_system_transform());
+	XMMATRIX C = XMLoadFloat4x4(&mesh->mesh->GetCoordinateSystemTransform());
 
 	bool hit = false;
 	for (const SkinnedMesh::mesh& mesh : mesh->mesh->meshes)

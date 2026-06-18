@@ -55,12 +55,12 @@ Sprite::Sprite(ID3D11Device* device,const wchar_t* filename)
 	hr = create_ps_from_cso(device, "Shader\\sprite_ps.cso", pixel_shader.GetAddressOf());
 
 	// 画像ファイルのロードとテクスチャ情報の取得
-	hr = load_texture_from_file(device, filename, shader_resource_view.GetAddressOf(), &texture2d_desc);
+	hr = LoadTextureFromFile(device, filename, shader_resource_view.GetAddressOf(), &texture2d_desc);
 	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 
 }
 
-void Sprite::textout(ID3D11DeviceContext* immediate_context, std::string s,
+void Sprite::Textout(ID3D11DeviceContext* immediate_context, std::string s,
 	float x, float y, float w, float h, float r, float g, float b, float a)
 {
 	float sw = static_cast<float>(texture2d_desc.Width / 16);
@@ -68,21 +68,21 @@ void Sprite::textout(ID3D11DeviceContext* immediate_context, std::string s,
 	float carriage = 0;
 	for (const char c : s)
 	{
-		render(immediate_context, x + carriage, y, w, h, r, g, b, a, 0,
+		Render(immediate_context, x + carriage, y, w, h, r, g, b, a, 0,
 			sw * (c & 0x0F), sh * (c >> 4), sw, sh);
 		carriage += w;
 	}
 }
 
 
-void Sprite::render(ID3D11DeviceContext* immediate_context,
+void Sprite::Render(ID3D11DeviceContext* immediate_context,
 	float dx, float dy, float dw, float dh)
 {
-	render(immediate_context, dx, dy, dw, dh, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
+	Render(immediate_context, dx, dy, dw, dh, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 }
 
 
-void Sprite::render(ID3D11DeviceContext* immediate_context,
+void Sprite::Render(ID3D11DeviceContext* immediate_context,
 		float dx, float dy, float dw, float dh,
 		float r, float g, float b, float a,
 		float angle/*degree*/
@@ -91,14 +91,14 @@ void Sprite::render(ID3D11DeviceContext* immediate_context,
 	float tex_width = static_cast<float>(texture2d_desc.Width);
 	float tex_height = static_cast<float>(texture2d_desc.Height);
 
-	this->render(immediate_context,
+	this->Render(immediate_context,
 		dx, dy, dw, dh,
 		r, g, b, a,
 		angle,
 		0.0f, 0.0f, static_cast<float>(tex_width), static_cast<float>(tex_height));
 }
 
-void Sprite::render(ID3D11DeviceContext* immediate_context,
+void Sprite::Render(ID3D11DeviceContext* immediate_context,
 	float dx, float dy, float dw, float dh,
 	float r, float g, float b, float a,
 	float angle/*degree*/,
@@ -215,5 +215,5 @@ void Sprite::render(ID3D11DeviceContext* immediate_context,
 
 Sprite::~Sprite()
 {
-	release_all_textures();
+	ReleaseAllTextures();
 }

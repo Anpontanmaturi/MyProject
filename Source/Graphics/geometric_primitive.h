@@ -31,14 +31,14 @@ public:
 	GeometricPrimitive(ID3D11Device* device);
 	virtual ~GeometricPrimitive() = default;
 
-	void render(ID3D11DeviceContext* immediate_context,
+	void Render(ID3D11DeviceContext* immediate_context,
 		const DirectX::XMFLOAT4X4& world, const DirectX::XMFLOAT4& material_color);
 
 protected:
-	void create_com_buffers(ID3D11Device* device, vertex* vertices, size_t vertex_count,
+	void CreateComBuffers(ID3D11Device* device, vertex* vertices, size_t vertex_count,
 		uint32_t* indices, size_t index_count);
-	void create_cube(ID3D11Device* device);
-	void create_cylinder(ID3D11Device* device);
-	void create_sphere(ID3D11Device* device);
-	void create_capsule(ID3D11Device* device);
+	void CreateCube(ID3D11Device* device);
+	void CreateCylinder(ID3D11Device* device);
+	void CreateSphere(ID3D11Device* device);
+	void CreateCapsule(ID3D11Device* device);
 };

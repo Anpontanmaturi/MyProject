@@ -11,10 +11,10 @@ Stage::Stage(ID3D11Device* device)
 
 Stage::~Stage()
 {
-	CollisionManager::Instance().unregister(&collision_mesh);
+	CollisionManager::Instance().Unregister(&collision_mesh);
 }
 
-void Stage::update_transform()
+void Stage::UpdateTransform()
 {
 	DirectX::XMMATRIX S = DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);
 	DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z);
@@ -22,7 +22,7 @@ void Stage::update_transform()
 	DirectX::XMStoreFloat4x4(&transform, S * R * T);
 }
 
-void Stage::render(ID3D11DeviceContext* device_context)
+void Stage::Render(ID3D11DeviceContext* device_context)
 {
-	model->render(device_context, transform, color, nullptr);
+	model->Render(device_context, transform, color, nullptr);
 }

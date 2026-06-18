@@ -175,7 +175,7 @@ StaticMesh::StaticMesh(ID3D11Device* device, const wchar_t* obj_filename, bool i
 	}
 	fin.close();
 	
-	create_com_buffers(device, vertices.data(), vertices.size(), indices.data(), indices.size());
+	CreateComBuffers(device, vertices.data(), vertices.size(), indices.data(), indices.size());
 
 	HRESULT hr{ S_OK };
 
@@ -221,23 +221,22 @@ StaticMesh::StaticMesh(ID3D11Device* device, const wchar_t* obj_filename, bool i
 
 		if (material.texture_filenames[0].size() > 0)
 		{
-			load_texture_from_file(device, material.texture_filenames[0].c_str(), material.shader_resource_views[0].GetAddressOf(), &texture2d_desc);
+			LoadTextureFromFile(device, material.texture_filenames[0].c_str(), material.shader_resource_views[0].GetAddressOf(), &texture2d_desc);
 		}
 		else
 		{
-			make_dummy_texture(device, material.shader_resource_views[0].GetAddressOf(), 0xFFFFFFFF, 16);
+			MakeDummyTexture(device, material.shader_resource_views[0].GetAddressOf(), 0xFFFFFFFF, 16);
 		}
 		if (material.texture_filenames[1].size() > 0)
 		{
-			load_texture_from_file(device, material.texture_filenames[1].c_str(), material.shader_resource_views[1].GetAddressOf(), &texture2d_desc);
+			LoadTextureFromFile(device, material.texture_filenames[1].c_str(), material.shader_resource_views[1].GetAddressOf(), &texture2d_desc);
 		}
 		else
 		{
-			make_dummy_texture(device, material.shader_resource_views[1].GetAddressOf(), 0xFFFF7F7F, 16);
+			MakeDummyTexture(device, material.shader_resource_views[1].GetAddressOf(), 0xFFFF7F7F, 16);
 		}
 	}
 
-	// 16
 	for (const vertex& v : vertices)
 	{
 		bounding_box[0].x = std::min<float>(bounding_box[0].x, v.position.x);
@@ -249,7 +248,7 @@ StaticMesh::StaticMesh(ID3D11Device* device, const wchar_t* obj_filename, bool i
 	}
 }
 
-void StaticMesh::create_com_buffers(ID3D11Device* device, vertex* vertices,
+void StaticMesh::CreateComBuffers(ID3D11Device* device, vertex* vertices,
 	size_t vertex_count, uint32_t* indices, size_t index_count)
 {
 	HRESULT hr{ S_OK };
@@ -276,9 +275,9 @@ void StaticMesh::create_com_buffers(ID3D11Device* device, vertex* vertices,
 	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 }
 
-void StaticMesh::render(ID3D11DeviceContext* immediate_context,
+void StaticMesh::Render(ID3D11DeviceContext* immediate_context,
 	const DirectX::XMFLOAT4X4& world, const DirectX::XMFLOAT4& material_color,
-	ID3D11PixelShader* alternative_pixel_shader/*UNIT.16*/)
+	ID3D11PixelShader* alternative_pixel_shader)
 {
 	uint32_t stride{ sizeof(vertex) };
 	uint32_t offset{ 0 };
@@ -291,21 +290,10 @@ void StaticMesh::render(ID3D11DeviceContext* immediate_context,
 	//immediate_context->PSSetShader(pixel_shader.Get(), nullptr, 0);
 	alternative_pixel_shader ? immediate_context->PSSetShader(alternative_pixel_shader, nullptr, 0) : immediate_context->PSSetShader(pixel_shader.Get(), nullptr, 0);
 
-	//immediate_context->PSSetShaderResources(0, 1, shader_resource_view.GetAddressOf());
-	//
-	//constants data{ world, material_color };
-	//immediate_context->UpdateSubresource(constant_buffer.Get(), 0, 0, &data, 0, 0);
-	//immediate_context->VSSetConstantBuffers(0, 1, constant_buffer.GetAddressOf());
-	//
-	//D3D11_BUFFER_DESC buffer_desc{};
-	//index_buffer->GetDesc(&buffer_desc);
-	//immediate_context->DrawIndexed(buffer_desc.ByteWidth / sizeof(uint32_t), 0, 0);
-
 	for (const material& material : materials)
 	{
 		//immediate_context->PSSetShaderResources(0, 1, material.shader_resource_view.GetAddressOf());
 
-		// 16
 		immediate_context->PSSetShaderResources(0, 1, material.shader_resource_views[0].GetAddressOf());
 		immediate_context->PSSetShaderResources(1, 1, material.shader_resource_views[1].GetAddressOf());
 

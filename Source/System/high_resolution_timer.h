@@ -54,12 +54,12 @@ public:
 		}
 	}
 
-	float time_interval() const  // in seconds
+	float TimeInterval() const  // in seconds
 	{
 		return static_cast<float>(delta_time);
 	}
 
-	void reset() // Call before message loop.
+	void Reset() // Call before message loop.
 	{
 		QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&this_time));
 		base_time = this_time;
@@ -69,7 +69,7 @@ public:
 		stopped = false;
 	}
 
-	void start() // Call when unpaused.
+	void Start() // Call when unpaused.
 	{
 		LONGLONG start_time;
 		QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&start_time));
@@ -88,7 +88,7 @@ public:
 		}
 	}
 
-	void stop() // Call when paused.
+	void Stop() // Call when paused.
 	{
 		if (!stopped)
 		{
@@ -97,7 +97,7 @@ public:
 		}
 	}
 
-	void tick() // Call every frame.
+	void Tick() // Call every frame.
 	{
 		if (stopped)
 		{

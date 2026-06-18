@@ -63,14 +63,14 @@ Framebuffer::Framebuffer(ID3D11Device* device, uint32_t width, uint32_t height)
 	viewport.TopLeftX = 0.0f;
 	viewport.TopLeftY = 0.0f;
 }
-void Framebuffer::clear(ID3D11DeviceContext* immediate_context,
+void Framebuffer::Clear(ID3D11DeviceContext* immediate_context,
 	float r, float g, float b, float a, float depth)
 {
 	float color[4]{ r, g, b, a };
 	immediate_context->ClearRenderTargetView(render_target_view.Get(), color);
 	immediate_context->ClearDepthStencilView(depth_stencil_view.Get(), D3D11_CLEAR_DEPTH, depth, 0);
 }
-void Framebuffer::activate(ID3D11DeviceContext* immediate_context)
+void Framebuffer::Activate(ID3D11DeviceContext* immediate_context)
 {
 	viewport_count = D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE;
 	immediate_context->RSGetViewports(&viewport_count, cached_viewports);
@@ -81,7 +81,7 @@ void Framebuffer::activate(ID3D11DeviceContext* immediate_context)
 	immediate_context->OMSetRenderTargets(1, render_target_view.GetAddressOf(),
 		depth_stencil_view.Get());
 }
-void Framebuffer::deactivate(ID3D11DeviceContext* immediate_context)
+void Framebuffer::Deactivate(ID3D11DeviceContext* immediate_context)
 {
 	immediate_context->RSSetViewports(viewport_count, cached_viewports);
 	immediate_context->OMSetRenderTargets(1, cached_render_target_view.GetAddressOf(),

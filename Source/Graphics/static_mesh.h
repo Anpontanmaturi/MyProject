@@ -55,10 +55,10 @@ public:
 	StaticMesh(ID3D11Device* device, const wchar_t* obj_filename, bool invert_uv);
 	virtual ~StaticMesh() = default;
 
-	void render(ID3D11DeviceContext* immediate_context,
+	void Render(ID3D11DeviceContext* immediate_context,
 		const DirectX::XMFLOAT4X4& world, const DirectX::XMFLOAT4& material_color, ID3D11PixelShader* alternative_pixel_shader = nullptr/*UNIT.16*/);
 
 protected:
-	void create_com_buffers(ID3D11Device* device, vertex* vertices, size_t vertex_count,
+	void CreateComBuffers(ID3D11Device* device, vertex* vertices, size_t vertex_count,
 		uint32_t* indices, size_t index_count);
 };

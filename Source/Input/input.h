@@ -15,10 +15,10 @@ public:
 	static Input& Instance() { return *instance; }
 
 	// 更新
-	void update();
+	void Update();
 
 	// ゲームパッド取得
-	GamePad& get_game_pad() { return gamepad; }
+	GamePad& GetGamePad() { return gamepad; }
 
 	// マウス取得
 	Mouse& GetMouse() { return mouse; }

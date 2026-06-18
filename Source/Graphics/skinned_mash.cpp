@@ -98,7 +98,7 @@ void fetch_bone_influences(const FbxMesh* fbx_mesh,
 	}
 }
 
-void SkinnedMesh::fetch_scene(const char* fbx_filename, bool triangulate, float sampling_rate)
+void SkinnedMesh::FetchScene(const char* fbx_filename, bool triangulate, float sampling_rate)
 {
 	FbxManager* fbx_manager{ FbxManager::Create() };
 	FbxScene* fbx_scene{ FbxScene::Create(fbx_manager, "") };
@@ -152,14 +152,14 @@ void SkinnedMesh::fetch_scene(const char* fbx_filename, bool triangulate, float 
 	} };
 	traverse(fbx_scene->GetRootNode());
 
-	fetch_meshes(fbx_scene, meshes);
+	FetchMeshes(fbx_scene, meshes);
 
-	fetch_materials(fbx_scene, materials);
+	FetchMaterials(fbx_scene, materials);
 
 #if 0
 	float sampling_rate{ 0 };
 #endif
-	fetch_animations(fbx_scene, animation_clips, sampling_rate);
+	FetchAnimations(fbx_scene, animation_clips, sampling_rate);
 
 	fbx_manager->Destroy();
 }
@@ -179,14 +179,14 @@ SkinnedMesh::SkinnedMesh(ID3D11Device* device, const char* fbx_filename, bool tr
 	}
 	else
 	{
-		fetch_scene(fbx_filename, triangulate, sampling_rate);
+		FetchScene(fbx_filename, triangulate, sampling_rate);
 
 		std::ofstream ofs(cereal_filename.c_str(), std::ios::binary);
 		cereal::BinaryOutputArchive serialization(ofs);
 		serialization(scene_view, meshes, materials, animation_clips);
 	}
 
-	create_com_objects(device, fbx_filename);
+	CreateComObjects(device, fbx_filename);
 }
 
 SkinnedMesh::SkinnedMesh(ID3D11Device* device, const char* fbx_filename, std::vector<std::string>& animation_filenames, bool triangulate, float sampling_rate, axis_sytem axis)
@@ -203,11 +203,11 @@ SkinnedMesh::SkinnedMesh(ID3D11Device* device, const char* fbx_filename, std::ve
 	}
 	else
 	{
-		fetch_scene(fbx_filename, triangulate, sampling_rate);
+		FetchScene(fbx_filename, triangulate, sampling_rate);
 
 		for (const std::string animation_filename : animation_filenames)
 		{
-			append_animations(animation_filename.c_str(), sampling_rate);
+			AppendAnimations(animation_filename.c_str(), sampling_rate);
 		}
 
 		std::ofstream ofs(cereal_filename.c_str(), std::ios::binary);
@@ -215,10 +215,10 @@ SkinnedMesh::SkinnedMesh(ID3D11Device* device, const char* fbx_filename, std::ve
 		serialization(scene_view, meshes, materials, animation_clips);
 	}
 
-	create_com_objects(device, fbx_filename);
+	CreateComObjects(device, fbx_filename);
 }
 
-void SkinnedMesh::fetch_meshes(FbxScene* fbx_scene, std::vector<mesh>& meshes)
+void SkinnedMesh::FetchMeshes(FbxScene* fbx_scene, std::vector<mesh>& meshes)
 {
 	for (const Scene::node& node : scene_view.nodes)
 	{
@@ -240,7 +240,7 @@ void SkinnedMesh::fetch_meshes(FbxScene* fbx_scene, std::vector<mesh>& meshes)
 		std::vector<bone_influences_per_control_point> bone_influences;
 		fetch_bone_influences(fbx_mesh, bone_influences);
 
-		fetch_skeleton(fbx_mesh, mesh.bind_pose);
+		FetchSkeleton(fbx_mesh, mesh.bind_pose);
 
 		std::vector<mesh::subset>& subsets{ mesh.subsets };
 		const int material_count{ fbx_mesh->GetNode()->GetMaterialCount() };
@@ -293,7 +293,6 @@ void SkinnedMesh::fetch_meshes(FbxScene* fbx_scene, std::vector<mesh>& meshes)
 		const FbxVector4* control_points{ fbx_mesh->GetControlPoints() };
 		for (int polygon_index = 0; polygon_index < polygon_count; ++polygon_index)
 		{
-			// 20
 			const int material_index{ material_count > 0 ?
 				fbx_mesh->GetElementMaterial()->GetIndexArray().GetAt(polygon_index): 0};
 			mesh::subset& subset{ subsets.at(material_index) };
@@ -370,7 +369,7 @@ void SkinnedMesh::fetch_meshes(FbxScene* fbx_scene, std::vector<mesh>& meshes)
 	}
 }
 
-void SkinnedMesh::create_com_objects(ID3D11Device* device, const char* fbx_filename)
+void SkinnedMesh::CreateComObjects(ID3D11Device* device, const char* fbx_filename)
 {
 	for (mesh& mesh : meshes)
 	{
@@ -414,12 +413,12 @@ void SkinnedMesh::create_com_objects(ID3D11Device* device, const char* fbx_filen
 				std::filesystem::path path(fbx_filename);
 				path.replace_filename(iterator->second.texture_filenames[texture_index]);
 				D3D11_TEXTURE2D_DESC texture2d_desc;
-				load_texture_from_file(device, path.c_str(),
+				LoadTextureFromFile(device, path.c_str(),
 					iterator->second.shader_resource_views[texture_index].GetAddressOf(), &texture2d_desc);
 			}
 			else
 			{
-				make_dummy_texture(device,
+				MakeDummyTexture(device,
 					iterator->second.shader_resource_views[texture_index].GetAddressOf(),
 					texture_index == 1 ? 0xFFFF7F7F : 0xFFFFFFFF, 16);
 			}
@@ -449,7 +448,7 @@ void SkinnedMesh::create_com_objects(ID3D11Device* device, const char* fbx_filen
 	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 }
 
-void SkinnedMesh::fetch_materials(FbxScene* fbx_scene,
+void SkinnedMesh::FetchMaterials(FbxScene* fbx_scene,
 	std::unordered_map<uint64_t, SkinnedMesh::material>& materials)
 {
 	const size_t node_count{ scene_view.nodes.size() };
@@ -533,7 +532,7 @@ void SkinnedMesh::fetch_materials(FbxScene* fbx_scene,
 	}
 }
 
-void SkinnedMesh::fetch_skeleton(FbxMesh* fbx_mesh, Skeleton& bind_pose)
+void SkinnedMesh::FetchSkeleton(FbxMesh* fbx_mesh, Skeleton& bind_pose)
 {
 	const int deformer_count = fbx_mesh->GetDeformerCount(FbxDeformer::eSkin);
 	for (int deformer_index = 0; deformer_index < deformer_count; ++deformer_index)
@@ -573,7 +572,7 @@ void SkinnedMesh::fetch_skeleton(FbxMesh* fbx_mesh, Skeleton& bind_pose)
 	}
 }
 
-void SkinnedMesh::fetch_animations(FbxScene* fbx_scene, std::vector<Animation>& animation_clips,
+void SkinnedMesh::FetchAnimations(FbxScene* fbx_scene, std::vector<Animation>& animation_clips,
 	float sampling_rate/*If this value is 0, the animatio
 	n data will be sampled at the default frame rate.*/
 )
@@ -631,7 +630,7 @@ void SkinnedMesh::fetch_animations(FbxScene* fbx_scene, std::vector<Animation>& 
 	}
 }
 
-void SkinnedMesh::update_animation(Animation::keyframe& keyframe)
+void SkinnedMesh::UpdateAnimation(Animation::keyframe& keyframe)
 {
 	size_t node_count{ keyframe.nodes.size() };
 	for (size_t node_index = 0; node_index < node_count; ++node_index)
@@ -648,7 +647,7 @@ void SkinnedMesh::update_animation(Animation::keyframe& keyframe)
 	}
 }
 
-bool SkinnedMesh::append_animations(const char* animation_filename, float sampling_rate)
+bool SkinnedMesh::AppendAnimations(const char* animation_filename, float sampling_rate)
 {
 	FbxManager* fbx_manager{ FbxManager::Create() };
 	FbxScene* fbx_scene{ FbxScene::Create(fbx_manager,"") };
@@ -662,7 +661,7 @@ bool SkinnedMesh::append_animations(const char* animation_filename, float sampli
 	
 	size_t init_clip_count = animation_clips.size(); // 30
 
-	fetch_animations(fbx_scene, animation_clips, sampling_rate);
+	FetchAnimations(fbx_scene, animation_clips, sampling_rate);
 
 	fbx_manager->Destroy();
 
@@ -673,7 +672,7 @@ bool SkinnedMesh::append_animations(const char* animation_filename, float sampli
 
 	return true;
 }
-void SkinnedMesh::blend_animations(const Animation::keyframe* keyframes[2],
+void SkinnedMesh::BlendAnimations(const Animation::keyframe* keyframes[2],
 	float factor, Animation::keyframe& keyframe)
 {
 	size_t node_count{ keyframes[0]->nodes.size() };
@@ -697,7 +696,7 @@ void SkinnedMesh::blend_animations(const Animation::keyframe* keyframes[2],
 	}
 }
 
-void SkinnedMesh::render(ID3D11DeviceContext* immediate_context, const XMFLOAT4X4& world,
+void SkinnedMesh::Render(ID3D11DeviceContext* immediate_context, const XMFLOAT4X4& world,
 	const XMFLOAT4& material_color,
 	const Animation::keyframe* keyframe)
 {

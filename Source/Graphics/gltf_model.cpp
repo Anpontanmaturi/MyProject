@@ -98,8 +98,8 @@ GltfModel::GltfModel(ID3D11Device* device, const std::string& filename) : filena
 	default_scene = gltf_model.defaultScene;
 	if (default_scene < 0 && !scenes.empty())default_scene = 0;
 
-	fetch_nodes(gltf_model);
-	fetch_meshes(device, gltf_model);
+	FetchNodes(gltf_model);
+	FetchMeshes(device, gltf_model);
 
 	D3D11_INPUT_ELEMENT_DESC input_element_desc[]
 	{
@@ -122,11 +122,10 @@ GltfModel::GltfModel(ID3D11Device* device, const std::string& filename) : filena
 	hr = device->CreateBuffer(&buffer_desc, nullptr, primitive_cbuffer.ReleaseAndGetAddressOf());
 	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 
-	// 35
-	fetch_materials(device, gltf_model);
+	FetchMaterials(device, gltf_model);
 }
 
-void GltfModel::fetch_nodes(const tinygltf::Model& gltf_model)
+void GltfModel::FetchNodes(const tinygltf::Model& gltf_model)
 {
 	for (std::vector<tinygltf::Node>::const_reference gltf_node : gltf_model.nodes)
 	{
@@ -177,10 +176,10 @@ void GltfModel::fetch_nodes(const tinygltf::Model& gltf_model)
 			}
 		}
 	}
-	cumulate_transforms(nodes);
+	CumulateTransforms(nodes);
 }
 
-void GltfModel::cumulate_transforms(std::vector<node>&nodes)
+void GltfModel::CumulateTransforms(std::vector<node>&nodes)
 {
 	using namespace DirectX;
 	
@@ -208,7 +207,7 @@ void GltfModel::cumulate_transforms(std::vector<node>&nodes)
 	}	
 }
 
-void GltfModel::fetch_meshes(ID3D11Device * device, const tinygltf::Model & gltf_model)
+void GltfModel::FetchMeshes(ID3D11Device * device, const tinygltf::Model & gltf_model)
 {
 	HRESULT hr;
 	
@@ -270,7 +269,7 @@ void GltfModel::fetch_meshes(ID3D11Device * device, const tinygltf::Model & gltf
 	}	
 }
 
-void GltfModel::render(ID3D11DeviceContext* immediate_context, const DirectX::XMFLOAT4X4& world)
+void GltfModel::Render(ID3D11DeviceContext* immediate_context, const DirectX::XMFLOAT4X4& world)
 {
 	using namespace DirectX;
 
@@ -364,7 +363,7 @@ void GltfModel::render(ID3D11DeviceContext* immediate_context, const DirectX::XM
 	}
 }
 
-void GltfModel::fetch_materials(ID3D11Device* device, const tinygltf::Model& gltf_model)
+void GltfModel::FetchMaterials(ID3D11Device* device, const tinygltf::Model& gltf_model)
 {
 	for (std::vector<tinygltf::Material>::const_reference gltf_material : gltf_model.materials)
 	{

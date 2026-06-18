@@ -11,20 +11,20 @@ public:
 	~Stage();
 
 	// XV
-	void update_transform();
+	void UpdateTransform();
 
 	// •`‰æ
-	void render(ID3D11DeviceContext* device_context);
+	void Render(ID3D11DeviceContext* device_context);
 
 	// Ý’èEŽæ“¾
-	void set_position(const DirectX::XMFLOAT3& position) { this->position = position; }
-	const DirectX::XMFLOAT3& get_position() const { return position; }
-	void set_rotation(const DirectX::XMFLOAT3& rotation) { this->rotation = rotation; }
-	const DirectX::XMFLOAT3& get_rotation() const { return rotation; }
-	void set_scale(const DirectX::XMFLOAT3& scale) { this->scale = scale; }
-	const DirectX::XMFLOAT3& get_scale() const { return scale; }
-	void set_color(const DirectX::XMFLOAT4& color) { this->color = color; }
-	const DirectX::XMFLOAT4& get_color() const { return color; }
+	void SetPosition(const DirectX::XMFLOAT3& position) { this->position = position; }
+	const DirectX::XMFLOAT3& GetPosition() const { return position; }
+	void SetRotation(const DirectX::XMFLOAT3& rotation) { this->rotation = rotation; }
+	const DirectX::XMFLOAT3& GetRotation() const { return rotation; }
+	void SetScale(const DirectX::XMFLOAT3& scale) { this->scale = scale; }
+	const DirectX::XMFLOAT3& GetScale() const { return scale; }
+	void SetColor(const DirectX::XMFLOAT4& color) { this->color = color; }
+	const DirectX::XMFLOAT4& GetColor() const { return color; }
 
 private:
 	std::unique_ptr<SkinnedMesh> model;

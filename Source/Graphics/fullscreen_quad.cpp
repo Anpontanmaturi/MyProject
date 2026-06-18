@@ -8,7 +8,7 @@ FullscreenQuad::FullscreenQuad(ID3D11Device* device)
 		nullptr, nullptr, 0);
 	create_ps_from_cso(device, "Shader\\fullscreen_quad_ps.cso", embedded_pixel_shader.ReleaseAndGetAddressOf());
 }
-void FullscreenQuad::blit(ID3D11DeviceContext* immediate_context, 
+void FullscreenQuad::Blit(ID3D11DeviceContext* immediate_context, 
 	ID3D11ShaderResourceView** shader_resource_view, uint32_t start_slot, uint32_t num_views, 
 	ID3D11PixelShader* replaced_pixel_shader)
 {

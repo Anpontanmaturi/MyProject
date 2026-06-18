@@ -38,11 +38,11 @@ public:
 	Benchmark(Benchmark&&) noexcept = delete;
 	Benchmark& operator=(Benchmark&&) noexcept = delete;
 
-	void begin()
+	void Begin()
 	{
 		QueryPerformanceCounter(&start_ticks);
 	}
-	float end()
+	float End()
 	{
 		QueryPerformanceCounter(&current_ticks);
 		return static_cast<float>(current_ticks.QuadPart - start_ticks.QuadPart) / static_cast<float>(ticks_per_second.QuadPart);

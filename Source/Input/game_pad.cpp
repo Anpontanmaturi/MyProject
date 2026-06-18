@@ -4,7 +4,7 @@
 #include "game_pad.h"
 
 // çXêV
-void GamePad::update()
+void GamePad::Update()
 {
 	axis_lx = axis_ly = 0.0f;
 	axis_rx = axis_ry = 0.0f;

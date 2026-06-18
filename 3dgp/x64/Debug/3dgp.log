@@ -1,9 +1,7 @@
-﻿  collision_manager.cpp
-  graphics.cpp
-  skinned_mash.cpp
-C:\Users\2240070\Desktop\MyProject\Source\Graphics\skinned_mash.cpp(341,30): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-  stage.cpp
+﻿  sprite_batch.cpp
+C:\Users\2240070\Desktop\MyProject\Source\Graphics\sprite_batch.cpp(16,41): warning C4267: '=': 'size_t' から 'UINT' に変換しました。データが失われているかもしれません。
+  static_mesh.cpp
   framework.cpp
-  main.cpp
   コードを生成中...
+     ライブラリ C:\Users\2240070\Desktop\MyProject\x64\Debug\3dgp.lib とオブジェクト C:\Users\2240070\Desktop\MyProject\x64\Debug\3dgp.exp を作成中
   3dgp.vcxproj -> C:\Users\2240070\Desktop\MyProject\x64\Debug\3dgp.exe

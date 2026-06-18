@@ -7,9 +7,9 @@ Framework::Framework(HWND hwnd) : hwnd(hwnd)
 	graphics_system = std::make_unique<Graphics>(hwnd);
 }
 
-void Framework::update(float elapsed_time/*Elapsed seconds from last frame*/)
+void Framework::Update(float elapsed_time/*Elapsed seconds from last frame*/)
 {
-	GamePad::Instance().update();
+	GamePad::Instance().Update();
 
 #ifdef USE_IMGUI
 	ImGui_ImplDX11_NewFrame();
@@ -19,7 +19,7 @@ void Framework::update(float elapsed_time/*Elapsed seconds from last frame*/)
 	Graphics::Instance().update(elapsed_time);
 }
 
-void Framework::render(float elapsed_time/*Elapsed seconds from last frame*/)
+void Framework::Render(float elapsed_time/*Elapsed seconds from last frame*/)
 {
 	if (graphics_system)
 	{
@@ -27,7 +27,7 @@ void Framework::render(float elapsed_time/*Elapsed seconds from last frame*/)
 	}
 }
 
-bool Framework::uninitialize()
+bool Framework::Uninitialize()
 {
 	return true;
 }

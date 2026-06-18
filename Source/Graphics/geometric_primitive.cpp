@@ -30,7 +30,7 @@ GeometricPrimitive::GeometricPrimitive(ID3D11Device* device)
 	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 }
 
-void GeometricPrimitive::create_com_buffers(ID3D11Device* device, vertex* vertices,
+void GeometricPrimitive::CreateComBuffers(ID3D11Device* device, vertex* vertices,
 	size_t vertex_count, uint32_t* indices, size_t index_count)
 {
 	HRESULT hr{ S_OK };
@@ -57,7 +57,7 @@ void GeometricPrimitive::create_com_buffers(ID3D11Device* device, vertex* vertic
 	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 }
 
-void GeometricPrimitive::render(ID3D11DeviceContext* immediate_context,
+void GeometricPrimitive::Render(ID3D11DeviceContext* immediate_context,
 	const DirectX::XMFLOAT4X4& world, const DirectX::XMFLOAT4& material_color)
 {
 	uint32_t stride{ sizeof(vertex) };
@@ -79,7 +79,7 @@ void GeometricPrimitive::render(ID3D11DeviceContext* immediate_context,
 	immediate_context->DrawIndexed(buffer_desc.ByteWidth / sizeof(uint32_t), 0, 0);
 }
 
-void GeometricPrimitive::create_cube(ID3D11Device* device) {
+void GeometricPrimitive::CreateCube(ID3D11Device* device) {
 	vertex vertices[24]{};
 	// サイズが 1.0 の正立方体データを作成する（重心を原点にする）。正立方体のコントロールポイント数は 8 個、
 	// 1 つのコントロールポイントの位置には法線の向きが違う頂点が 3 個あるので頂点情報の総数は 8x3=24 個、
@@ -191,10 +191,10 @@ void GeometricPrimitive::create_cube(ID3D11Device* device) {
 	indices[34] = 22;
 	indices[35] = 23;
 
-	create_com_buffers(device, vertices, 24, indices, 36);
+	CreateComBuffers(device, vertices, 24, indices, 36);
 }
 
-void GeometricPrimitive::create_cylinder(ID3D11Device* device) {
+void GeometricPrimitive::CreateCylinder(ID3D11Device* device) {
 	std::vector<vertex> vertices;
 	std::vector<uint32_t> indices;
 
@@ -261,10 +261,10 @@ void GeometricPrimitive::create_cylinder(ID3D11Device* device) {
 	}
 
 
-	create_com_buffers(device, vertices.data(), vertices.size(), indices.data(), indices.size());
+	CreateComBuffers(device, vertices.data(), vertices.size(), indices.data(), indices.size());
 }
 
-void GeometricPrimitive::create_sphere(ID3D11Device* device)
+void GeometricPrimitive::CreateSphere(ID3D11Device* device)
 {
 	std::vector<vertex> vertices;
 	std::vector<uint32_t> indices;
@@ -301,10 +301,10 @@ void GeometricPrimitive::create_sphere(ID3D11Device* device)
 		}
 	}
 
-	create_com_buffers(device, vertices.data(), vertices.size(), indices.data(), indices.size());
+	CreateComBuffers(device, vertices.data(), vertices.size(), indices.data(), indices.size());
 }
 
-void GeometricPrimitive::create_capsule(ID3D11Device* device)
+void GeometricPrimitive::CreateCapsule(ID3D11Device* device)
 {
 	std::vector<vertex> vertices;
 	std::vector<uint32_t> indices;
@@ -404,5 +404,5 @@ void GeometricPrimitive::create_capsule(ID3D11Device* device)
 		}
 	}
 
-	create_com_buffers(device, vertices.data(), vertices.size(), indices.data(), indices.size());
+	CreateComBuffers(device, vertices.data(), vertices.size(), indices.data(), indices.size());
 }
