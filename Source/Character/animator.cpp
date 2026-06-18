@@ -1,6 +1,6 @@
 #include "animator.h"
 
-void Animator::update(float elapsed_time)
+void Animator::Update(float elapsed_time)
 {
 	if (!is_playing) return;
 
@@ -54,7 +54,52 @@ void Animator::update(float elapsed_time)
 		blend_time += elapsed_time;
 		if (blend_time >= blend_duration)
 		{
+			blend_time = blend_duration;
+		}
+		blend_factor = blend_time / blend_duration;
 
+		const Animation::keyframe* keyframes[2] =
+		{
+			&previous_keyframe,
+			current_keyframe
+		};
+		mesh->blend_animations(keyframes, blend_factor, blended_keyframe);
+		current_keyframe = &blended_keyframe;
+	}
+
+	// メッシュに現在のポーズを適用
+	mesh->update_animation(*current_keyframe);
+}
+
+void Animator::Play(int clip_index, bool loop, float blend_duration)
+{
+	is_loop = loop;
+	is_playing = true;
+	current_time = 0;
+	this->blend_duration = blend_duration;
+	blend_time = 0;
+	current_clip = &mesh->animation_clips.at(clip_index);
+	duration = current_clip->sequence.size() / current_clip->sampling_rate;
+
+	// 前のポーズを保存
+	if (current_keyframe != nullptr)
+	{
+		previous_keyframe = *current_keyframe;
+	}
+	else
+	{
+		previous_keyframe = current_clip->sequence.at(0);
+	}
+}
+
+void Animator::Play(const char* clip_name, bool loop, float blend_duration)
+{
+	for (size_t i = 0; i < mesh->animation_clips.size(); ++i)
+	{
+		if (mesh->animation_clips.at(i).name == clip_name)
+		{
+			Play(static_cast<int>(i), loop, blend_duration);
+			return;
 		}
 	}
 }

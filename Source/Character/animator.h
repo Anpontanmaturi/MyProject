@@ -7,12 +7,12 @@ class Animator
 public:
 	Animator(SkinnedMesh* mesh) : mesh(mesh) {}
 
-	void update(float elapsed_time);
+	void Update(float elapsed_time);
 
-	void play(int clip_index, bool loop, float blend_duration = 0.1f);
-	void play(const char* clip_name, bool loop, float blend_duration = 0.1f);
+	void Play(int clip_index, bool loop, float blend_duration = 0.1f);
+	void Play(const char* clip_name, bool loop, float blend_duration = 0.1f);
 
-	const Animation::keyframe* get_current_keyframe() const { return current_keyframe; }
+	const Animation::keyframe* GetCurrentKeyframe() const { return current_keyframe; }
 
 private:
 	SkinnedMesh*			mesh = nullptr;
