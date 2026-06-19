@@ -7,10 +7,10 @@ class CameraController
 {
 public:
 	// 更新処理
-	void update(float elapsed_time);
+	void Update(float elapsed_time);
 
 	// ターゲット位置設定
-	void set_target(const DirectX::XMFLOAT3& target) { this->target = target; }
+	void SetTarget(const DirectX::XMFLOAT3& target) { this->target = target; }
 
 private:
 	DirectX::XMFLOAT3		target = { 0, 0, 0 };	// 注視点

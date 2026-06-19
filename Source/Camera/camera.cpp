@@ -3,13 +3,13 @@
 Camera::Camera()
 {
 	// カメラ設定
-	set_perspectice_fov(
+	SetPerspecticeFov(
 		DirectX::XMConvertToRadians(45),	// 画角
 		1280.0f / 720.0f,					// 画面アスペクト比
 		0.1f,								// ニアクリップ
 		1000.0f								// ファークリップ
 	);
-	set_lookat(
+	SetLookat(
 		{ 0, 0, -5 },		// 視点
 		{ 0, 0, 0 },		// 注視点
 		{ 0, 1, 0 }			// 上ベクトル
@@ -17,7 +17,7 @@ Camera::Camera()
 }
 
 // 指定方向を向く
-void Camera::set_lookat(const DirectX::XMFLOAT3& eye, const DirectX::XMFLOAT3& focus, const DirectX::XMFLOAT3& up)
+void Camera::SetLookat(const DirectX::XMFLOAT3& eye, const DirectX::XMFLOAT3& focus, const DirectX::XMFLOAT3& up)
 {
 	// 視点、注視点、上方向からビュー行列を作成
 	DirectX::XMVECTOR Eye = DirectX::XMLoadFloat3(&eye);
@@ -50,7 +50,7 @@ void Camera::set_lookat(const DirectX::XMFLOAT3& eye, const DirectX::XMFLOAT3& f
 }
 
 // パースペクティブ設定
-void Camera::set_perspectice_fov(float fovY, float aspect, float nearZ, float farZ)
+void Camera::SetPerspecticeFov(float fovY, float aspect, float nearZ, float farZ)
 {
 	// 画角、画面比率、クリップ距離からプロジェクション行列を作成
 	DirectX::XMMATRIX Projection = DirectX::XMMatrixPerspectiveFovLH(fovY, aspect, nearZ, farZ);
@@ -58,7 +58,7 @@ void Camera::set_perspectice_fov(float fovY, float aspect, float nearZ, float fa
 }
 
 // 平行投影設定
-void Camera::set_orthographic(float width, float height, float nearZ, float farZ)
+void Camera::SetOrthographic(float width, float height, float nearZ, float farZ)
 {
 	// 画角、画面比率、クリップ距離からプロジェクション行列を作成
 

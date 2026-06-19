@@ -13,13 +13,6 @@
 #include <cereal/types/set.hpp>
 #include <cereal/types/unordered_map.hpp>
 
-template<class T>
-void serialize(T& archive, FbxNodeAttribute::EType& e)
-{
-	archive(reinterpret_cast<std::underlying_type_t<FbxNodeAttribute::EType>&>(e));
-}
-
-
 namespace DirectX
 {
 	template<class T>
@@ -137,16 +130,15 @@ struct Scene
 		std::string name;
 		FbxNodeAttribute::EType attribute{ FbxNodeAttribute::EType::eUnknown };
 		int64_t parent_index{ -1 };
-		// 30
+		// UNIT.30
 		template<class T>
 		void serialize(T& archive)
 		{
 			archive(unique_id, name, attribute, parent_index);
 		}
-
 	};
 	std::vector<node> nodes;
-	int64_t indexof(uint64_t unique_id)const
+	int64_t indexof(uint64_t unique_id) const
 	{
 		int64_t index{ 0 };
 		for (const node& node : nodes)
@@ -166,6 +158,7 @@ struct Scene
 	}
 
 };
+
 struct Animation
 {
 	std::string name;
@@ -251,8 +244,8 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> input_layout;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> constant_buffer;
 public:
-	SkinnedMesh(ID3D11Device* device, const char* fbx_filename, bool triangulate = false, float sampling_rate = 0.0f, axis_sytem axis = rhs_y_up);
-	SkinnedMesh(ID3D11Device* device, const char* fbx_filename, std::vector<std::string>& animation_filenames, bool triangulate = false, float sampling_rate = 0, axis_sytem axis = rhs_y_up/*Raycast‘Î‰ž*/);
+	SkinnedMesh(ID3D11Device* device, const char* fbx_filename, bool triangulate = false, float sampling_rate = 0.0f, axis_system axis = rhs_y_up);
+	SkinnedMesh(ID3D11Device* device, const char* fbx_filename, std::vector<std::string>& animation_filenames, bool triangulate = false, float sampling_rate = 0, axis_system axis = rhs_y_up/*Raycast‘Î‰ž*/);
 
 	virtual ~SkinnedMesh() = default;
 
@@ -273,7 +266,6 @@ public:
 
 			uint32_t start_index_location{ 0 };
 			uint32_t index_count{ 0 };
-			// 30
 			template<class T>
 			void serialize(T& archive)
 			{
@@ -364,7 +356,7 @@ private:
 		{-1, 0, 0, 0, 0, 0,-1, 0, 0, 1, 0, 0, 0, 0, 0, 1 },	// 2:RHS Z-UP
 		{ 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1 },	// 3:LHS Z-UP
 	};
-	axis_sytem axis = rhs_y_up;
+	axis_system axis = rhs_y_up;
 
 public:
 	const DirectX::XMFLOAT4X4& GetCoordinateSystemTransform() const { return coordinate_system_transforms[axis]; }

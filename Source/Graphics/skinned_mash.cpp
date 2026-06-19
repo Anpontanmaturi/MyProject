@@ -164,7 +164,7 @@ void SkinnedMesh::FetchScene(const char* fbx_filename, bool triangulate, float s
 	fbx_manager->Destroy();
 }
 
-SkinnedMesh::SkinnedMesh(ID3D11Device* device, const char* fbx_filename, bool triangulate, float sampling_rate, axis_sytem axis)
+SkinnedMesh::SkinnedMesh(ID3D11Device* device, const char* fbx_filename, bool triangulate, float sampling_rate, axis_system axis)
 {
 	// Raycast対応
 	this->axis = axis;
@@ -189,7 +189,7 @@ SkinnedMesh::SkinnedMesh(ID3D11Device* device, const char* fbx_filename, bool tr
 	CreateComObjects(device, fbx_filename);
 }
 
-SkinnedMesh::SkinnedMesh(ID3D11Device* device, const char* fbx_filename, std::vector<std::string>& animation_filenames, bool triangulate, float sampling_rate, axis_sytem axis)
+SkinnedMesh::SkinnedMesh(ID3D11Device* device, const char* fbx_filename, std::vector<std::string>& animation_filenames, bool triangulate, float sampling_rate, axis_system axis)
 {
 	this->axis = axis;
 
@@ -319,6 +319,17 @@ void SkinnedMesh::FetchMeshes(FbxScene* fbx_scene, std::vector<mesh>& meshes)
 						vertex.bone_indices[influence_index] =
 							influences_per_control_point.at(influence_index).bone_index;
 					}
+				}
+
+				float total_weight = 0;
+				for (size_t i = 0; i < MAX_BONE_INFLUENCES; ++i)
+				{
+					total_weight += vertex.bone_weights[i];
+				}
+
+				for (size_t i = 0; i < MAX_BONE_INFLUENCES; ++i)
+				{
+					vertex.bone_weights[i] /= total_weight;
 				}
 
 				if (fbx_mesh->GetElementNormalCount() > 0)

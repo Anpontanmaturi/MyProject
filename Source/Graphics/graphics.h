@@ -25,6 +25,7 @@ extern ImWchar glyphRangesJapanese[];
 #include "fullscreen_quad.h"
 #include "gltf_model.h"
 #include "Stage/stage.h"
+#include "Character/Player.h"
 
 #include "Camera/camera_controller.h"
 
@@ -86,6 +87,7 @@ public:
 	parameter_constants parameter_constants;
 
 	std::unique_ptr<Stage> stage;
+	std::unique_ptr<Player> player;
 
 	CameraController camera_controller;
 

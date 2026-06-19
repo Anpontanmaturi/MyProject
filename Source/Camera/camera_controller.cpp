@@ -3,7 +3,7 @@
 #include "camera.h"
 
 // 更新処理
-void CameraController::update(float elapsed_time)
+void CameraController::Update(float elapsed_time)
 {
 	GamePad& game_pad = GamePad::Instance();
 	float ax = game_pad.GetAxisRX();
@@ -52,13 +52,13 @@ void CameraController::update(float elapsed_time)
 	// 補間処理
 	float t = interpolation_speed * elapsed_time;
 	Camera& camera = Camera::Instance();
-	DirectX::XMVECTOR Eye = DirectX::XMLoadFloat3(&camera.get_eye());
-	DirectX::XMVECTOR Focus = DirectX::XMLoadFloat3(&camera.get_focus());
+	DirectX::XMVECTOR Eye = DirectX::XMLoadFloat3(&camera.GetEye());
+	DirectX::XMVECTOR Focus = DirectX::XMLoadFloat3(&camera.GetFocus());
 	DirectX::XMVECTOR FinalEye = DirectX::XMLoadFloat3(&eye);
 	DirectX::XMVECTOR FinalFocus = DirectX::XMLoadFloat3(&target);
 	DirectX::XMStoreFloat3(&eye, DirectX::XMVectorLerp(Eye, FinalEye, t));
 	DirectX::XMStoreFloat3(&target, DirectX::XMVectorLerp(Focus, FinalFocus, t));
 
 	// カメラの視点と注視点を設定
-	camera.set_lookat(eye, target, DirectX::XMFLOAT3(0, 1, 0));
+	camera.SetLookat(eye, target, DirectX::XMFLOAT3(0, 1, 0));
 }

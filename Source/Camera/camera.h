@@ -16,34 +16,34 @@ public:
 	}
 
 	// 指定方向を向く
-	void set_lookat(const DirectX::XMFLOAT3& eye, const DirectX::XMFLOAT3& focus, const DirectX::XMFLOAT3& up);
+	void SetLookat(const DirectX::XMFLOAT3& eye, const DirectX::XMFLOAT3& focus, const DirectX::XMFLOAT3& up);
 
 	// パースペクティブ設定
-	void set_perspectice_fov(float fovY, float aspect, float nearZ, float farZ);
+	void SetPerspecticeFov(float fovY, float aspect, float nearZ, float farZ);
 
 	// 平行投影
-	void set_orthographic(float width, float height, float nearZ, float farZ);
+	void SetOrthographic(float width, float height, float nearZ, float farZ);
 
 	// ビュー行列取得
-	const DirectX::XMFLOAT4X4& get_view() const { return view; }
+	const DirectX::XMFLOAT4X4& GetView() const { return view; }
 
 	//プロジェクション行列
-	const DirectX::XMFLOAT4X4& get_projection() const { return projection; }
+	const DirectX::XMFLOAT4X4& GetProjection() const { return projection; }
 
 	// 視点取得
-	const DirectX::XMFLOAT3& get_eye()const { return eye; }
+	const DirectX::XMFLOAT3& GetEye()const { return eye; }
 
 	// 注視点取得
-	const DirectX::XMFLOAT3& get_focus()const { return focus; }
+	const DirectX::XMFLOAT3& GetFocus()const { return focus; }
 
 	// 上方向取得
-	const DirectX::XMFLOAT3& get_up()const { return up; }
+	const DirectX::XMFLOAT3& GetUp()const { return up; }
 
 	// 前方向取得
-	const DirectX::XMFLOAT3& get_front()const { return front; }
+	const DirectX::XMFLOAT3& GetFront()const { return front; }
 
 	// 右方向取得
-	const DirectX::XMFLOAT3& get_right()const { return right; }
+	const DirectX::XMFLOAT3& GetRight()const { return right; }
 
 private:
 	DirectX::XMFLOAT4X4	view;

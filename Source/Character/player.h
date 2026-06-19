@@ -13,16 +13,16 @@ public:
 	void Render(ID3D11DeviceContext* device_context);
 
 	void SetPosition(const DirectX::XMFLOAT3& position) { this->position = position; }
-	const DirectX::XMFLOAT3& get_position() const { return position; }
+	const DirectX::XMFLOAT3& GetPosition() const { return position; }
 
 	void SetRotation(const DirectX::XMFLOAT3& rotation) { this->rotation = rotation; }
-	const DirectX::XMFLOAT3& get_rotation() const { return rotation; }
+	const DirectX::XMFLOAT3& GetRotation() const { return rotation; }
 
 	void SetScale(const DirectX::XMFLOAT3& scale) { this->scale = scale; }
-	const DirectX::XMFLOAT3& get_scale() const { return scale; }
+	const DirectX::XMFLOAT3& GetScale() const { return scale; }
 
 	void SetColor(const DirectX::XMFLOAT4& color) { this->color = color; }
-	const DirectX::XMFLOAT4& get_color() const { return color; }
+	const DirectX::XMFLOAT4& GetColor() const { return color; }
 
 	bool IsGround() const {return is_ground;}
 private:

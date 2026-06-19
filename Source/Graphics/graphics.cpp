@@ -292,13 +292,15 @@ Graphics::Graphics(HWND hWnd)
 	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 	
 	stage = std::make_unique<Stage>(device.Get());
+	player = std::make_unique<Player>(device.Get());
+	player->SetScale({ 0.01f, 0.01f, 0.01f });
 
 	Camera& camera = Camera::Instance();
-	camera.set_lookat(
+	camera.SetLookat(
 		{ 10, 10, -10 },
 		{ 10, 0, 0 },
 		{ 0, 1, 0 });
-	camera.set_perspectice_fov(DirectX::XM_PIDIV4, viewport.Width / viewport.Height, 0.1f, 1000.0f);
+	camera.SetPerspecticeFov(DirectX::XM_PIDIV4, viewport.Width / viewport.Height, 0.1f, 1000.0f);
 }
 
 Graphics::~Graphics()
@@ -312,8 +314,9 @@ Graphics::~Graphics()
 void Graphics::update(float elapsed_time)
 {
 	stage->UpdateTransform();
-	camera_controller.set_target({ 0, 0, 0 });
-	camera_controller.update(elapsed_time);
+	player->Update(elapsed_time);
+	camera_controller.SetTarget({ 0, 0, 0 });
+	camera_controller.Update(elapsed_time);
 
 #ifdef USE_IMGUI
 	ImGui::Begin("ImGUI");
@@ -369,9 +372,9 @@ void Graphics::render(float elapsed_time)
 	immediate_context->OMSetBlendState(blend_states[static_cast<size_t>(BLEND_STATE::ALPHA)].Get(), nullptr, 0xFFFFFFFF);
 
 	Camera& camera = Camera::Instance();
-	const DirectX::XMFLOAT3& camera_position = camera.get_eye();
-	DirectX::XMMATRIX V = DirectX::XMLoadFloat4x4(&camera.get_view());
-	DirectX::XMMATRIX P = DirectX::XMLoadFloat4x4(&camera.get_projection());
+	const DirectX::XMFLOAT3& camera_position = camera.GetEye();
+	DirectX::XMMATRIX V = DirectX::XMLoadFloat4x4(&camera.GetView());
+	DirectX::XMMATRIX P = DirectX::XMLoadFloat4x4(&camera.GetProjection());
 
 	scene_constants data{};
 	DirectX::XMStoreFloat4x4(&data.view_projection, V * P);
@@ -386,6 +389,7 @@ void Graphics::render(float elapsed_time)
 
 	// 3Dオブジェクトの描画
 	stage->Render(immediate_context.Get());
+	player->Render(immediate_context.Get());
 
 #ifdef USE_IMGUI
 	ImGui::Render();
