@@ -402,3 +402,9 @@ FodyWeavers.xsd
 
 *.cso
 *.cod
+
+# Executables
+*.exe
+*.out
+*.app
+*.ipa
