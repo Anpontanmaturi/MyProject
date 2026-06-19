@@ -215,8 +215,6 @@
     <ClCompile Include="Source\Graphics\static_mesh.cpp" />
     <ClCompile Include="Source\Graphics\texture.cpp" />
     <ClCompile Include="Source\Input\game_pad.cpp" />
-    <ClCompile Include="Source\Input\input.cpp" />
-    <ClCompile Include="Source\Input\mouse.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Stage\stage.cpp" />
     <ClCompile Include="Source\System\framebuffer.cpp" />
@@ -248,8 +246,6 @@
     <ClInclude Include="Source\Graphics\static_mesh.h" />
     <ClInclude Include="Source\Graphics\texture.h" />
     <ClInclude Include="Source\Input\game_pad.h" />
-    <ClInclude Include="Source\Input\input.h" />
-    <ClInclude Include="Source\Input\mouse.h" />
     <ClInclude Include="Source\Stage\stage.h" />
     <ClInclude Include="Source\System\framebuffer.h" />
     <ClInclude Include="Source\System\framework.h" />

@@ -26,7 +26,12 @@ public:
 
 	bool IsGround() const {return is_ground;}
 private:
+	void UpdateTransform();
+	void UpdateVelocity(float elapsed_time);
+	void UpdateStateMachine(float elapsed_time);
 
+	bool InputMove();
+	bool InputJump();
 
 	std::unique_ptr<SkinnedMesh>	mesh;
 	std::unique_ptr<Animator>	animator;
@@ -54,4 +59,59 @@ private:
 	float	input_move_z = 0.0f;
 	bool	is_ground = false;
 
+
+	enum class StateId
+	{
+		None = -1,
+		Idle,
+		Move,
+		Jump,
+
+		EnumCount
+	};
+	void SetState(StateId state_id);
+
+public:
+	class State
+	{
+	public:
+		State(Player* owner):owner(owner){}
+		virtual ~State() = default;
+
+	public:
+		virtual void OnEnter(){}
+		virtual void OnExit(){}
+		virtual void OnUpdate(float elapsed_time){}
+
+	protected:
+		Player* owner;
+	};
+
+	class IdleState : public State
+	{
+	public:
+		IdleState(Player* owner) : State(owner) {}
+		void OnEnter() override;
+		void OnUpdate(float elapsed_time) override;
+	};
+
+	class MoveState : public State
+	{
+	public:
+		MoveState(Player* owner) : State(owner) {}
+		void OnEnter() override;
+		void OnUpdate(float elapsed_time) override;
+	};
+
+	class JumpState : public State
+	{
+	public:
+		JumpState(Player* owner) : State(owner) {}
+		void OnEnter() override;
+		void OnUpdate(float elapsed_time) override;
+	};
+
+	StateId current_state = StateId::None;
+	StateId next_state = StateId::None;
+	std::unique_ptr<State> states[static_cast<size_t>(StateId::EnumCount)];
 };

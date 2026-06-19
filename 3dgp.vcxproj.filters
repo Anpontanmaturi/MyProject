@@ -111,12 +111,6 @@
     <ClCompile Include="Source\Camera\camera_controller.cpp">
       <Filter>Source\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Input\input.cpp">
-      <Filter>Source\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Input\mouse.cpp">
-      <Filter>Source\Input</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Character\player.cpp">
       <Filter>Source\Character</Filter>
     </ClCompile>
@@ -208,12 +202,6 @@
     </ClInclude>
     <ClInclude Include="Source\Camera\camera_controller.h">
       <Filter>Source\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Input\input.h">
-      <Filter>Source\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Input\mouse.h">
-      <Filter>Source\Input</Filter>
     </ClInclude>
     <ClInclude Include="Source\Character\player.h">
       <Filter>Source\Character</Filter>

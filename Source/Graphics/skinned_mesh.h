@@ -69,7 +69,7 @@ namespace DirectX
 }
 
 // Raycast‘Î‰ž
-enum axis_sytem
+enum axis_system
 {
 	rhs_y_up,
 	lhs_y_up,
