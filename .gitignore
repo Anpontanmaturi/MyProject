@@ -405,6 +405,3 @@ FodyWeavers.xsd
 *.out
 *.app
 *.ipa
-
-.pdb
-.exe
