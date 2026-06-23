@@ -4,7 +4,13 @@
 
 Framework::Framework(HWND hwnd) : hwnd(hwnd)
 {
+}
+
+bool Framework::Initialize()
+{
 	graphics_system = std::make_unique<Graphics>(hwnd);
+
+	return true;
 }
 
 void Framework::Update(float elapsed_time/*Elapsed seconds from last frame*/)
@@ -16,14 +22,14 @@ void Framework::Update(float elapsed_time/*Elapsed seconds from last frame*/)
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 #endif
-	Graphics::Instance().update(elapsed_time);
+	Graphics::Instance().Update(elapsed_time);
 }
 
 void Framework::Render(float elapsed_time/*Elapsed seconds from last frame*/)
 {
 	if (graphics_system)
 	{
-		graphics_system->render(elapsed_time);
+		graphics_system->Render(elapsed_time);
 	}
 }
 

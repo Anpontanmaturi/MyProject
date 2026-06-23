@@ -10,6 +10,8 @@ using namespace DirectX;
 
 #include <fstream>
 
+#include <crtdbg.h>
+
 inline XMFLOAT4X4 to_xmfloat4x4(const FbxAMatrix& fbxamatrix)
 {
 	XMFLOAT4X4 xmfloat4x4;
@@ -361,8 +363,9 @@ void SkinnedMesh::FetchMeshes(FbxScene* fbx_scene, std::vector<mesh>& meshes)
 
 				mesh.vertices.at(vertex_index) = std::move(vertex);
 
-				SkinnedMesh::materials;
-				mesh.subsets;
+				/*SkinnedMesh::materials;
+				mesh.subsets;*/
+
 				mesh.indices.at(static_cast<size_t>(offset) + position_in_polygon) = vertex_index;
 				subset.index_count++;
 			}
@@ -372,9 +375,9 @@ void SkinnedMesh::FetchMeshes(FbxScene* fbx_scene, std::vector<mesh>& meshes)
 			mesh.bounding_box[0].x = std::min<float>(mesh.bounding_box[0].x, v.position.x);
 			mesh.bounding_box[0].y = std::min<float>(mesh.bounding_box[0].y, v.position.y);
 			mesh.bounding_box[0].z = std::min<float>(mesh.bounding_box[0].z, v.position.z);
-			mesh.bounding_box[1].x = std::min<float>(mesh.bounding_box[1].x, v.position.x);
-			mesh.bounding_box[1].y = std::min<float>(mesh.bounding_box[1].y, v.position.y);
-			mesh.bounding_box[1].z = std::min<float>(mesh.bounding_box[1].z, v.position.z);
+			mesh.bounding_box[1].x = std::max<float>(mesh.bounding_box[1].x, v.position.x);
+			mesh.bounding_box[1].y = std::max<float>(mesh.bounding_box[1].y, v.position.y);
+			mesh.bounding_box[1].z = std::max<float>(mesh.bounding_box[1].z, v.position.z);
 		}
 
 	}
@@ -408,7 +411,7 @@ void SkinnedMesh::CreateComObjects(ID3D11Device* device, const char* fbx_filenam
 			mesh.index_buffer.ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 
-#if 1
+#if 0
 		mesh.vertices.clear();
 		mesh.indices.clear();
 #endif
@@ -670,16 +673,16 @@ bool SkinnedMesh::AppendAnimations(const char* animation_filename, float samplin
 	import_status = fbx_importer->Import(fbx_scene);
 	_ASSERT_EXPR_A(import_status, fbx_importer->GetStatus().GetErrorString());
 	
-	size_t init_clip_count = animation_clips.size(); // 30
+	//size_t init_clip_count = animation_clips.size(); // 30
 
 	FetchAnimations(fbx_scene, animation_clips, sampling_rate);
 
 	fbx_manager->Destroy();
 
-	for (size_t i = init_clip_count; i < animation_clips.size(); ++i)
+	/*for (size_t i = init_clip_count; i < animation_clips.size(); ++i)
 	{
 		animation_clips.at(i).appended = true;
-	}
+	}*/
 
 	return true;
 }
@@ -711,6 +714,10 @@ void SkinnedMesh::Render(ID3D11DeviceContext* immediate_context, const XMFLOAT4X
 	const XMFLOAT4& material_color,
 	const Animation::keyframe* keyframe)
 {
+	// レイキャスト対応
+	DirectX::XMMATRIX W = DirectX::XMLoadFloat4x4(&world);
+	DirectX::XMMATRIX C = DirectX::XMLoadFloat4x4(&coordinate_system_transforms[axis]);
+
 	for (const mesh& mesh : meshes)
 	{
 		uint32_t stride{ sizeof(vertex) };
@@ -729,8 +736,8 @@ void SkinnedMesh::Render(ID3D11DeviceContext* immediate_context, const XMFLOAT4X
 		if (keyframe && keyframe->nodes.size() > 0)
 		{
 			const Animation::keyframe::node& mesh_node{ keyframe->nodes.at(mesh.node_index) };
-			DirectX::XMStoreFloat4x4(&data.world, DirectX::XMLoadFloat4x4(
-				&mesh_node.global_transform) * DirectX::XMLoadFloat4x4(&world));
+			DirectX::XMMATRIX G = DirectX::XMLoadFloat4x4(&mesh_node.global_transform);
+			DirectX::XMStoreFloat4x4(&data.world, G * C * W);
 
 			const size_t bone_count{ mesh.bind_pose.bones.size() };
 			_ASSERT_EXPR(bone_count < MAX_BONES, L"The value of the 'bone_count' has exceeded MAX_BONES.");
@@ -748,8 +755,9 @@ void SkinnedMesh::Render(ID3D11DeviceContext* immediate_context, const XMFLOAT4X
 		}
 		else
 		{
-			XMStoreFloat4x4(&data.world,
-				XMLoadFloat4x4(&mesh.default_global_transform) * XMLoadFloat4x4(&world));
+			DirectX::XMMATRIX G = DirectX::XMLoadFloat4x4(&mesh.default_global_transform);
+			DirectX::XMStoreFloat4x4(&data.world, G * C * W);
+
 			for (size_t bone_index = 0; bone_index < MAX_BONES; ++bone_index)
 			{
 				data.bone_transforms[bone_index] = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
@@ -759,9 +767,12 @@ void SkinnedMesh::Render(ID3D11DeviceContext* immediate_context, const XMFLOAT4X
 		for (const mesh::subset& subset : mesh.subsets)
 		{
 			const material& material{ materials.at(subset.material_unique_id) };
+			if (subset.material_unique_id == 124)
+			{
+				int a = 0;
+			}
+
 			DirectX::XMStoreFloat4(&data.material_color, DirectX::XMLoadFloat4(&material_color) * DirectX::XMLoadFloat4(&material.Kd));
-			
-			
 			immediate_context->UpdateSubresource(constant_buffer.Get(), 0, 0, &data, 0, 0);
 			immediate_context->VSSetConstantBuffers(0, 1, constant_buffer.GetAddressOf());
 		

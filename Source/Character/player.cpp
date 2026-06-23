@@ -13,6 +13,7 @@ Player::Player(ID3D11Device* device)
 	states[static_cast<size_t>(StateId::Idle)] = std::make_unique<IdleState>(this);
 	states[static_cast<size_t>(StateId::Move)] = std::make_unique<MoveState>(this);
 	states[static_cast<size_t>(StateId::Jump)] = std::make_unique<JumpState>(this);
+	states[static_cast<size_t>(StateId::Attack)] = std::make_unique<AttackState>(this);
 
 	SetState(StateId::Idle);
 }
@@ -261,6 +262,17 @@ bool Player::InputJump()
 	return false;
 }
 
+// UŒ‚“ü—Íˆ—
+bool Player::InputAttack()
+{
+	GamePad& game_pad = GamePad::Instance();
+	if (game_pad.GetButtonDown() & GamePad::BTN_B)
+	{
+		return true;
+	}
+	return false;
+}
+
 void Player::SetState(StateId state_id)
 {
 	next_state = state_id;
@@ -282,6 +294,10 @@ void Player::IdleState::OnUpdate(float elapsed_time)
 	{
 		owner->SetState(StateId::Jump);
 	}
+	if (owner->InputAttack())
+	{
+		owner->SetState(StateId::Attack);
+	}
 }
 
 void Player::MoveState::OnEnter()
@@ -298,6 +314,10 @@ void Player::MoveState::OnUpdate(float elapsed_time)
 	if (owner->InputJump())
 	{
 		owner->SetState(StateId::Jump);
+	}
+	if (owner->InputAttack())
+	{
+		owner->SetState(StateId::Attack);
 	}
 }
 
@@ -323,3 +343,28 @@ void Player::JumpState::OnUpdate(float elapsed_time)
 	}
 }
 
+void Player::AttackState::OnEnter()
+{
+	owner->animator->Play("FastShoot", false);
+}
+
+void Player::AttackState::OnUpdate(float elapsed_time)
+{
+	bool move = owner->InputMove();
+
+	if (owner->InputJump())
+	{
+		owner->SetState(StateId::Jump);
+	}
+	if (owner->animator->IsEnd())
+	{
+		if (move)
+		{
+			owner->SetState(StateId::Move);
+		}
+		else
+		{
+			owner->SetState(StateId::Idle);
+		}
+	}
+}

@@ -101,7 +101,7 @@ struct Skeleton
 
 	};
 	std::vector<bone> bones;
-	int64_t indexof(uint64_t unique_id)const
+	int64_t indexof(uint64_t unique_id) const
 	{
 		int64_t index{ 0 };
 		for (const bone& bone : bones)
@@ -114,7 +114,6 @@ struct Skeleton
 		}
 		return -1;
 	}
-	// 30
 	template<class T>
 	void serialize(T& archive)
 	{
@@ -209,10 +208,10 @@ public:
 	struct vertex
 	{
 		DirectX::XMFLOAT3 position;
-		DirectX::XMFLOAT3 normal{ 0, 1, 0 };
-		DirectX::XMFLOAT4 tangent{ 1, 0, 0, 1 };
+		DirectX::XMFLOAT3 normal;
+		DirectX::XMFLOAT4 tangent;
 
-		DirectX::XMFLOAT2 texcoord{ 0, 0 };
+		DirectX::XMFLOAT2 texcoord;
 		
 		float bone_weights[MAX_BONE_INFLUENCES]{ 1,0,0,0 };
 		uint32_t bone_indices[MAX_BONE_INFLUENCES]{};
@@ -243,6 +242,9 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> pixel_shader;
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> input_layout;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> constant_buffer;
+
+	void CreateComObjects(ID3D11Device* device, const char* fbx_filename);
+
 public:
 	SkinnedMesh(ID3D11Device* device, const char* fbx_filename, bool triangulate = false, float sampling_rate = 0.0f, axis_system axis = rhs_y_up);
 	SkinnedMesh(ID3D11Device* device, const char* fbx_filename, std::vector<std::string>& animation_filenames, bool triangulate = false, float sampling_rate = 0, axis_system axis = rhs_y_up/*Raycast‘Î‰ž*/);
@@ -320,8 +322,6 @@ public:
 
 	};
 	std::unordered_map<uint64_t, material> materials;
-
-	void CreateComObjects(ID3D11Device* device, const char* fbx_filename);
 
 	void Render(ID3D11DeviceContext* immediate_context, const DirectX::XMFLOAT4X4& world,
 		const DirectX::XMFLOAT4& material_color,

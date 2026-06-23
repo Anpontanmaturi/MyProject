@@ -32,6 +32,7 @@ private:
 
 	bool InputMove();
 	bool InputJump();
+	bool InputAttack();
 
 	std::unique_ptr<SkinnedMesh>	mesh;
 	std::unique_ptr<Animator>	animator;
@@ -66,6 +67,7 @@ private:
 		Idle,
 		Move,
 		Jump,
+		Attack,
 
 		EnumCount
 	};
@@ -107,6 +109,14 @@ public:
 	{
 	public:
 		JumpState(Player* owner) : State(owner) {}
+		void OnEnter() override;
+		void OnUpdate(float elapsed_time) override;
+	};
+
+	class AttackState :public State
+	{
+	public:
+		AttackState(Player* owner):State(owner){}
 		void OnEnter() override;
 		void OnUpdate(float elapsed_time) override;
 	};

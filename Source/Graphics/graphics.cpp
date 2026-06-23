@@ -311,11 +311,11 @@ Graphics::~Graphics()
 	}
 }
 
-void Graphics::update(float elapsed_time)
+void Graphics::Update(float elapsed_time)
 {
 	stage->UpdateTransform();
 	player->Update(elapsed_time);
-	camera_controller.SetTarget({ 0, 0, 0 });
+	camera_controller.SetTarget(player->GetPosition());
 	camera_controller.Update(elapsed_time);
 
 #ifdef USE_IMGUI
@@ -323,38 +323,22 @@ void Graphics::update(float elapsed_time)
 	{
 		if (ImGui::CollapsingHeader("light", nullptr, ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			ImGui::DragFloat3("direction", &light_direction.x, 0.01f);
+			ImGui::SliderFloat("light_direction.x", &light_direction.x, -1.0f, +1.0f);
+			ImGui::SliderFloat("light_direction.y", &light_direction.y, -1.0f, +1.0f);
+			ImGui::SliderFloat("light_direction.z", &light_direction.z, -1.0f, +1.0f);
 		}
-		/*if (ImGui::CollapsingHeader("GometricPrimitive", nullptr, ImGuiTreeNodeFlags_DefaultOpen))
+		if (ImGui::CollapsingHeader("player", nullptr, ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			ImGui::DragFloat3("pos", &translation.x, 0.01f);
-			ImGui::DragFloat3("angle", &rotation.x, 0.01f);
-			ImGui::DragFloat3("scale", &scaling.x, 0.01f);
-			ImGui::ColorEdit4("color", &material_color.x, 0.01f);
+			player_pos = player->GetPosition();
+			ImGui::InputFloat3("player_position", &player_pos.x);
 		}
-		ImGui::SliderFloat("factors[0]", &factors[0], -1.500f, 1.500f);
-		ImGui::SliderFloat("factors[1]", &factors[1], 0.000f, 500.000f);
-		ImGui::SliderFloat("factors[2]", &factors[2], 0.00f, 1.00f);
-		ImGui::Separator();
-		ImGui::SliderFloat("luminance_threshold", &parameter_constants.luminance_threshold, 0.0f, +2.0f);
-		ImGui::SliderFloat("gaussian_sigma", &parameter_constants.gaussian_sigma, 0.0f, +2.0f);
-		ImGui::SliderFloat("bloom_intensity", &parameter_constants.bloom_intensity, 0.0f, +2.0f);
-		ImGui::SliderFloat("exposure", &parameter_constants.exposure, 0.0f, +2.0f);
-		ImGui::Separator();
-		ImGui::DragFloat("gltf_scale", &gltf_scale, 0.01f);*/
 	}
 	ImGui::End();
 #endif
 }
 
-void Graphics::render(float elapsed_time)
+void Graphics::Render(float elapsed_time)
 {
-	ID3D11RenderTargetView* null_render_target_views[D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT]{};
-	immediate_context->OMSetRenderTargets(_countof(null_render_target_views), null_render_target_views, 0);
-	ID3D11ShaderResourceView* null_shader_resource_views[D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT]{};
-	immediate_context->VSSetShaderResources(0, _countof(null_shader_resource_views), null_shader_resource_views);
-	immediate_context->PSSetShaderResources(0, _countof(null_shader_resource_views), null_shader_resource_views);
-
 	HRESULT hr{ S_OK };
 
 	FLOAT color[]{ 0.2f,0.2f,0.2f,1.0f };
@@ -367,9 +351,9 @@ void Graphics::render(float elapsed_time)
 	immediate_context->PSSetSamplers(1, 1, sampler_states[static_cast<size_t>(SAMPLER_STATE::LINEAR)].GetAddressOf());
 	immediate_context->PSSetSamplers(2, 1, sampler_states[static_cast<size_t>(SAMPLER_STATE::ANISOTROPIC)].GetAddressOf());
 
-	immediate_context->RSSetState(rasterizer_states[static_cast<size_t>(RASTER_STATE::SOLID)].Get());
-	immediate_context->OMSetDepthStencilState(depth_stencil_states[static_cast<size_t>(DEPTH_STATE::ZT_ON_ZW_ON)].Get(), 1);
 	immediate_context->OMSetBlendState(blend_states[static_cast<size_t>(BLEND_STATE::ALPHA)].Get(), nullptr, 0xFFFFFFFF);
+	immediate_context->OMSetDepthStencilState(depth_stencil_states[static_cast<size_t>(DEPTH_STATE::ZT_ON_ZW_ON)].Get(), 0);
+	immediate_context->RSSetState(rasterizer_states[static_cast<size_t>(RASTER_STATE::SOLID)].Get());
 
 	Camera& camera = Camera::Instance();
 	const DirectX::XMFLOAT3& camera_position = camera.GetEye();

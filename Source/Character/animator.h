@@ -12,6 +12,9 @@ public:
 	void Play(int clip_index, bool loop, float blend_duration = 0.1f);
 	void Play(const char* clip_name, bool loop, float blend_duration = 0.1f);
 
+	bool IsEnd() const { return !is_loop && (current_time >= duration); }
+	bool IsPlaying() const { return is_playing; }
+
 	const Animation::keyframe* GetCurrentKeyframe() const { return current_keyframe; }
 
 private:

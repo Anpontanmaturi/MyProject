@@ -14,10 +14,10 @@ public:
 
 private:
 	DirectX::XMFLOAT3		target = { 0, 0, 0 };	// ’‹“_
-	DirectX::XMFLOAT3		angle = { DirectX::XMConvertToRadians(45), 0, 0 };	// ‰ñ“]Šp“x
+	DirectX::XMFLOAT3		angle = { DirectX::XMConvertToRadians(15), 0, 0 };	// ‰ñ“]Šp“x
 	float					roll_speed = DirectX::XMConvertToRadians(90); // ‰ñ“]‘¬“x
 	float					range = 10.0f; 	// ‹——£
 	float					max_angle_x = DirectX::XMConvertToRadians(45);
-	float					min_angle_x = DirectX::XMConvertToRadians(-45);
+	float					min_angle_x = DirectX::XMConvertToRadians(10);
 	float					interpolation_speed = 3.0f; // •âŠÔ‘¬“x
 };

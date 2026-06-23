@@ -39,6 +39,11 @@ public:
 	{
 		MSG msg{};
 
+		if (!Initialize())
+		{
+			return 0;
+		}
+
 #ifdef USE_IMGUI
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
@@ -122,16 +127,10 @@ public:
 	}
 
 private:
+	bool Initialize();
 	void Update(float elapsed_time/*Elapsed seconds from last frame*/);
 	void Render(float elapsed_time/*Elapsed seconds from last frame*/);
 	bool Uninitialize();
-
-	DirectX::XMFLOAT4 camera_position = { 0.0f,0.0f,-10.0f,1.0f };
-	DirectX::XMFLOAT4 light_direction = { 0.0f,0.0f,1.0f,1.0f };
-
-	//camera camera;
-	//free_camera_controller camera_controller;
-
 
 private:
 	HighResolutionTimer tictoc;

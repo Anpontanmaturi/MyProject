@@ -16,14 +16,7 @@ extern ImWchar glyphRangesJapanese[];
 #endif
 
 // 必要なアセットヘッダーをここに集約
-#include "sprite.h"
-#include "sprite_batch.h"
-#include "geometric_primitive.h"
-#include "static_mesh.h"
 #include "skinned_mesh.h"
-#include "System/framebuffer.h"
-#include "fullscreen_quad.h"
-#include "gltf_model.h"
 #include "Stage/stage.h"
 #include "Character/Player.h"
 
@@ -36,8 +29,8 @@ public:
 	Graphics(HWND hWnd);
 	~Graphics();
 
-	void render(float elapsed_time);
-	void update(float elapsed_time);
+	void Render(float elapsed_time);
+	void Update(float elapsed_time);
 
 	Graphics(const Graphics&) = delete;
 	Graphics& operator=(const Graphics&) = delete;
@@ -91,25 +84,17 @@ public:
 
 	CameraController camera_controller;
 
-	// スマートポインターを使った変数宣言
-	std::unique_ptr<Sprite> sprites[8];
-	std::unique_ptr<SpriteBatch> sprite_batches[8];
-	std::unique_ptr<GeometricPrimitive> geometric_primitives[8];
-	std::unique_ptr<StaticMesh> static_meshes[8];
-	std::unique_ptr<SkinnedMesh> skinned_meshes[8];
-	std::unique_ptr<Framebuffer> framebuffers[8];
-	std::unique_ptr<GltfModel> gltf_models[8];
-	std::unique_ptr<FullscreenQuad> bit_block_transfer;
-
 private:
 	static Graphics* instance;
 
 	float gltf_scale = 1.0f;
 	float factors[3] = {};
 
-	DirectX::XMFLOAT4 light_direction = { 0.0f,0.0f,1.0f,1.0f };
+	DirectX::XMFLOAT4 light_direction = { 0.0f,-1.0f,0.0f,0.0f };
 
 	float	screen_width = {};
 	float	screen_height = {};
+
+	DirectX::XMFLOAT3 player_pos = {};
 
 };
