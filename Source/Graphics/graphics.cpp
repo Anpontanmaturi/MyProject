@@ -315,9 +315,12 @@ void Graphics::Update(float elapsed_time)
 {
 	stage->UpdateTransform();
 	player->Update(elapsed_time);
-	camera_controller.SetTarget(player->GetPosition());
-	camera_controller.Update(elapsed_time);
 
+	{
+		camera_controller.SetTarget(player->GetCameraLookAt(), player->GetRotation());
+		camera_controller.SetMoveFront(player->MoveOtherBack());
+		camera_controller.Update(elapsed_time);
+	}
 #ifdef USE_IMGUI
 	ImGui::Begin("ImGUI");
 	{
@@ -330,7 +333,10 @@ void Graphics::Update(float elapsed_time)
 		if (ImGui::CollapsingHeader("player", nullptr, ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			player_pos = player->GetPosition();
+			player_scale = player->GetScale();
 			ImGui::InputFloat3("player_position", &player_pos.x);
+			ImGui::InputFloat3("player_position", &player_scale.x);
+			ImGui::Text("move other front: %s", player->MoveOtherBack() ? "true" : "false"); 
 		}
 	}
 	ImGui::End();

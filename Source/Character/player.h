@@ -25,6 +25,14 @@ public:
 	const DirectX::XMFLOAT4& GetColor() const { return color; }
 
 	bool IsGround() const {return is_ground;}
+	bool MoveOtherBack() const { return move_otherback; }
+
+	DirectX::XMFLOAT3 GetCameraLookAt() const
+	{
+		float offset_y = (mesh->GetModelHeight() * scale.y) * 0.25f;
+		return DirectX::XMFLOAT3(position.x, position.y + offset_y, position.z);
+	}
+
 private:
 	void UpdateTransform();
 	void UpdateVelocity(float elapsed_time);
@@ -59,7 +67,7 @@ private:
 	float	input_move_x = 0.0f;
 	float	input_move_z = 0.0f;
 	bool	is_ground = false;
-
+	bool	move_otherback = false;
 
 	enum class StateId
 	{

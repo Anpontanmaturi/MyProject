@@ -295,7 +295,6 @@ public:
 				bounding_box, vertices, indices);
 		}
 
-
 	private:
 		Microsoft::WRL::ComPtr<ID3D11Buffer> vertex_buffer;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> index_buffer;
@@ -333,6 +332,8 @@ public:
 	void BlendAnimations(const Animation::keyframe* keyframes[2],
 		float factor, Animation::keyframe& keyframe);
 
+	float GetModelHeight() const { return model_height; }; // ƒ‚ƒfƒ‹‚Ì‚‚³‚ğ‘—‚é
+
 protected:
 	Scene scene_view;
 
@@ -348,8 +349,8 @@ protected:
 	void FetchScene(const char* fbx_filename, bool triangulate, float sampling_rate);
 
 
-// Raycast‘Î‰
 private:
+	// Raycast‘Î‰
 	const DirectX::XMFLOAT4X4 coordinate_system_transforms[axis_system_enum_count]{
 		{-1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 },	// 0:RHS Y-UP
 		{ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 },	// 1:LHS Y-UP
@@ -357,6 +358,10 @@ private:
 		{ 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1 },	// 3:LHS Z-UP
 	};
 	axis_system axis = rhs_y_up;
+
+	float model_height = 0.0f; // ƒ‚ƒfƒ‹‚Ì‚‚³
+
+	void CalculateModelHeight();
 
 public:
 	const DirectX::XMFLOAT4X4& GetCoordinateSystemTransform() const { return coordinate_system_transforms[axis]; }

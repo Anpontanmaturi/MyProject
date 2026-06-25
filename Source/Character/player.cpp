@@ -247,6 +247,9 @@ bool Player::InputMove()
 	input_move_z = camera_front_z * axis_y + camera_right_z * axis_x;
 	float vec_length = sqrtf(input_move_x * input_move_x + input_move_z * input_move_z);
 
+	// スティックが下方向に倒されたとき,ニュートラル以外 true にする(デッドゾーンは後ほど)
+	move_otherback = (axis_x != 0.0f || axis_y != 0.0f) && !(axis_y < 0.0f);
+
 	return vec_length > 0.0f;
 }
 

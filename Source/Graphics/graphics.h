@@ -96,5 +96,6 @@ private:
 	float	screen_height = {};
 
 	DirectX::XMFLOAT3 player_pos = {};
+	DirectX::XMFLOAT3 player_scale = {};
 
 };

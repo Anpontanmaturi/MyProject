@@ -52,11 +52,17 @@ public:
 	// 左スティックY軸入力状態の取得
 	float GetAxisLY() const { return axis_ly; }
 
+	// 左スティックデッドゾーン取得
+	float GetDeadzoneL() const { return stick_deadzone_l; }
+
 	// 右スティックX軸入力状態の取得
 	float GetAxisRX() const { return axis_rx; }
 
 	// 右スティックY軸入力状態の取得
 	float GetAxisRY() const { return axis_ry; }
+
+	// 右スティックデッドゾーン取得
+	float GetDeadzoneR() const { return stick_deadzone_r; }
 
 	// 左トリガー入力状態の取得
 	float GetTriggerL() const { return trigger_l; }
@@ -77,4 +83,7 @@ private:
 	float				trigger_r = 0.0f;
 
 	int					slot = 0;
+
+	float				stick_deadzone_l = 0.1f;
+	float				stick_deadzone_r = 0.1f;
 };

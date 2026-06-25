@@ -11,18 +11,29 @@ void CameraController::Update(float elapsed_time)
 	// カメラの回転速度
 	float speed = roll_speed * elapsed_time;
 
-	// スティックの入力値に合わせてX軸とY軸を回転
-	angle.x += ay * speed;
-	angle.y += ax * speed;
+	if (ax || ay)
+	{
+		// スティックの入力値に合わせてX軸とY軸を回転
+		angle.x += ay * speed;
+		angle.y += ax * speed;
 
-	// X軸のカメラ回転を制限
-	if (angle.x < min_angle_x)
-	{
-		angle.x = min_angle_x;
+		// X軸のカメラ回転を制限
+		if (angle.x < min_angle_x)
+		{
+			angle.x = min_angle_x;
+		}
+		if (angle.x > max_angle_x)
+		{
+			angle.x = max_angle_x;
+		}
 	}
-	if (angle.x > max_angle_x)
+	else if (player_move)
 	{
-		angle.x = max_angle_x;
+		float diff = player_rotation.y - angle.y;
+		while (diff < -DirectX::XM_PI) diff += DirectX::XM_2PI;
+		while (diff > DirectX::XM_PI) diff -= DirectX::XM_2PI;
+
+		angle.y += diff * (interpolation_speed * 0.5f) * elapsed_time;
 	}
 
 	// Y軸の回転値を-3.14～3.14に収まるようにする

@@ -69,7 +69,7 @@ struct bone_influence
 };
 using bone_influences_per_control_point = std::vector<bone_influence>;
 
-void fetch_bone_influences(const FbxMesh* fbx_mesh,
+void FetchBoneInfluences(const FbxMesh* fbx_mesh,
 	std::vector<bone_influences_per_control_point>& bone_influences)
 {
 	const int control_points_count{ fbx_mesh->GetControlPointsCount() };
@@ -187,6 +187,7 @@ SkinnedMesh::SkinnedMesh(ID3D11Device* device, const char* fbx_filename, bool tr
 		cereal::BinaryOutputArchive serialization(ofs);
 		serialization(scene_view, meshes, materials, animation_clips);
 	}
+	CalculateModelHeight();
 
 	CreateComObjects(device, fbx_filename);
 }
@@ -216,6 +217,7 @@ SkinnedMesh::SkinnedMesh(ID3D11Device* device, const char* fbx_filename, std::ve
 		cereal::BinaryOutputArchive serialization(ofs);
 		serialization(scene_view, meshes, materials, animation_clips);
 	}
+	CalculateModelHeight();
 
 	CreateComObjects(device, fbx_filename);
 }
@@ -240,7 +242,7 @@ void SkinnedMesh::FetchMeshes(FbxScene* fbx_scene, std::vector<mesh>& meshes)
 		mesh.default_global_transform = to_xmfloat4x4(fbx_node->EvaluateGlobalTransform());
 
 		std::vector<bone_influences_per_control_point> bone_influences;
-		fetch_bone_influences(fbx_mesh, bone_influences);
+		FetchBoneInfluences(fbx_mesh, bone_influences);
 
 		FetchSkeleton(fbx_mesh, mesh.bind_pose);
 
@@ -379,7 +381,6 @@ void SkinnedMesh::FetchMeshes(FbxScene* fbx_scene, std::vector<mesh>& meshes)
 			mesh.bounding_box[1].y = std::max<float>(mesh.bounding_box[1].y, v.position.y);
 			mesh.bounding_box[1].z = std::max<float>(mesh.bounding_box[1].z, v.position.z);
 		}
-
 	}
 }
 
@@ -784,5 +785,26 @@ void SkinnedMesh::Render(ID3D11DeviceContext* immediate_context, const XMFLOAT4X
 
 			immediate_context->DrawIndexed(subset.index_count, subset.start_index_location, 0);
 		}
+	}
+}
+
+void SkinnedMesh::CalculateModelHeight()
+{
+	if (!meshes.empty())
+	{
+		float overall_min_y = FLT_MAX;
+		float overall_max_y = -FLT_MAX;
+
+		for (const SkinnedMesh::mesh& m : meshes)
+		{
+			if (m.bounding_box[0].y < overall_min_y) overall_min_y = m.bounding_box[0].y;
+			if (m.bounding_box[1].y > overall_max_y) overall_max_y = m.bounding_box[1].y;
+		}
+
+		this->model_height = overall_max_y - overall_min_y;
+	}
+	else
+	{
+		this->model_height = 0.0f;
 	}
 }
