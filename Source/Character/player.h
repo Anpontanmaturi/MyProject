@@ -2,11 +2,13 @@
 
 #include "Graphics/skinned_mesh.h"
 #include "animator.h"
+#include <memory>
 
 class Player
 {
 public:
 	Player(ID3D11Device* device);
+	~Player();
 
 	void Update(float elapsed_time);
 
@@ -68,6 +70,8 @@ private:
 	float	input_move_z = 0.0f;
 	bool	is_ground = false;
 	bool	move_otherback = false;
+
+	ID3D11Device* p_device = nullptr;
 
 	enum class StateId
 	{

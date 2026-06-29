@@ -326,6 +326,9 @@ public:
 		const DirectX::XMFLOAT4& material_color,
 		const Animation::keyframe* keyframe);
 
+	void Render(ID3D11DeviceContext* immediate_context, const DirectX::XMFLOAT4X4& world,
+		const DirectX::XMFLOAT4& material_color);
+
 	void UpdateAnimation(Animation::keyframe& keyframe);
 
 	bool AppendAnimations(const char* animation_filename, float sampling_rate);

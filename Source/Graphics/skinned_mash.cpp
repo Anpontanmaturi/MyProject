@@ -788,6 +788,12 @@ void SkinnedMesh::Render(ID3D11DeviceContext* immediate_context, const XMFLOAT4X
 	}
 }
 
+void SkinnedMesh::Render(ID3D11DeviceContext* immediate_context, const XMFLOAT4X4& world,
+	const XMFLOAT4& material_color)
+{
+	this->Render(immediate_context, world, material_color, nullptr);
+}
+
 void SkinnedMesh::CalculateModelHeight()
 {
 	if (!meshes.empty())

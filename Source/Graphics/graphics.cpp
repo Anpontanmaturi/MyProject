@@ -318,7 +318,7 @@ void Graphics::Update(float elapsed_time)
 
 	{
 		camera_controller.SetTarget(player->GetCameraLookAt(), player->GetRotation());
-		camera_controller.SetMoveFront(player->MoveOtherBack());
+		camera_controller.SetMove(player->MoveOtherBack());
 		camera_controller.Update(elapsed_time);
 	}
 #ifdef USE_IMGUI

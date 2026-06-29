@@ -3,11 +3,17 @@
 #include "Input/game_pad.h"
 #include "Collision/collision_manager.h"
 
+#include "Weapon/projectile_straight.h"
+#include "projectile_manager.h"
+
+Player::~Player() = default;
+
 Player::Player(ID3D11Device* device)
 {
 	const char* filename = ".\\Data\\Model\\Jammo\\Jammo.fbx";
 	mesh = std::make_unique<SkinnedMesh>(device, filename, true, 0.0f, axis_system::rhs_y_up);
 	animator = std::make_unique<Animator>(mesh.get());
+	p_device = device;
 
 	// ステート生成
 	states[static_cast<size_t>(StateId::Idle)] = std::make_unique<IdleState>(this);
@@ -24,6 +30,8 @@ void Player::Update(float elapsed_time)
 
 	UpdateVelocity(elapsed_time);
 
+	ProjectileManager::Instance().Update(elapsed_time);
+
 	animator->Update(elapsed_time);
 
 	UpdateTransform();
@@ -32,6 +40,8 @@ void Player::Update(float elapsed_time)
 void Player::Render(ID3D11DeviceContext* device_context)
 {
 	mesh->Render(device_context, transform, color, animator->GetCurrentKeyframe());
+
+	ProjectileManager::Instance().Render(device_context);
 }
 
 void Player::UpdateVelocity(float elapsed_time)
@@ -271,6 +281,20 @@ bool Player::InputAttack()
 	GamePad& game_pad = GamePad::Instance();
 	if (game_pad.GetButtonDown() & GamePad::BTN_B)
 	{
+		// 前方向
+		DirectX::XMFLOAT3 dir{};
+		dir.x = sinf(rotation.y);
+		dir.y = 0.0f;
+		dir.z = cosf(rotation.y);
+		// 発射位置
+		DirectX::XMFLOAT3 pos{};
+		pos.x = position.x;
+		pos.y = position.y + ((mesh->GetModelHeight() * scale.y) * 0.15f);
+		pos.z = position.z;
+
+		ProjectileStraight* proj = new ProjectileStraight(&ProjectileManager::Instance(), p_device);
+		proj->Launch(dir, pos);
+
 		return true;
 	}
 	return false;

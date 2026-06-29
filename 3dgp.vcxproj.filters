@@ -34,6 +34,9 @@
     <Filter Include="Source\Collision">
       <UniqueIdentifier>{a028d5db-914b-4c02-848a-64c69496b6b0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Character\Weapon">
+      <UniqueIdentifier>{57aaa7cf-8053-4973-a281-425463d87f8f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp">
@@ -116,6 +119,15 @@
     </ClCompile>
     <ClCompile Include="Source\Character\animator.cpp">
       <Filter>Source\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Character\projectile_manager.cpp">
+      <Filter>Source\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Character\projectile.cpp">
+      <Filter>Source\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Character\Weapon\projectile_straight.cpp">
+      <Filter>Source\Character\Weapon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -208,6 +220,15 @@
     </ClInclude>
     <ClInclude Include="Source\Character\animator.h">
       <Filter>Source\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Character\projectile_manager.h">
+      <Filter>Source\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Character\projectile.h">
+      <Filter>Source\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Character\Weapon\projectile_straight.h">
+      <Filter>Source\Character\Weapon</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -25,5 +25,5 @@ void Stage::UpdateTransform()
 
 void Stage::Render(ID3D11DeviceContext* device_context)
 {
-	model->Render(device_context, transform, color, nullptr);
+	model->Render(device_context, transform, color);
 }

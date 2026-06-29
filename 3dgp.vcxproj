@@ -203,6 +203,9 @@
     <ClCompile Include="Source\Camera\camera_controller.cpp" />
     <ClCompile Include="Source\Character\animator.cpp" />
     <ClCompile Include="Source\Character\player.cpp" />
+    <ClCompile Include="Source\Character\projectile.cpp" />
+    <ClCompile Include="Source\Character\projectile_manager.cpp" />
+    <ClCompile Include="Source\Character\Weapon\projectile_straight.cpp" />
     <ClCompile Include="Source\Collision\collision_manager.cpp" />
     <ClCompile Include="Source\Graphics\fullscreen_quad.cpp" />
     <ClCompile Include="Source\Graphics\geometric_primitive.cpp" />
@@ -234,6 +237,9 @@
     <ClInclude Include="Source\Camera\camera_controller.h" />
     <ClInclude Include="Source\Character\animator.h" />
     <ClInclude Include="Source\Character\player.h" />
+    <ClInclude Include="Source\Character\projectile.h" />
+    <ClInclude Include="Source\Character\projectile_manager.h" />
+    <ClInclude Include="Source\Character\Weapon\projectile_straight.h" />
     <ClInclude Include="Source\Collision\collision_manager.h" />
     <ClInclude Include="Source\Graphics\fullscreen_quad.h" />
     <ClInclude Include="Source\Graphics\geometric_primitive.h" />
