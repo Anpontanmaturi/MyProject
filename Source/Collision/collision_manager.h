@@ -37,8 +37,37 @@ public:
 
 	bool Raycast(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult& hit_result) const;
 
+	// ‹…vs‹…
+	static bool SphereVsSphere(const DirectX::XMFLOAT3& positionA,
+		float radiusA,
+		const DirectX::XMFLOAT3& positionB,
+		float radiusB,
+		DirectX::XMFLOAT3& outPositionB);
+
+	// ‰~’Œvs‰~’Œ
+	static bool CylinderVsCylinder(
+		const DirectX::XMFLOAT3& positionA,
+		float radiusA,
+		float heightA,
+		const DirectX::XMFLOAT3& positionB,
+		float radiusB,
+		float heightB,
+		DirectX::XMFLOAT3& outPositionB
+	);
+
+	// ‹…vs‰~’Œ
+	static bool SphereVsCylinder(
+		const DirectX::XMFLOAT3& spherePosition,
+		float sphereRadius,
+		const DirectX::XMFLOAT3& cylinderPosition,
+		float cylinderRadius,
+		float cylinderHeight,
+		DirectX::XMFLOAT3& outCylinderPosition
+	);
+
 private:
 	bool Raycast(const CollisionMesh* mesh, const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult* hit_result) const;
+
 
 private:
 	std::vector<CollisionMesh*> meshes;

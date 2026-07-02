@@ -32,6 +32,8 @@ void Player::Update(float elapsed_time)
 
 	ProjectileManager::Instance().Update(elapsed_time);
 
+	CollisionProjectilesVsEnemys();
+
 	animator->Update(elapsed_time);
 
 	UpdateTransform();
@@ -298,6 +300,31 @@ bool Player::InputAttack()
 		return true;
 	}
 	return false;
+}
+
+void Player::CollisionProjectilesVsEnemys()
+{
+	Sandbag& sandbag = Sandbag::Instance(p_device);
+
+	int projectile_count = ProjectileManager::Instance().GetProjectileCount();
+	for (int i = 0; i < projectile_count; i++)
+	{
+		Projectile* projectile = ProjectileManager::Instance().GetProjectile(i);
+
+		DirectX::XMFLOAT3 out_position;
+		if (CollisionManager::SphereVsCylinder(
+			projectile->GetPosition(),
+			projectile->GetRadius(),
+			sandbag.GetPosition(),
+			sandbag.GetRadius(),
+			sandbag.GetHeight(),
+			out_position))
+		{
+			// ’eŠÛ”jŠü
+			projectile->Destroy();
+		}
+
+	}
 }
 
 void Player::SetState(StateId state_id)

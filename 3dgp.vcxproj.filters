@@ -129,6 +129,9 @@
     <ClCompile Include="Source\Character\Weapon\projectile_straight.cpp">
       <Filter>Source\Character\Weapon</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Character\sandbag.cpp">
+      <Filter>Source\Character</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -229,6 +232,9 @@
     </ClInclude>
     <ClInclude Include="Source\Character\Weapon\projectile_straight.h">
       <Filter>Source\Character\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Character\sandbag.h">
+      <Filter>Source\Character</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -4,11 +4,17 @@
 #include "animator.h"
 #include <memory>
 
-class Player
+class Sandbag
 {
 public:
-	Player(ID3D11Device* device);
-	~Player();
+	Sandbag(ID3D11Device* device);
+	~Sandbag();
+
+	static Sandbag& Instance(ID3D11Device* device)
+	{
+		static Sandbag instance(device);
+		return instance;
+	}
 
 	void Update(float elapsed_time);
 
@@ -26,25 +32,15 @@ public:
 	void SetColor(const DirectX::XMFLOAT4& color) { this->color = color; }
 	const DirectX::XMFLOAT4& GetColor() const { return color; }
 
-	bool IsGround() const {return is_ground;}
-	bool MoveOtherBack() const { return move_otherback; }
+	float GetRadius() const { return radius; }
+	float GetHeight() const { return height; }
 
-	DirectX::XMFLOAT3 GetCameraLookAt() const
-	{
-		float offset_y = (mesh->GetModelHeight() * scale.y) * 0.25f;
-		return DirectX::XMFLOAT3(position.x, position.y + offset_y, position.z);
-	}
+	bool IsGround() const { return is_ground; }
 
 private:
 	void UpdateTransform();
 	void UpdateVelocity(float elapsed_time);
 	void UpdateStateMachine(float elapsed_time);
-
-	bool InputMove();
-	bool InputJump();
-	bool InputAttack();
-
-	void CollisionProjectilesVsEnemys();
 
 	std::unique_ptr<SkinnedMesh>	mesh;
 	std::unique_ptr<Animator>	animator;
@@ -60,6 +56,9 @@ private:
 	};
 	DirectX::XMFLOAT4	color = { 1, 1, 1, 1 };
 
+	float	radius = 1.0f / 28.0f;
+	float	height = 2.0f / 28.0f;
+
 	DirectX::XMFLOAT3	velocity = {};
 	float	gravity = 10.0f;
 	float	acceleration = 50.0f;
@@ -68,20 +67,12 @@ private:
 	float	turn_speed = DirectX::XMConvertToRadians(720);
 	float	jump_speed = 5.0f;
 	float	air_control = 0.3f;
-	float	input_move_x = 0.0f;
-	float	input_move_z = 0.0f;
 	bool	is_ground = false;
-	bool	move_otherback = false;
-
-	ID3D11Device* p_device = nullptr;
 
 	enum class StateId
 	{
 		None = -1,
 		Idle,
-		Move,
-		Jump,
-		Attack,
 
 		EnumCount
 	};
@@ -91,46 +82,22 @@ public:
 	class State
 	{
 	public:
-		State(Player* owner):owner(owner){}
+		State(Sandbag* owner) :owner(owner) {}
 		virtual ~State() = default;
 
 	public:
-		virtual void OnEnter(){}
-		virtual void OnExit(){}
-		virtual void OnUpdate(float elapsed_time){}
+		virtual void OnEnter() {}
+		virtual void OnExit() {}
+		virtual void OnUpdate(float elapsed_time) {}
 
 	protected:
-		Player* owner;
+		Sandbag* owner;
 	};
 
 	class IdleState : public State
 	{
 	public:
-		IdleState(Player* owner) : State(owner) {}
-		void OnEnter() override;
-		void OnUpdate(float elapsed_time) override;
-	};
-
-	class MoveState : public State
-	{
-	public:
-		MoveState(Player* owner) : State(owner) {}
-		void OnEnter() override;
-		void OnUpdate(float elapsed_time) override;
-	};
-
-	class JumpState : public State
-	{
-	public:
-		JumpState(Player* owner) : State(owner) {}
-		void OnEnter() override;
-		void OnUpdate(float elapsed_time) override;
-	};
-
-	class AttackState :public State
-	{
-	public:
-		AttackState(Player* owner):State(owner){}
+		IdleState(Sandbag* owner) : State(owner) {}
 		void OnEnter() override;
 		void OnUpdate(float elapsed_time) override;
 	};

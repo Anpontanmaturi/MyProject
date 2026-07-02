@@ -294,6 +294,8 @@ Graphics::Graphics(HWND hWnd)
 	stage = std::make_unique<Stage>(device.Get());
 	player = std::make_unique<Player>(device.Get());
 	player->SetScale({ 0.01f, 0.01f, 0.01f });
+	sandbag = std::make_unique<Sandbag>(device.Get());
+	sandbag->SetScale({ 0.01f, 0.01f, 0.01f });
 
 	Camera& camera = Camera::Instance();
 	camera.SetLookat(
@@ -315,6 +317,7 @@ void Graphics::Update(float elapsed_time)
 {
 	stage->UpdateTransform();
 	player->Update(elapsed_time);
+	sandbag->Update(elapsed_time);
 
 	{
 		camera_controller.SetTarget(player->GetCameraLookAt(), player->GetRotation());
@@ -380,6 +383,7 @@ void Graphics::Render(float elapsed_time)
 	// 3Dオブジェクトの描画
 	stage->Render(immediate_context.Get());
 	player->Render(immediate_context.Get());
+	sandbag->Render(immediate_context.Get());
 
 #ifdef USE_IMGUI
 	ImGui::Render();

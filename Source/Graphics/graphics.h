@@ -18,7 +18,8 @@ extern ImWchar glyphRangesJapanese[];
 // 必要なアセットヘッダーをここに集約
 #include "skinned_mesh.h"
 #include "Stage/stage.h"
-#include "Character/Player.h"
+#include "Character/player.h"
+#include "Character/sandbag.h"
 
 #include "Camera/camera_controller.h"
 
@@ -81,6 +82,7 @@ public:
 
 	std::unique_ptr<Stage> stage;
 	std::unique_ptr<Player> player;
+	std::unique_ptr<Sandbag> sandbag;
 
 	CameraController camera_controller;
 
