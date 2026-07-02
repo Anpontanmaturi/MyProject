@@ -208,6 +208,7 @@
     <ClCompile Include="Source\Character\sandbag.cpp" />
     <ClCompile Include="Source\Character\Weapon\projectile_straight.cpp" />
     <ClCompile Include="Source\Collision\collision_manager.cpp" />
+    <ClCompile Include="Source\Graphics\debug_renderer.cpp" />
     <ClCompile Include="Source\Graphics\fullscreen_quad.cpp" />
     <ClCompile Include="Source\Graphics\geometric_primitive.cpp" />
     <ClCompile Include="Source\Graphics\gltf_model.cpp" />
@@ -243,6 +244,7 @@
     <ClInclude Include="Source\Character\sandbag.h" />
     <ClInclude Include="Source\Character\Weapon\projectile_straight.h" />
     <ClInclude Include="Source\Collision\collision_manager.h" />
+    <ClInclude Include="Source\Graphics\debug_renderer.h" />
     <ClInclude Include="Source\Graphics\fullscreen_quad.h" />
     <ClInclude Include="Source\Graphics\geometric_primitive.h" />
     <ClInclude Include="Source\Graphics\gltf_model.h" />
@@ -277,6 +279,18 @@
       <AssemblerOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Shader\%(Filename).cod</AssemblerOutputFile>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="HLSL\debug_ps.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="HLSL\debug_vs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="HLSL\fullscreen_quad_ps.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
@@ -500,6 +514,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="HLSL\debug.hlsli" />
     <None Include="HLSL\fullscreen_quad.hlsli" />
     <None Include="HLSL\geometric_primitive.hlsli" />
     <None Include="HLSL\gltf_model.hlsli" />

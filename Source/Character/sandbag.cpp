@@ -1,5 +1,6 @@
 #include "sandbag.h"
 #include "Collision/collision_manager.h"
+#include "Graphics/graphics.h"
 
 Sandbag::~Sandbag() = default;
 
@@ -21,6 +22,8 @@ void Sandbag::Update(float elapsed_time)
 
 	UpdateVelocity(elapsed_time);
 
+	UpdateInvincibleTimer(elapsed_time);
+
 	animator->Update(elapsed_time);
 
 	UpdateTransform();
@@ -29,6 +32,10 @@ void Sandbag::Update(float elapsed_time)
 void Sandbag::Render(ID3D11DeviceContext* device_context)
 {
 	mesh->Render(device_context, transform, color, animator->GetCurrentKeyframe());
+
+	DebugRenderer* debugRenderer = Graphics::Instance().GetDebugRenderer();
+
+	debugRenderer->DrawCylinder(position, radius, height, DirectX::XMFLOAT4(1, 0, 0, 1));
 }
 
 void Sandbag::UpdateVelocity(float elapsed_time)
@@ -136,6 +143,31 @@ void Sandbag::UpdateTransform()
 	DirectX::XMStoreFloat4x4(&transform, S * R * T);
 }
 
+bool Sandbag::TakeDamege(int damage, float invincible_time)
+{
+	// ダメージが0の場合は健康状態を変更する必要がない
+	if (damage == 0) return false;
+
+	// 無敵時間中はダメージを与えない
+	if (invincible_timer > 0.0f)return false;
+
+	// 無敵時間設定
+	invincible_timer = invincible_time;
+
+	animator->Play("GetHit1", false); // 後ほどステートにする
+
+	return true;
+}
+
+// 無敵時間更新
+void Sandbag::UpdateInvincibleTimer(float elapsed_time)
+{
+	if (invincible_timer > 0.0f)
+	{
+		invincible_timer -= elapsed_time;
+	}
+}
+
 void Sandbag::UpdateStateMachine(float elapsed_time)
 {
 	// ステートの切り替え
@@ -158,7 +190,6 @@ void Sandbag::UpdateStateMachine(float elapsed_time)
 		states[static_cast<size_t>(current_state)]->OnUpdate(elapsed_time);
 	}
 }
-
 
 void Sandbag::SetState(StateId state_id)
 {

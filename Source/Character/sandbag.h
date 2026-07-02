@@ -37,6 +37,9 @@ public:
 
 	bool IsGround() const { return is_ground; }
 
+	bool TakeDamege(int damage, float invincible_time);
+	void UpdateInvincibleTimer(float elapsedTime);
+
 private:
 	void UpdateTransform();
 	void UpdateVelocity(float elapsed_time);
@@ -56,8 +59,8 @@ private:
 	};
 	DirectX::XMFLOAT4	color = { 1, 1, 1, 1 };
 
-	float	radius = 1.0f / 28.0f;
-	float	height = 2.0f / 28.0f;
+	float	radius = 0.5f;
+	float	height = 1.5f;
 
 	DirectX::XMFLOAT3	velocity = {};
 	float	gravity = 10.0f;
@@ -68,6 +71,7 @@ private:
 	float	jump_speed = 5.0f;
 	float	air_control = 0.3f;
 	bool	is_ground = false;
+	float	invincible_timer = 1.0f;
 
 	enum class StateId
 	{

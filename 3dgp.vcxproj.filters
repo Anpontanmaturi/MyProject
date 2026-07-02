@@ -132,6 +132,9 @@
     <ClCompile Include="Source\Character\sandbag.cpp">
       <Filter>Source\Character</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Graphics\debug_renderer.cpp">
+      <Filter>Source\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -236,6 +239,9 @@
     <ClInclude Include="Source\Character\sandbag.h">
       <Filter>Source\Character</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Graphics\debug_renderer.h">
+      <Filter>Source\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="HLSL\blur_ps.hlsl">
@@ -283,6 +289,12 @@
     <FxCompile Include="HLSL\gltf_model_vs.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
+    <FxCompile Include="HLSL\debug_ps.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="HLSL\debug_vs.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="HLSL\fullscreen_quad.hlsli">
@@ -301,6 +313,9 @@
       <Filter>HLSL</Filter>
     </None>
     <None Include="HLSL\gltf_model.hlsli">
+      <Filter>HLSL</Filter>
+    </None>
+    <None Include="HLSL\debug.hlsli">
       <Filter>HLSL</Filter>
     </None>
   </ItemGroup>

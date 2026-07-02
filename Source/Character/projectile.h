@@ -13,6 +13,9 @@ public:
 
 	virtual void Render(ID3D11DeviceContext* device_context) = 0;
 
+	// デバッグプリミティブ描画
+	virtual void DrawDebugPrimitive();
+
 	const DirectX::XMFLOAT3& GetPosition() const { return position; }
 	const DirectX::XMFLOAT3& GetDirection() const { return direction; }
 	const DirectX::XMFLOAT3& GetScale() const { return scale; }
@@ -31,6 +34,6 @@ protected:
 	DirectX::XMFLOAT4X4		transform = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
 	DirectX::XMFLOAT4		color = { 1, 1, 1, 1 };
 	ProjectileManager*		manager = nullptr;
-	float					radius = 1.0f;
+	float					radius = 0.2f;
 
 };

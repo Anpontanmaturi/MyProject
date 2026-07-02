@@ -22,6 +22,7 @@ extern ImWchar glyphRangesJapanese[];
 #include "Character/sandbag.h"
 
 #include "Camera/camera_controller.h"
+#include "debug_renderer.h"
 
 // グラフィックス
 class Graphics
@@ -63,7 +64,12 @@ public:
 
 	Microsoft::WRL::ComPtr<ID3D11Buffer> constant_buffers[8];
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> pixel_shaders[8];
+
+
+	// デバッグレンダラ取得
+	DebugRenderer* GetDebugRenderer() const { return debug_renderer.get(); }
 	
+
 	// シェーダー定数構造体
 	struct scene_constants
 	{
@@ -99,5 +105,7 @@ private:
 
 	DirectX::XMFLOAT3 player_pos = {};
 	DirectX::XMFLOAT3 player_scale = {};
+
+	std::unique_ptr<DebugRenderer>	debug_renderer;
 
 };

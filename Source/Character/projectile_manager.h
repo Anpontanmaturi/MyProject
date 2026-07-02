@@ -17,6 +17,8 @@ public:
 
 	void Render(ID3D11DeviceContext* device_context);
 
+	void DrawDebugPrimitive();
+
 	void Register(Projectile* projectile); // ’eŠÛ“o˜^
 
 	void Clear(); // ‘Síœ

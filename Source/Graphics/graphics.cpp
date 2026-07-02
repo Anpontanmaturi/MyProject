@@ -297,6 +297,8 @@ Graphics::Graphics(HWND hWnd)
 	sandbag = std::make_unique<Sandbag>(device.Get());
 	sandbag->SetScale({ 0.01f, 0.01f, 0.01f });
 
+	debug_renderer = std::make_unique<DebugRenderer>(device.Get());
+
 	Camera& camera = Camera::Instance();
 	camera.SetLookat(
 		{ 10, 10, -10 },
@@ -384,6 +386,8 @@ void Graphics::Render(float elapsed_time)
 	stage->Render(immediate_context.Get());
 	player->Render(immediate_context.Get());
 	sandbag->Render(immediate_context.Get());
+
+	debug_renderer->Render(immediate_context.Get(), camera.GetView(), camera.GetProjection());
 
 #ifdef USE_IMGUI
 	ImGui::Render();

@@ -47,6 +47,14 @@ void ProjectileManager::Render(ID3D11DeviceContext* device_context)
 	}
 }
 
+void ProjectileManager::DrawDebugPrimitive()
+{
+	for (Projectile* projectile : projectiles)
+	{
+		projectile->DrawDebugPrimitive();
+	}
+}
+
 // íeä€ìoò^
 void ProjectileManager::Register(Projectile* projectile)
 {

@@ -44,6 +44,8 @@ void Player::Render(ID3D11DeviceContext* device_context)
 	mesh->Render(device_context, transform, color, animator->GetCurrentKeyframe());
 
 	ProjectileManager::Instance().Render(device_context);
+
+	ProjectileManager::Instance().DrawDebugPrimitive();
 }
 
 void Player::UpdateVelocity(float elapsed_time)
@@ -320,6 +322,11 @@ void Player::CollisionProjectilesVsEnemys()
 			sandbag.GetHeight(),
 			out_position))
 		{
+			if (sandbag.TakeDamege(1, 0.1f))
+			{
+
+			}
+
 			// ’eŠÛ”jŠü
 			projectile->Destroy();
 		}
