@@ -296,6 +296,7 @@ Graphics::Graphics(HWND hWnd)
 	player->SetScale({ 0.01f, 0.01f, 0.01f });
 	sandbag = std::make_unique<Sandbag>(device.Get());
 	sandbag->SetScale({ 0.01f, 0.01f, 0.01f });
+	player->SetTargetEnemy(sandbag.get());
 
 	debug_renderer = std::make_unique<DebugRenderer>(device.Get());
 

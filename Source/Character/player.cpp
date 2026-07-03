@@ -306,8 +306,6 @@ bool Player::InputAttack()
 
 void Player::CollisionProjectilesVsEnemys()
 {
-	Sandbag& sandbag = Sandbag::Instance(p_device);
-
 	int projectile_count = ProjectileManager::Instance().GetProjectileCount();
 	for (int i = 0; i < projectile_count; i++)
 	{
@@ -317,18 +315,16 @@ void Player::CollisionProjectilesVsEnemys()
 		if (CollisionManager::SphereVsCylinder(
 			projectile->GetPosition(),
 			projectile->GetRadius(),
-			sandbag.GetPosition(),
-			sandbag.GetRadius(),
-			sandbag.GetHeight(),
+			enemy_target->GetPosition(),
+			enemy_target->GetRadius(),
+			enemy_target->GetHeight(),
 			out_position))
 		{
-			if (sandbag.TakeDamege(1, 0.1f))
+			if (enemy_target->TakeDamege(1, 0.1f))
 			{
-
+				// ’eŠÛ”jŠü
+				projectile->Destroy();
 			}
-
-			// ’eŠÛ”jŠü
-			projectile->Destroy();
 		}
 
 	}
@@ -417,7 +413,7 @@ void Player::AttackState::OnUpdate(float elapsed_time)
 	{
 		owner->SetState(StateId::Jump);
 	}
-	if (owner->animator->IsEnd())
+	if (owner->animator->IsFinished())
 	{
 		if (move)
 		{

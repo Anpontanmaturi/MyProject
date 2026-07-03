@@ -4,6 +4,8 @@
 #include "animator.h"
 #include <memory>
 
+class Sandbag;
+
 class Player
 {
 public:
@@ -34,6 +36,8 @@ public:
 		float offset_y = (mesh->GetModelHeight() * scale.y) * 0.25f;
 		return DirectX::XMFLOAT3(position.x, position.y + offset_y, position.z);
 	}
+
+	void SetTargetEnemy(Sandbag* target) { enemy_target = target; }
 
 private:
 	void UpdateTransform();
@@ -74,6 +78,8 @@ private:
 	bool	move_otherback = false;
 
 	ID3D11Device* p_device = nullptr;
+
+	Sandbag* enemy_target = nullptr;
 
 	enum class StateId
 	{

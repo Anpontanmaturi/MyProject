@@ -10,6 +10,9 @@ public:
 	Sandbag(ID3D11Device* device);
 	~Sandbag();
 
+	Sandbag(const Sandbag&) = delete;
+	Sandbag& operator=(const Sandbag&) = delete;
+
 	static Sandbag& Instance(ID3D11Device* device)
 	{
 		static Sandbag instance(device);
@@ -77,6 +80,7 @@ private:
 	{
 		None = -1,
 		Idle,
+		Damage,
 
 		EnumCount
 	};
@@ -102,6 +106,14 @@ public:
 	{
 	public:
 		IdleState(Sandbag* owner) : State(owner) {}
+		void OnEnter() override;
+		void OnUpdate(float elapsed_time) override;
+	};
+
+	class DamageState : public State
+	{
+	public:
+		DamageState(Sandbag* owner) : State(owner) {}
 		void OnEnter() override;
 		void OnUpdate(float elapsed_time) override;
 	};

@@ -12,6 +12,7 @@ Sandbag::Sandbag(ID3D11Device* device)
 
 	// ステート生成
 	states[static_cast<size_t>(StateId::Idle)] = std::make_unique<IdleState>(this);
+	states[static_cast<size_t>(StateId::Damage)] = std::make_unique<DamageState>(this);
 
 	SetState(StateId::Idle);
 }
@@ -149,12 +150,12 @@ bool Sandbag::TakeDamege(int damage, float invincible_time)
 	if (damage == 0) return false;
 
 	// 無敵時間中はダメージを与えない
-	if (invincible_timer > 0.0f)return false;
+	if (this->invincible_timer > 0.0f)return false;
 
 	// 無敵時間設定
-	invincible_timer = invincible_time;
+	this->invincible_timer = invincible_time;
 
-	animator->Play("GetHit1", false); // 後ほどステートにする
+	this->SetState(StateId::Damage);
 
 	return true;
 }
@@ -162,9 +163,13 @@ bool Sandbag::TakeDamege(int damage, float invincible_time)
 // 無敵時間更新
 void Sandbag::UpdateInvincibleTimer(float elapsed_time)
 {
-	if (invincible_timer > 0.0f)
+	if (this->invincible_timer > 0.0f)
 	{
-		invincible_timer -= elapsed_time;
+		this->invincible_timer -= elapsed_time;
+		if (this->invincible_timer < 0.0f)
+		{
+			this->invincible_timer = 0.0f; // マイナスに突入したら0で止める
+		}
 	}
 }
 
@@ -206,3 +211,17 @@ void Sandbag::IdleState::OnUpdate(float elapsed_time)
 {
 	
 }
+
+void Sandbag::DamageState::OnEnter()
+{
+	owner->animator->Play("GetHit1", false);
+}
+
+void Sandbag::DamageState::OnUpdate(float elapsed_time)
+{
+	if (owner->animator->IsFinished())
+	{
+		owner->SetState(StateId::Idle);
+	}
+}
+
