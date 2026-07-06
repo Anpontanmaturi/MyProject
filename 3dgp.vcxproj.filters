@@ -135,6 +135,9 @@
     <ClCompile Include="Source\Graphics\debug_renderer.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Character\character.cpp">
+      <Filter>Source\Character</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -241,6 +244,9 @@
     </ClInclude>
     <ClInclude Include="Source\Graphics\debug_renderer.h">
       <Filter>Source\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Character\character.h">
+      <Filter>Source\Character</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

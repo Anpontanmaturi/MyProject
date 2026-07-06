@@ -202,6 +202,7 @@
     <ClCompile Include="Source\Camera\camera.cpp" />
     <ClCompile Include="Source\Camera\camera_controller.cpp" />
     <ClCompile Include="Source\Character\animator.cpp" />
+    <ClCompile Include="Source\Character\character.cpp" />
     <ClCompile Include="Source\Character\player.cpp" />
     <ClCompile Include="Source\Character\projectile.cpp" />
     <ClCompile Include="Source\Character\projectile_manager.cpp" />
@@ -238,6 +239,7 @@
     <ClInclude Include="Source\Camera\camera.h" />
     <ClInclude Include="Source\Camera\camera_controller.h" />
     <ClInclude Include="Source\Character\animator.h" />
+    <ClInclude Include="Source\Character\character.h" />
     <ClInclude Include="Source\Character\player.h" />
     <ClInclude Include="Source\Character\projectile.h" />
     <ClInclude Include="Source\Character\projectile_manager.h" />
