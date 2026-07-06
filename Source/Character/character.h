@@ -48,6 +48,8 @@ protected:
 	// –³“GŠÔXV
 	void UpdateInvincibleTimer(float elapsedTime);
 
+	// ’…’n‚µ‚½‚ÉŒÄ‚Î‚ê‚é
+	virtual void OnLanding() {}
 
 protected:
 	DirectX::XMFLOAT3	position = {};

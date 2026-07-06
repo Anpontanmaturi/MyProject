@@ -27,6 +27,10 @@ public:
 
 	void SetTargetEnemy(Sandbag* target) { enemy_target = target; }
 
+protected:
+	// ’…’n‚µ‚½Žž‚ÉŒÄ‚Î‚ê‚é
+	void OnLanding() override;
+
 private:
 	void UpdateStateMachine(float elapsed_time);
 
@@ -36,13 +40,16 @@ private:
 	bool InputMove(float elapsed_time);
 	bool InputJump();
 	bool InputAttack();
+	bool InputDash();
 
 	void CollisionProjectilesVsEnemys();
 
 	std::unique_ptr<SkinnedMesh>	mesh;
 	std::unique_ptr<Animator>	animator;
 	
+	float	speed = {};
 	float	move_speed = 5.0f;
+	float	dash_speed = 15.0f;
 	float	turn_speed = DirectX::XMConvertToRadians(720);
 	float	jump_speed = 5.0f;
 	bool	move_otherback = false;
@@ -51,6 +58,8 @@ private:
 
 	Sandbag* enemy_target = nullptr;
 
+	int dash_count = 1;
+
 	enum class StateId
 	{
 		None = -1,
@@ -58,6 +67,7 @@ private:
 		Move,
 		Jump,
 		Attack,
+		Dash,
 
 		EnumCount
 	};
@@ -107,6 +117,14 @@ public:
 	{
 	public:
 		AttackState(Player* owner):State(owner){}
+		void OnEnter() override;
+		void OnUpdate(float elapsed_time) override;
+	};
+
+	class DashState : public State
+	{
+	public:
+		DashState(Player* owner) :State(owner) {}
 		void OnEnter() override;
 		void OnUpdate(float elapsed_time) override;
 	};

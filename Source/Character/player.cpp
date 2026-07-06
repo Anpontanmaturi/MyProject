@@ -14,12 +14,14 @@ Player::Player(ID3D11Device* device)
 	mesh = std::make_unique<SkinnedMesh>(device, filename, true, 0.0f, axis_system::rhs_y_up);
 	animator = std::make_unique<Animator>(mesh.get());
 	p_device = device;
+	speed = move_speed;
 
 	// ステート生成
 	states[static_cast<size_t>(StateId::Idle)] = std::make_unique<IdleState>(this);
 	states[static_cast<size_t>(StateId::Move)] = std::make_unique<MoveState>(this);
 	states[static_cast<size_t>(StateId::Jump)] = std::make_unique<JumpState>(this);
 	states[static_cast<size_t>(StateId::Attack)] = std::make_unique<AttackState>(this);
+	states[static_cast<size_t>(StateId::Dash)] = std::make_unique<DashState>(this);
 
 	SetState(StateId::Idle);
 }
@@ -46,6 +48,11 @@ void Player::Render(ID3D11DeviceContext* device_context)
 	ProjectileManager::Instance().Render(device_context);
 
 	ProjectileManager::Instance().DrawDebugPrimitive();
+}
+
+void Player::OnLanding()
+{
+	dash_count = 1;
 }
 
 void Player::UpdateStateMachine(float elapsed_time)
@@ -108,7 +115,7 @@ bool Player::InputMove(float elapsed_time)
 	DirectX::XMFLOAT3 move_vec = GetMoveVec();
 
 	// 移動
-	Move(move_vec.x, move_vec.z, move_speed);
+	Move(move_vec.x, move_vec.z, speed);
 
 	// 旋回
 	Turn(elapsed_time, move_vec.x, move_vec.z, turn_speed);
@@ -153,6 +160,37 @@ bool Player::InputAttack()
 	return false;
 }
 
+bool Player::InputDash()
+{
+	GamePad& game_pad = GamePad::Instance();
+	if (game_pad.GetButtonDown() & GamePad::BTN_X)
+	{
+		if (!IsGround() && dash_count <= 0)
+		{
+			return false;
+		}
+
+		DirectX::XMFLOAT3 dir{};
+		dir.x = sinf(rotation.y);
+		dir.y = 0.0f; // 上下にはいかないように0固定
+		dir.z = cosf(rotation.y);
+
+		if (!IsGround())
+		{
+			dash_count--;
+		}
+
+		speed = dash_speed;
+		Move(dir.x, dir.z, speed); // 移動ベクトルを更新しておく
+
+		velocity.x = dir.x * dash_speed;
+		velocity.z = dir.z * dash_speed;
+
+		return true;
+	}
+	return false;
+}
+
 void Player::CollisionProjectilesVsEnemys()
 {
 	int projectile_count = ProjectileManager::Instance().GetProjectileCount();
@@ -175,7 +213,6 @@ void Player::CollisionProjectilesVsEnemys()
 				projectile->Destroy();
 			}
 		}
-
 	}
 }
 
@@ -204,6 +241,10 @@ void Player::IdleState::OnUpdate(float elapsed_time)
 	{
 		owner->SetState(StateId::Attack);
 	}
+	if (owner->InputDash())
+	{
+		owner->SetState(StateId::Dash);
+	}
 }
 
 void Player::MoveState::OnEnter()
@@ -224,6 +265,10 @@ void Player::MoveState::OnUpdate(float elapsed_time)
 	if (owner->InputAttack())
 	{
 		owner->SetState(StateId::Attack);
+	}
+	if (owner->InputDash())
+	{
+		owner->SetState(StateId::Dash);
 	}
 }
 
@@ -247,6 +292,10 @@ void Player::JumpState::OnUpdate(float elapsed_time)
 			owner->SetState(StateId::Idle);
 		}
 	}
+	if (owner->InputDash())
+	{
+		owner->SetState(StateId::Dash);
+	}
 }
 
 void Player::AttackState::OnEnter()
@@ -265,6 +314,35 @@ void Player::AttackState::OnUpdate(float elapsed_time)
 	if (owner->animator->IsFinished())
 	{
 		if (move)
+		{
+			owner->SetState(StateId::Move);
+		}
+		else
+		{
+			owner->SetState(StateId::Idle);
+		}
+	}
+}
+
+void Player::DashState::OnEnter()
+{
+	owner->animator->Play("Frying", false);
+}
+
+void Player::DashState::OnUpdate(float elapsed_time)
+{
+	owner->velocity.y = 0.0f;
+
+	if (owner->InputJump())
+	{
+		owner->speed = owner->move_speed;
+		owner->SetState(StateId::Jump);
+	}
+
+	if (owner->animator->IsFinished())
+	{
+		owner->speed = owner->move_speed;
+		if (owner->InputMove(elapsed_time))
 		{
 			owner->SetState(StateId::Move);
 		}

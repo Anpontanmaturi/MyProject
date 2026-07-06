@@ -135,6 +135,11 @@ void Character::UpdateVelocity(float elapsed_time)
 	if (CollisionManager::Instance().Raycast(start, end, hit_result))
 	{
 		position.y = hit_result.position.y;
+
+		if (!is_ground)
+		{
+			OnLanding();
+		}
 		velocity.y = 0.0f;
 		is_ground = true;
 	}

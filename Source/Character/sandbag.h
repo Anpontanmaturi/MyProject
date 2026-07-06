@@ -24,6 +24,7 @@ public:
 
 	void Render(ID3D11DeviceContext* device_context);
 
+protected:
 	void OnDamaged() override;
 
 private:
