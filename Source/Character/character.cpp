@@ -79,6 +79,9 @@ void Character::UpdateVelocity(float elapsed_time)
 		HitResult hit_result;
 		if (CollisionManager::Instance().Raycast(s, e, hit_result))
 		{
+			is_wall_touch = true;
+			wall_normal = hit_result.normal;
+
 			// 交点から終点へのベクトルを求める
 			DirectX::XMVECTOR P = DirectX::XMLoadFloat3(&hit_result.position);
 			DirectX::XMVECTOR E = DirectX::XMLoadFloat3(&e);
@@ -125,6 +128,9 @@ void Character::UpdateVelocity(float elapsed_time)
 			// 壁に当たらなかったので普通に移動
 			position.x += move_x;
 			position.z += move_z;
+
+			// 壁に当たらなかったらフラグを寝かせる
+			is_wall_touch = false;
 		}
 	}
 

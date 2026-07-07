@@ -58,6 +58,7 @@ private:
 
 	Sandbag* enemy_target = nullptr;
 
+	int jump_count = 1;
 	int dash_count = 1;
 
 	enum class StateId
@@ -68,6 +69,7 @@ private:
 		Jump,
 		Attack,
 		Dash,
+		WallSlide,
 
 		EnumCount
 	};
@@ -125,6 +127,14 @@ public:
 	{
 	public:
 		DashState(Player* owner) :State(owner) {}
+		void OnEnter() override;
+		void OnUpdate(float elapsed_time) override;
+	};
+
+	class WallSlideState : public State
+	{
+	public:
+		WallSlideState(Player* owner) : State(owner) {}
 		void OnEnter() override;
 		void OnUpdate(float elapsed_time) override;
 	};

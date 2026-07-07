@@ -22,6 +22,7 @@ Player::Player(ID3D11Device* device)
 	states[static_cast<size_t>(StateId::Jump)] = std::make_unique<JumpState>(this);
 	states[static_cast<size_t>(StateId::Attack)] = std::make_unique<AttackState>(this);
 	states[static_cast<size_t>(StateId::Dash)] = std::make_unique<DashState>(this);
+	states[static_cast<size_t>(StateId::WallSlide)] = std::make_unique<WallSlideState>(this);
 
 	SetState(StateId::Idle);
 }
@@ -270,6 +271,17 @@ void Player::MoveState::OnUpdate(float elapsed_time)
 	{
 		owner->SetState(StateId::Dash);
 	}
+
+	if (!owner->IsGround() && owner->IsWallTouch())
+	{
+		// 入力方向と壁の法線の内積をチェック
+		DirectX::XMFLOAT3 move_vec = owner->GetMoveVec();
+		float dot = move_vec.x * owner->GetWallNormal().x + move_vec.z * owner->GetWallNormal().z;
+		if (dot < -0.1f) // 壁に向かって入力されている
+		{
+			owner->SetState(StateId::WallSlide);
+		}
+	}
 }
 
 void Player::JumpState::OnEnter()
@@ -295,6 +307,17 @@ void Player::JumpState::OnUpdate(float elapsed_time)
 	if (owner->InputDash())
 	{
 		owner->SetState(StateId::Dash);
+	}
+
+	if (!owner->IsGround() && owner->IsWallTouch())
+	{
+		// 入力方向と壁の法線の内積をチェック
+		DirectX::XMFLOAT3 move_vec = owner->GetMoveVec();
+		float dot = move_vec.x * owner->GetWallNormal().x + move_vec.z * owner->GetWallNormal().z;
+		if (dot < -0.1f) // 壁に向かって入力されている
+		{
+			owner->SetState(StateId::WallSlide);
+		}
 	}
 }
 
@@ -350,5 +373,48 @@ void Player::DashState::OnUpdate(float elapsed_time)
 		{
 			owner->SetState(StateId::Idle);
 		}
+	}
+}
+
+void Player::WallSlideState::OnEnter()
+{
+	owner->animator->Play("HangIdle", true);
+	owner->dash_count = 1;
+}
+
+void Player::WallSlideState::OnUpdate(float elapsed_time)
+{
+	// 落下速度を遅くする（重力を相殺する力を加えるか、速度の上限を絞る）
+	if (owner->velocity.y < -2.0f)
+	{
+		owner->velocity.y = -2.0f;
+	}
+
+	// 地面に着いたらIdleかMoveへ
+	if (owner->IsGround())
+	{
+		owner->SetState(StateId::Idle);
+		return;
+	}
+
+	// 壁蹴り（ジャンプ）入力
+	GamePad& game_pad = GamePad::Instance();
+	if (game_pad.GetButtonDown() & GamePad::BTN_A)
+	{
+		// 壁の法線方向へ弾き飛ばしつつ、上方向へジャンプ
+		owner->velocity.y = owner->jump_speed * 1.2f; // 少し高めに
+		owner->velocity.x = owner->GetWallNormal().x * owner->move_speed;
+		owner->velocity.z = owner->GetWallNormal().z * owner->move_speed;
+
+		owner->SetState(StateId::Jump);
+		return;
+	}
+
+	// 壁から離れた、または入力がやんだらJump状態（空中）へ戻る
+	DirectX::XMFLOAT3 move_vec = owner->GetMoveVec();
+	float dot = move_vec.x * owner->GetWallNormal().x + move_vec.z * owner->GetWallNormal().z;
+	if (!owner->IsWallTouch() || dot >= -0.1f)
+	{
+		owner->SetState(StateId::Jump);
 	}
 }

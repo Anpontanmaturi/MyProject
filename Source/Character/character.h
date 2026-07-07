@@ -29,6 +29,9 @@ public:
 
 	virtual bool TakeDamege(int damage, float invincible_time);
 
+	bool IsWallTouch() const { return is_wall_touch; }
+	const DirectX::XMFLOAT3& GetWallNormal() const { return wall_normal; }
+
 protected:
 	// ˆÚ“®
 	void Move(float vx, float vy, float speed);
@@ -76,5 +79,8 @@ protected:
 	bool	is_ground = false;
 	float	invincible_timer = 1.0f;
 	float	jump_speed = 5.0f;
-	float	air_control = 0.3f;
+	float	air_control = 0.8f;
+
+	bool is_wall_touch = false;
+	DirectX::XMFLOAT3 wall_normal = {};
 };
