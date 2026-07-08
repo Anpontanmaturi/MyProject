@@ -384,7 +384,7 @@ void Player::WallSlideState::OnEnter()
 
 void Player::WallSlideState::OnUpdate(float elapsed_time)
 {
-	// —Ž‰º‘¬“x‚ð’x‚­‚·‚éid—Í‚ð‘ŠŽE‚·‚é—Í‚ð‰Á‚¦‚é‚©A‘¬“x‚ÌãŒÀ‚ði‚éj
+	// —Ž‰º‘¬“x‚ð’x‚­‚·‚é
 	if (owner->velocity.y < -2.0f)
 	{
 		owner->velocity.y = -2.0f;
