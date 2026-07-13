@@ -2,6 +2,12 @@
 
 #include <DirectXMath.h>
 
+enum class CameraMode
+{
+	Normal,
+	LockOn
+};
+
 // カメラコントローラー
 class CameraController
 {
@@ -16,7 +22,15 @@ public:
 
 	void SetMove(bool player_move) { this->player_move = player_move; }
 
+	void SetCameraMode(CameraMode mode) { this->camera_mode = mode; }
+	CameraMode GetCameraMode() const { return camera_mode; }
+
+	void SetLockOnTarget(const DirectX::XMFLOAT3* target_ptr) { lockon_target = target_ptr; }
+
 private:
+	CameraMode				camera_mode = CameraMode::Normal;
+	const DirectX::XMFLOAT3* lockon_target = nullptr;
+
 	DirectX::XMFLOAT3		target = { 0, 0, 0 };	// 注視点
 	DirectX::XMFLOAT3		angle = { DirectX::XMConvertToRadians(15), 0, 0 };	// 回転角度
 	float					roll_speed = DirectX::XMConvertToRadians(90); // 回転速度

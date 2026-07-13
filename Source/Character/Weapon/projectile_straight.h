@@ -15,6 +15,7 @@ public:
 	void Render(ID3D11DeviceContext* device_context) override;
 
 	void Launch(const DirectX::XMFLOAT3& direction, const DirectX::XMFLOAT3& position);
+	void ChargeLaunch(const DirectX::XMFLOAT3& direction, const DirectX::XMFLOAT3& position); // チャージショット
 
 private:
 	std::unique_ptr<SkinnedMesh> model = nullptr;

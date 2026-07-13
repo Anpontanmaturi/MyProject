@@ -21,6 +21,8 @@ public:
 	const DirectX::XMFLOAT3& GetScale() const { return scale; }
 	float GetRadius()const { return radius; }
 
+	float SetScale(float scale) { this->scale = { scale, scale, scale }; }
+
 	// ”jŠü
 	void Destroy();
 

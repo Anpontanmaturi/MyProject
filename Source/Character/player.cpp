@@ -29,6 +29,8 @@ Player::Player(ID3D11Device* device)
 
 void Player::Update(float elapsed_time)
 {
+	UpdateCharge(elapsed_time);
+
 	UpdateStateMachine(elapsed_time);
 
 	UpdateVelocity(elapsed_time);
@@ -40,6 +42,25 @@ void Player::Update(float elapsed_time)
 	animator->Update(elapsed_time);
 
 	UpdateTransform();
+}
+
+void Player::DebugRenderGUI()
+{
+	ImGui::Begin("ImGUI");
+	{
+		if (ImGui::CollapsingHeader("player", nullptr, ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			ImGui::InputFloat3("player_position", &position.x);
+			ImGui::InputFloat3("player_position", &scale.x);
+			ImGui::Text("move other front: %s", MoveOtherBack() ? "true" : "false");
+			ImGui::Separator();
+			ImGui::Text("charge shot");
+			ImGui::SameLine();
+			ImGui::ProgressBar(charge_timer / full_charge_time, ImVec2(-1, 0));
+			ImGui::SliderFloat("charge_flash_spead", &flash_speed, 1.0f, 25.0f);
+		}
+	}
+	ImGui::End();
 }
 
 void Player::Render(ID3D11DeviceContext* device_context)
@@ -136,28 +157,102 @@ bool Player::InputJump()
 	return false;
 }
 
+// チャージ判定用
+void Player::UpdateCharge(float elapsed_time)
+{
+	GamePad& game_pad = GamePad::Instance();
+	if (game_pad.GetButton() & GamePad::BTN_B)
+	{
+		charge_timer += elapsed_time;
+
+		if (charge_timer > full_charge_time)
+		{
+			charge_timer = full_charge_time;
+
+			static float color_timer = 0.0f;
+			color_timer += elapsed_time;
+
+			float sin_wave = sinf(color_timer * flash_speed * 2.0f * DirectX::XM_PI);
+
+			float blend_ratio = (sin_wave + 1.0f) * 0.5f;
+
+			color.x = 1.0f + blend_ratio * 1.5f;
+			color.y = 1.0f + blend_ratio * 1.5f;
+			color.z = 1.0f + blend_ratio * 1.5f;
+		}
+	}
+	else
+	{
+		if (!(game_pad.GetButtonUp() & GamePad::BTN_B))
+		{
+			charge_timer = 0.0f;
+			color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+		}
+	}
+}
+
 // 攻撃入力処理
 bool Player::InputAttack()
 {
 	GamePad& game_pad = GamePad::Instance();
+
+	auto CalculateLaunch = [&](DirectX::XMFLOAT3& out_pos, DirectX::XMFLOAT3& out_dir) {
+		out_pos.x = position.x;
+		out_pos.y = position.y + ((mesh->GetModelHeight() * scale.y) * 0.15f);
+		out_pos.z = position.z;
+
+		if (camera_mode == CameraMode::LockOn) 
+		{
+			DirectX::XMFLOAT3 enemy_pos = enemy_target->GetPosition();
+			enemy_pos.y += 1.2f;
+
+			float dx = enemy_pos.x - out_pos.x;
+			float dy = enemy_pos.y - out_pos.y;
+			float dz = enemy_pos.z - out_pos.z;
+			float dist = sqrtf(dx * dx + dy * dy + dz * dz);
+
+			if (dist > 0.01f) {
+				out_dir.x = dx / dist;
+				out_dir.y = dy / dist; 
+				out_dir.z = dz / dist;
+				
+				rotation.y = atan2f(dx, dz);
+			}
+		}
+		else {
+			out_dir.x = sinf(rotation.y);
+			out_dir.y = 0.0f; 
+			out_dir.z = cosf(rotation.y);
+		}
+	};
+
 	if (game_pad.GetButtonDown() & GamePad::BTN_B)
 	{
-		// 前方向
-		DirectX::XMFLOAT3 dir{};
-		dir.x = sinf(rotation.y);
-		dir.y = 0.0f;
-		dir.z = cosf(rotation.y);
-		// 発射位置
-		DirectX::XMFLOAT3 pos{};
-		pos.x = position.x;
-		pos.y = position.y + ((mesh->GetModelHeight() * scale.y) * 0.15f);
-		pos.z = position.z;
+		DirectX::XMFLOAT3 pos{}, dir{};
+		CalculateLaunch(pos, dir);
 
 		ProjectileStraight* proj = new ProjectileStraight(&ProjectileManager::Instance(), p_device);
 		proj->Launch(dir, pos);
 
 		return true;
 	}
+
+	if (game_pad.GetButtonUp() & GamePad::BTN_B)
+	{
+		if (charge_timer >= full_charge_time)
+		{
+			DirectX::XMFLOAT3 pos{}, dir{};
+			CalculateLaunch(pos, dir);
+
+			ProjectileStraight* proj = new ProjectileStraight(&ProjectileManager::Instance(), p_device);
+			proj->ChargeLaunch(dir, pos);
+
+			charge_timer = 0.0f;
+			return true;
+		}
+		charge_timer = 0.0f;
+	}
+
 	return false;
 }
 

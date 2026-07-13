@@ -10,6 +10,7 @@ public:
 
 	void UpdateTransform();
 
+	// ゲッター、セッター
 	void SetPosition(const DirectX::XMFLOAT3& position) { this->position = position; }
 	const DirectX::XMFLOAT3& GetPosition() const { return position; }
 
@@ -25,12 +26,15 @@ public:
 	float GetRadius() const { return radius; }
 	float GetHeight() const { return height; }
 
+	const DirectX::XMFLOAT3& GetWallNormal() const { return wall_normal; }
+
+	const DirectX::XMFLOAT3* GetPositionPtr() const { return &position; }
+
 	bool IsGround() const { return is_ground; }
 
 	virtual bool TakeDamege(int damage, float invincible_time);
 
 	bool IsWallTouch() const { return is_wall_touch; }
-	const DirectX::XMFLOAT3& GetWallNormal() const { return wall_normal; }
 
 protected:
 	// 移動

@@ -320,6 +320,7 @@ void Graphics::Update(float elapsed_time)
 {
 	stage->UpdateTransform();
 	player->Update(elapsed_time);
+	player->SetCameraMode(camera_controller.GetCameraMode());
 	sandbag->Update(elapsed_time);
 
 	{
@@ -336,16 +337,29 @@ void Graphics::Update(float elapsed_time)
 			ImGui::SliderFloat("light_direction.y", &light_direction.y, -1.0f, +1.0f);
 			ImGui::SliderFloat("light_direction.z", &light_direction.z, -1.0f, +1.0f);
 		}
-		if (ImGui::CollapsingHeader("player", nullptr, ImGuiTreeNodeFlags_DefaultOpen))
+	}
+	ImGui::End();
+	ImGui::Begin("Camera");
+	{
+		if (ImGui::CollapsingHeader("camera_mode", nullptr, ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			player_pos = player->GetPosition();
-			player_scale = player->GetScale();
-			ImGui::InputFloat3("player_position", &player_pos.x);
-			ImGui::InputFloat3("player_position", &player_scale.x);
-			ImGui::Text("move other front: %s", player->MoveOtherBack() ? "true" : "false"); 
+			CameraMode current_mode = camera_controller.GetCameraMode();
+			ImGui::Text("now camera mode: %s", (current_mode == CameraMode::Normal) ? "Normal" : "LockOn");
+
+			if (ImGui::Button("normal", { 100,20 }))
+			{
+				camera_controller.SetCameraMode(CameraMode::Normal);
+				camera_controller.SetLockOnTarget(nullptr);
+			}
+			if (ImGui::Button("lockon", { 100,20 }))
+			{
+				camera_controller.SetCameraMode(CameraMode::LockOn);
+				camera_controller.SetLockOnTarget(sandbag->GetPositionPtr());
+			}
 		}
 	}
 	ImGui::End();
+	player->DebugRenderGUI();
 #endif
 }
 

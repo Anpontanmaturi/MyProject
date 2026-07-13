@@ -42,3 +42,13 @@ void ProjectileStraight::Launch(const DirectX::XMFLOAT3& direction, const Direct
 	this->direction = direction;
 	this->position = position;
 }
+
+void ProjectileStraight::ChargeLaunch(const DirectX::XMFLOAT3& direction, const DirectX::XMFLOAT3& position)
+{
+	this->speed *= 2.0f;
+	this->scale.x *= 2.0f;
+	this->scale.y *= 2.0f;
+	this->scale.z *= 2.0f;
+	this->radius *= 2.0f;
+	Launch(direction, position);
+}

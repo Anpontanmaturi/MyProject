@@ -3,6 +3,7 @@
 #include "character.h"
 #include "Graphics/skinned_mesh.h"
 #include "animator.h"
+#include "Camera/camera_controller.h"
 #include <memory>
 
 class Sandbag;
@@ -17,6 +18,8 @@ public:
 
 	void Render(ID3D11DeviceContext* device_context);
 
+	void DebugRenderGUI();
+
 	bool MoveOtherBack() const { return move_otherback; }
 
 	DirectX::XMFLOAT3 GetCameraLookAt() const
@@ -27,12 +30,18 @@ public:
 
 	void SetTargetEnemy(Sandbag* target) { enemy_target = target; }
 
+	// カメラモードをプレイヤーから見れるように
+	void SetCameraMode(CameraMode mode) { camera_mode = mode; }
+
 protected:
 	// 着地した時に呼ばれる
 	void OnLanding() override;
 
 private:
 	void UpdateStateMachine(float elapsed_time);
+
+	// チャージ用関数
+	void UpdateCharge(float elaapsed_time);
 
 	// スティックの入力値から移動ベクトルを取得
 	DirectX::XMFLOAT3 GetMoveVec();
@@ -57,9 +66,14 @@ private:
 	ID3D11Device* p_device = nullptr;
 
 	Sandbag* enemy_target = nullptr;
+	CameraMode camera_mode = CameraMode::Normal;
 
 	int jump_count = 1;
 	int dash_count = 1;
+
+	float charge_timer = 0.0f;
+	const float full_charge_time = 2.0f;
+	float flash_speed = 7.5f;
 
 	enum class StateId
 	{
