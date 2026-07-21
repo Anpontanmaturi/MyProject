@@ -36,7 +36,7 @@ void Sandbag::Render(ID3D11DeviceContext* device_context)
 
 	DebugRenderer* debugRenderer = Graphics::Instance().GetDebugRenderer();
 
-	debugRenderer->DrawCylinder(position, radius, height, DirectX::XMFLOAT4(1, 0, 0, 1));
+	//debugRenderer->DrawCylinder(position, radius, height, DirectX::XMFLOAT4(1, 0, 0, 1));
 }
 
 void Sandbag::OnDamaged()

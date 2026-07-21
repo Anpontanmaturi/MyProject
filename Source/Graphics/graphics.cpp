@@ -356,6 +356,16 @@ void Graphics::Update(float elapsed_time)
 				camera_controller.SetCameraMode(CameraMode::LockOn);
 				camera_controller.SetLockOnTarget(sandbag->GetPositionPtr());
 			}
+			if (ImGui::Button("fixed2d", { 100,20 }))
+			{
+				camera_controller.SetCameraMode(CameraMode::Fixed2D);
+				camera_controller.SetLockOnTarget(nullptr);
+			}
+			if (ImGui::Button("enemy", { 100,20 }))
+			{
+				camera_controller.SetCameraMode(CameraMode::Enemy);
+				camera_controller.SetLockOnTarget(sandbag->GetPositionPtr());
+			}
 		}
 	}
 	ImGui::End();

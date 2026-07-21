@@ -17,7 +17,7 @@ void CameraController::Update(float elapsed_time)
 
 	switch (camera_mode)
 	{
-	case CameraMode::Normal:
+	case CameraMode::Normal: {
 		if (ax || ay)
 		{
 			// スティックの入力値に合わせてX軸とY軸を回転
@@ -68,17 +68,17 @@ void CameraController::Update(float elapsed_time)
 
 		focus = target;
 		break;
-
-	case CameraMode::LockOn:
-		DirectX::XMVECTOR PlayerPos = DirectX::XMLoadFloat3(&target);
-		DirectX::XMVECTOR EnemyPos = DirectX::XMLoadFloat3(lockon_target);
+	}
+	case CameraMode::LockOn: {
+		DirectX::XMVECTOR player_pos = DirectX::XMLoadFloat3(&target);
+		DirectX::XMVECTOR enemy_pos = DirectX::XMLoadFloat3(lockon_target);
 
 		// プレイヤーから敵への方向ベクトルを計算
-		DirectX::XMVECTOR LookDir = DirectX::XMVector3Normalize(DirectX::XMVectorSubtract(EnemyPos, PlayerPos));
+		DirectX::XMVECTOR look_dir = DirectX::XMVector3Normalize(DirectX::XMVectorSubtract(enemy_pos, player_pos));
 
 		// カメラ位置：プレイヤーから「敵と反対の方向」にrange分だけ離す（プレイヤーの後ろ）
-		DirectX::XMVECTOR EyePos = DirectX::XMVectorSubtract(PlayerPos, DirectX::XMVectorScale(LookDir, range));
-		DirectX::XMStoreFloat3(&eye, EyePos);
+		DirectX::XMVECTOR eye_pos = DirectX::XMVectorSubtract(player_pos, DirectX::XMVectorScale(look_dir, range));
+		DirectX::XMStoreFloat3(&eye, eye_pos);
 
 		// 注視点をサンドバッグ（敵）にする
 		focus = *lockon_target;
@@ -86,17 +86,55 @@ void CameraController::Update(float elapsed_time)
 
 		break;
 	}
+	case CameraMode::Fixed2D: {
+		DirectX::XMVECTOR player_pos = DirectX::XMLoadFloat3(&target);
+		DirectX::XMFLOAT3 playerPos;
+		DirectX::XMStoreFloat3(&playerPos, player_pos);
+
+		const float DISTANCE_BEHIND = 8.0f;
+
+		focus.x = playerPos.x;
+		focus.y = playerPos.y; 
+		focus.z = playerPos.z;
+
+		eye.x = focus.x;
+		eye.y = playerPos.y;
+		eye.z = focus.z -DISTANCE_BEHIND;
+
+		break;
+	}
+	case CameraMode::Enemy: {
+		if (lockon_target == nullptr)
+		{
+			break;
+		}
+		DirectX::XMFLOAT3 enemy_pos = *lockon_target;
+
+		const float CAMERA_DISTANCE = 6.0f; // 敵からカメラまでの距離
+
+		focus.x = enemy_pos.x;
+		focus.y = enemy_pos.y + 1.0f;
+		focus.z = enemy_pos.z;
+
+		eye.x = enemy_pos.x;
+		eye.y = focus.y;
+		eye.z = enemy_pos.z - CAMERA_DISTANCE;
+
+		break;
+	}
+	}
 
 	// 補間処理
 	float t = interpolation_speed * elapsed_time;
 	Camera& camera = Camera::Instance();
-	DirectX::XMVECTOR Eye = DirectX::XMLoadFloat3(&camera.GetEye());
-	DirectX::XMVECTOR Focus = DirectX::XMLoadFloat3(&camera.GetFocus());
-	DirectX::XMVECTOR FinalEye = DirectX::XMLoadFloat3(&eye);
-	DirectX::XMVECTOR FinalFocus = DirectX::XMLoadFloat3(&focus);
-	DirectX::XMStoreFloat3(&eye, DirectX::XMVectorLerp(Eye, FinalEye, t));
-	DirectX::XMStoreFloat3(&target, DirectX::XMVectorLerp(Focus, FinalFocus, t));
-
+	if (!(camera_mode == CameraMode::Fixed2D)) {
+		DirectX::XMVECTOR Eye = DirectX::XMLoadFloat3(&camera.GetEye());
+		DirectX::XMVECTOR Focus = DirectX::XMLoadFloat3(&camera.GetFocus());
+		DirectX::XMVECTOR FinalEye = DirectX::XMLoadFloat3(&eye);
+		DirectX::XMVECTOR FinalFocus = DirectX::XMLoadFloat3(&focus);
+		DirectX::XMStoreFloat3(&eye, DirectX::XMVectorLerp(Eye, FinalEye, t));
+		DirectX::XMStoreFloat3(&target, DirectX::XMVectorLerp(Focus, FinalFocus, t));
+	}
 	// カメラの視点と注視点を設定
 	camera.SetLookat(eye, target, DirectX::XMFLOAT3(0, 1, 0));
 }
