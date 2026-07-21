@@ -6,6 +6,17 @@ using namespace DirectX;
 
 void CollisionManager::Register(CollisionMesh* mesh)
 {
+	if (std::filesystem::exists(mesh->cache_filename))
+	{
+		LoadSpaceDivision(mesh->cache_filename.c_str());
+	}
+	else
+	{
+		SpaceDivision(mesh);
+
+		SaveSpaceDivision(mesh->cache_filename.c_str());
+	}
+
 	meshes.emplace_back(mesh);
 }
 
@@ -18,7 +29,162 @@ void CollisionManager::Unregister(CollisionMesh* mesh)
 	}
 }
 
-bool CollisionManager::Raycast(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult& hit_result) const
+void CollisionManager::SpaceDivision(CollisionMesh* mesh)
+{
+	collision_mesh.triangles.clear();
+	collision_mesh.areas.clear();
+
+	XMVECTOR volume_min = XMVectorReplicate(FLT_MAX);
+	XMVECTOR volume_max = XMVectorReplicate(-FLT_MAX);
+
+	for (const SkinnedMesh::mesh& mesh : mesh->mesh->meshes)
+	{
+		XMMATRIX grobal_transform = XMLoadFloat4x4(&mesh.default_global_transform);
+		for (size_t i = 0; i < mesh.indices.size(); i += 3)
+		{
+			// 三角形の頂点を抽出
+			uint32_t a = mesh.indices.at(i + 0);
+			uint32_t b = mesh.indices.at(i + 1);
+			uint32_t c = mesh.indices.at(i + 2);
+			XMVECTOR A = XMLoadFloat3(&mesh.vertices.at(a).position);
+			XMVECTOR B = XMLoadFloat3(&mesh.vertices.at(b).position);
+			XMVECTOR C = XMLoadFloat3(&mesh.vertices.at(c).position);
+			A = XMVector3Transform(A, grobal_transform);
+			B = XMVector3Transform(B, grobal_transform);
+			C = XMVector3Transform(C, grobal_transform);
+
+			// 法線ベクトルを算出
+			XMVECTOR N = XMVector3Cross(XMVectorSubtract(B, A), XMVectorSubtract(C, A));
+			if (XMVector3Equal(N, XMVectorZero()))
+			{
+				// 面を作成できない
+				continue;
+			}
+			N = DirectX::XMVector3Normalize(N);
+
+			// 三角形データを格納
+			CollisionMesh::Triangle& triangle = collision_mesh.triangles.emplace_back();
+			XMStoreFloat3(&triangle.positions[0], A);
+			XMStoreFloat3(&triangle.positions[1], B);
+			XMStoreFloat3(&triangle.positions[2], C);
+			XMStoreFloat3(&triangle.normal, N);
+
+			// モデル全体のAABBを計測
+			volume_min = XMVectorMin(volume_min, A);
+			volume_min = XMVectorMin(volume_min, B);
+			volume_min = XMVectorMin(volume_min, C);
+			volume_max = XMVectorMax(volume_max, A);
+			volume_max = XMVectorMax(volume_max, B);
+			volume_max = XMVectorMax(volume_max, C);
+		}
+	}
+
+	// モデル全体のAABB
+	XMFLOAT3 volumeMin, volumeMax;
+	XMStoreFloat3(&volumeMin, volume_min);
+	XMStoreFloat3(&volumeMax, volume_max);
+
+	// モデル全体のAABBからXZ平面に指定のサイズで分割されたコリジョンエリアを作成する
+	const int cellsize = 4;
+	for (float x = volumeMin.x ; x < volumeMax.x ; x += cellsize)
+	{
+		for (float z = volumeMin.z ; z < volumeMax.z ; z += cellsize)
+		{
+			// AABBを算出
+			CollisionMesh::Area& area = collision_mesh.areas.emplace_back();
+			area.bounding_box.Center.x = x + cellsize * 0.5f;
+			area.bounding_box.Center.y = (volumeMax.y + volumeMin.y) * 0.5f;
+			area.bounding_box.Center.z = z + cellsize * 0.5f;
+			area.bounding_box.Extents.x = cellsize * 0.5f;
+			area.bounding_box.Extents.y = (volumeMax.y - volumeMin.y) * 0.5f;
+			area.bounding_box.Extents.z = cellsize * 0.5f;
+
+			// AABBに所属する三角形を抽出
+			int triangle_index = 0;
+			for (const CollisionMesh::Triangle& triangle : collision_mesh.triangles)
+			{
+				XMVECTOR A = XMLoadFloat3(&triangle.positions[0]);
+				XMVECTOR B = XMLoadFloat3(&triangle.positions[1]);
+				XMVECTOR C = XMLoadFloat3(&triangle.positions[2]);
+
+				if (area.bounding_box.Intersects(A, B, C))
+				{
+					area.triangle_indices.push_back(triangle_index);
+				}
+				triangle_index++;
+			}
+		}
+	}
+}
+
+void CollisionManager::SaveSpaceDivision(const char* filename)
+{
+	std::ofstream ofs(filename, std::ios::binary);
+
+	if (!ofs)return;
+
+	// 三角形の数を保存
+	size_t triangle_count = collision_mesh.triangles.size();
+	ofs.write(reinterpret_cast<char*>(&triangle_count), sizeof(size_t));
+
+	// 三角形を保存
+	ofs.write(reinterpret_cast<char*>(collision_mesh.triangles.data()), 
+		sizeof(CollisionMesh::Triangle) * triangle_count);
+
+	// エリアの数を保存
+	size_t area_count = collision_mesh.areas.size();
+	ofs.write(reinterpret_cast<char*>(&area_count), sizeof(size_t));
+
+	for (auto& area : collision_mesh.areas)
+	{
+		ofs.write(reinterpret_cast<char*>(&area.bounding_box), sizeof(BoundingBox));
+
+		size_t index_count = area.triangle_indices.size();
+		ofs.write(reinterpret_cast<char*>(&index_count), sizeof(size_t));
+
+		ofs.write(reinterpret_cast<char*>(area.triangle_indices.data()), sizeof(int) * index_count);
+	}
+}
+
+bool CollisionManager::LoadSpaceDivision(const char* filename)
+{
+	std::ifstream ifs(filename, std::ios::binary);
+
+	if (!ifs)return false;
+
+	collision_mesh.triangles.clear();
+	collision_mesh.areas.clear();
+
+	size_t triangle_count;
+	ifs.read(reinterpret_cast<char*>(&triangle_count),sizeof(size_t));
+
+	collision_mesh.triangles.resize(triangle_count);
+
+	ifs.read(reinterpret_cast<char*>(collision_mesh.triangles.data()),
+		sizeof(CollisionMesh::Triangle) * triangle_count);
+
+	size_t area_count;
+
+	ifs.read(reinterpret_cast<char*>(&area_count), sizeof(size_t));
+
+	collision_mesh.areas.resize(area_count);
+
+	for (auto& area : collision_mesh.areas)
+	{
+		ifs.read(reinterpret_cast<char*>(&area.bounding_box), sizeof(DirectX::BoundingBox));
+
+		size_t index_count;
+
+		ifs.read(reinterpret_cast<char*>(&index_count), sizeof(size_t));
+
+		area.triangle_indices.resize(index_count);
+		ifs.read(reinterpret_cast<char*>(area.triangle_indices.data()),
+			sizeof(int) * index_count);
+	}
+	return true;
+}
+
+bool CollisionManager::Raycast(const XMFLOAT3& start, const XMFLOAT3& end, HitResult& hit_result) const
 {
 	bool hit = false;
 	hit_result.distance = FLT_MAX;
@@ -37,7 +203,7 @@ bool CollisionManager::Raycast(const DirectX::XMFLOAT3& start, const DirectX::XM
 	return hit;
 }
 
-bool CollisionManager::Raycast(const CollisionMesh* mesh, const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult* hit_result) const
+bool CollisionManager::Raycast(const CollisionMesh* mesh, const XMFLOAT3& start, const XMFLOAT3& end, HitResult* hit_result) const
 {
 	XMVECTOR RayStart = XMLoadFloat3(&start);
 	XMVECTOR RayEnd = XMLoadFloat3(&end);
@@ -92,46 +258,86 @@ bool CollisionManager::Raycast(const CollisionMesh* mesh, const DirectX::XMFLOAT
 		bool hit_mesh = false;
 		XMVECTOR HitPosition;
 		XMVECTOR HitNormal;
-		for (const SkinnedMesh::mesh::subset& subset : mesh.subsets)
+
+		if (!space_division)
 		{
-			for (UINT i = 0; i < subset.index_count; i += 3)
+			for (const SkinnedMesh::mesh::subset& subset : mesh.subsets)
 			{
-				UINT index = subset.start_index_location + i;
+				for (UINT i = 0; i < subset.index_count; i += 3)
+				{
+					UINT index = subset.start_index_location + i;
 
-				// 三角形の頂点を抽出
-				const SkinnedMesh::vertex& a = vertices[indices[index]];
-				const SkinnedMesh::vertex& b = vertices[indices[index + 1]];
-				const SkinnedMesh::vertex& c = vertices[indices[index + 2]];
+					// 三角形の頂点を抽出
+					const SkinnedMesh::vertex& a = vertices[indices[index]];
+					const SkinnedMesh::vertex& b = vertices[indices[index + 1]];
+					const SkinnedMesh::vertex& c = vertices[indices[index + 2]];
 
-				XMVECTOR A = XMLoadFloat3(&a.position);
-				XMVECTOR B = XMLoadFloat3(&b.position);
-				XMVECTOR C = XMLoadFloat3(&c.position);
+					XMVECTOR A = XMLoadFloat3(&a.position);
+					XMVECTOR B = XMLoadFloat3(&b.position);
+					XMVECTOR C = XMLoadFloat3(&c.position);
 
-				// 三角形の三辺ベクトルを算出
-				XMVECTOR AB = B - A;
-				XMVECTOR BC = C - B;
-				XMVECTOR CA = A - C;
+					// 三角形の三辺ベクトルを算出
+					XMVECTOR AB = B - A;
+					XMVECTOR BC = C - B;
+					XMVECTOR CA = A - C;
 
-				// 三角形の法線ベクトルを算出		
-				XMVECTOR N = XMVector3Cross(AB, BC);
+					// 三角形の法線ベクトルを算出		
+					XMVECTOR N = XMVector3Cross(AB, BC);
 
-				// 内積の結果がプラスならば裏向き
-				XMVECTOR Dot = XMVector3Dot(V, N);
-				float dot = XMVectorGetX(Dot);
-				if (dot >= 0) continue;
+					// 内積の結果がプラスならば裏向き
+					XMVECTOR Dot = XMVector3Dot(V, N);
+					float dot = XMVectorGetX(Dot);
+					if (dot >= 0) continue;
 
-				// 三角形とレイの交差判定
-				float dist = neart;
-				if (!TriangleTests::Intersects(S, V, A, B, C, dist))
-					continue;
+					// 三角形とレイの交差判定
+					float dist = neart;
+					if (!TriangleTests::Intersects(S, V, A, B, C, dist))
+						continue;
 
-				if (dist >= neart) continue;
+					if (dist >= neart) continue;
 
-				neart = dist;
-				HitPosition = S + V * neart;
-				HitNormal = N;
+					neart = dist;
+					HitPosition = S + V * neart;
+					HitNormal = N;
 
-				hit_mesh = true;
+					hit_mesh = true;
+				}
+			}
+		}
+		else
+		{
+			for (const CollisionMesh::Area& area : this->collision_mesh.areas)
+			{
+				float area_dist = neart;
+				if (!area.bounding_box.Intersects(S, V, area_dist))continue;
+
+				for (int index : area.triangle_indices)
+				{
+					const CollisionMesh::Triangle triangle = this->collision_mesh.triangles[index];
+
+					XMVECTOR A = XMLoadFloat3(&triangle.positions[0]);
+					XMVECTOR B = XMLoadFloat3(&triangle.positions[1]);
+					XMVECTOR C = XMLoadFloat3(&triangle.positions[2]);
+
+					XMVECTOR N = XMLoadFloat3(&triangle.normal);
+
+					XMVECTOR Dot = XMVector3Dot(V, N);
+					float dot = XMVectorGetX(Dot);
+					if (dot >= 0) continue;
+
+					// 三角形とレイの交差判定
+					float dist = neart;
+					if (!TriangleTests::Intersects(S, V, A, B, C, dist))
+						continue;
+
+					if (dist >= neart) continue;
+
+					neart = dist;
+					HitPosition = S + V * neart;
+					HitNormal = N;
+
+					hit_mesh = true;
+				}
 			}
 		}
 		if (hit_mesh)
@@ -162,19 +368,19 @@ bool CollisionManager::Raycast(const CollisionMesh* mesh, const DirectX::XMFLOAT
 
 // 球と球の交差判定
 bool CollisionManager::SphereVsSphere(
-	const DirectX::XMFLOAT3& positionA,
+	const XMFLOAT3& positionA,
 	float radiusA,
-	const DirectX::XMFLOAT3& positionB,
+	const XMFLOAT3& positionB,
 	float radiusB,
-	DirectX::XMFLOAT3& outPositionB)
+	XMFLOAT3& outPositionB)
 {
 	// B→Aの単位ベクトルを算出
-	DirectX::XMVECTOR PositionA = DirectX::XMLoadFloat3(&positionA);
-	DirectX::XMVECTOR PositionB = DirectX::XMLoadFloat3(&positionB);
-	DirectX::XMVECTOR Vec = DirectX::XMVectorSubtract(PositionB, PositionA);
-	DirectX::XMVECTOR LengthSq = DirectX::XMVector3LengthSq(Vec);
+	XMVECTOR PositionA = XMLoadFloat3(&positionA);
+	XMVECTOR PositionB = XMLoadFloat3(&positionB);
+	XMVECTOR Vec = XMVectorSubtract(PositionB, PositionA);
+	XMVECTOR LengthSq = XMVector3LengthSq(Vec);
 	float lengthSq;
-	DirectX::XMStoreFloat(&lengthSq, LengthSq);
+	XMStoreFloat(&lengthSq, LengthSq);
 
 	// 距離判定
 	float range = radiusA + radiusB;
@@ -184,10 +390,10 @@ bool CollisionManager::SphereVsSphere(
 	}
 
 	// AがBを押し出す
-	Vec = DirectX::XMVector3Normalize(Vec);
-	Vec = DirectX::XMVectorScale(Vec, range);
-	PositionB = DirectX::XMVectorAdd(PositionA, Vec);
-	DirectX::XMStoreFloat3(&outPositionB, PositionB);
+	Vec = XMVector3Normalize(Vec);
+	Vec = XMVectorScale(Vec, range);
+	PositionB = XMVectorAdd(PositionA, Vec);
+	XMStoreFloat3(&outPositionB, PositionB);
 
 	return true;
 }
@@ -195,13 +401,13 @@ bool CollisionManager::SphereVsSphere(
 
 // 円柱と円柱の交差判定
 bool CollisionManager::CylinderVsCylinder(
-	const DirectX::XMFLOAT3& positionA,
+	const XMFLOAT3& positionA,
 	float radiusA,
 	float heightA,
-	const DirectX::XMFLOAT3& positionB,
+	const XMFLOAT3& positionB,
 	float radiusB,
 	float heightB,
-	DirectX::XMFLOAT3& outPositionB)
+	XMFLOAT3& outPositionB)
 {
 	// Aの足元がBの頭より上なら当たっていない
 	if (positionA.y > positionB.y + heightB)
@@ -234,12 +440,12 @@ bool CollisionManager::CylinderVsCylinder(
 
 // 球と円柱の交差判定
 bool CollisionManager::SphereVsCylinder(
-	const DirectX::XMFLOAT3& spherePosition,
+	const XMFLOAT3& spherePosition,
 	float sphereRadius,
-	const DirectX::XMFLOAT3& cylinderPosition,
+	const XMFLOAT3& cylinderPosition,
 	float cylinderRadius,
 	float cylinderHeight,
-	DirectX::XMFLOAT3& outCylinderPosition)
+	XMFLOAT3& outCylinderPosition)
 {
 	// 高さチェック
 	if (spherePosition.y + sphereRadius < cylinderPosition.y) return false;
@@ -260,4 +466,16 @@ bool CollisionManager::SphereVsCylinder(
 	outCylinderPosition.z = spherePosition.z + (vz * range);
 
 	return true;
+}
+
+std::string CollisionManager::CreateCollisionCachePath(
+	const std::string& model_path)
+{
+	namespace fs = std::filesystem;
+
+	fs::path path(model_path);
+
+	path.replace_extension(".col");
+
+	return path.string();
 }

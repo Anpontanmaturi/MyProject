@@ -75,6 +75,9 @@ private:
 	const float full_charge_time = 2.0f;
 	float flash_speed = 7.5f;
 
+	// ‰¼’u‚«
+	bool space_division = true;
+
 	enum class StateId
 	{
 		None = -1,

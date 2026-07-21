@@ -59,6 +59,11 @@ void Player::DebugRenderGUI()
 			ImGui::ProgressBar(charge_timer / full_charge_time, ImVec2(-1, 0));
 			ImGui::SliderFloat("charge_flash_spead", &flash_speed, 1.0f, 25.0f);
 		}
+		if (ImGui::CollapsingHeader("any", nullptr, ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			ImGui::Checkbox("space_division", &space_division);
+			CollisionManager::Instance().SetDivision(space_division);
+		}
 	}
 	ImGui::End();
 }
