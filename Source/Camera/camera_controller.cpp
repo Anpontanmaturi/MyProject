@@ -91,7 +91,7 @@ void CameraController::Update(float elapsed_time)
 		DirectX::XMFLOAT3 playerPos;
 		DirectX::XMStoreFloat3(&playerPos, player_pos);
 
-		const float DISTANCE_BEHIND = 8.0f;
+		const float camera_dist = 10.0f;
 
 		focus.x = playerPos.x;
 		focus.y = playerPos.y; 
@@ -99,7 +99,7 @@ void CameraController::Update(float elapsed_time)
 
 		eye.x = focus.x;
 		eye.y = playerPos.y;
-		eye.z = focus.z -DISTANCE_BEHIND;
+		eye.z = focus.z - camera_dist;
 
 		break;
 	}
