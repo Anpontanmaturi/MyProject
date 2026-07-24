@@ -7,7 +7,7 @@ Stage::Stage(ID3D11Device* device)
 	model = std::make_unique<SkinnedMesh>(device, filename, true, 0.0f, axis_system::rhs_y_up);
 	collision_mesh.mesh = model.get();
 	collision_mesh.transform = &transform;
-	collision_mesh.cache_filename = CollisionManager::Instance().CreateCollisionCachePath(filename);
+	collision_mesh.cache_filename = collision_cache.CreateCachePath(filename);
 
 	CollisionManager::Instance().Register(&collision_mesh);
 }

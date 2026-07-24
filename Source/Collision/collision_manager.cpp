@@ -1,5 +1,6 @@
 #include <DirectXCollision.h>
 #include "collision_manager.h"
+#include "collision_cache.h"
 #include "Graphics/skinned_mesh.h"
 
 using namespace DirectX;
@@ -8,13 +9,13 @@ void CollisionManager::Register(CollisionMesh* mesh)
 {
 	if (std::filesystem::exists(mesh->cache_filename))
 	{
-		LoadSpaceDivision(mesh->cache_filename.c_str());
+		CollisionCache::Load(collision_mesh, mesh->cache_filename.c_str());
 	}
 	else
 	{
 		SpaceDivision(mesh);
 
-		SaveSpaceDivision(mesh->cache_filename.c_str());
+		CollisionCache::Save(collision_mesh, mesh->cache_filename.c_str());
 	}
 
 	meshes.emplace_back(mesh);
@@ -115,73 +116,6 @@ void CollisionManager::SpaceDivision(CollisionMesh* mesh)
 			}
 		}
 	}
-}
-
-void CollisionManager::SaveSpaceDivision(const char* filename)
-{
-	std::ofstream ofs(filename, std::ios::binary);
-
-	if (!ofs)return;
-
-	// 三角形の数を保存
-	size_t triangle_count = collision_mesh.triangles.size();
-	ofs.write(reinterpret_cast<char*>(&triangle_count), sizeof(size_t));
-
-	// 三角形を保存
-	ofs.write(reinterpret_cast<char*>(collision_mesh.triangles.data()), 
-		sizeof(CollisionMesh::Triangle) * triangle_count);
-
-	// エリアの数を保存
-	size_t area_count = collision_mesh.areas.size();
-	ofs.write(reinterpret_cast<char*>(&area_count), sizeof(size_t));
-
-	for (auto& area : collision_mesh.areas)
-	{
-		ofs.write(reinterpret_cast<char*>(&area.bounding_box), sizeof(BoundingBox));
-
-		size_t index_count = area.triangle_indices.size();
-		ofs.write(reinterpret_cast<char*>(&index_count), sizeof(size_t));
-
-		ofs.write(reinterpret_cast<char*>(area.triangle_indices.data()), sizeof(int) * index_count);
-	}
-}
-
-bool CollisionManager::LoadSpaceDivision(const char* filename)
-{
-	std::ifstream ifs(filename, std::ios::binary);
-
-	if (!ifs)return false;
-
-	collision_mesh.triangles.clear();
-	collision_mesh.areas.clear();
-
-	size_t triangle_count;
-	ifs.read(reinterpret_cast<char*>(&triangle_count),sizeof(size_t));
-
-	collision_mesh.triangles.resize(triangle_count);
-
-	ifs.read(reinterpret_cast<char*>(collision_mesh.triangles.data()),
-		sizeof(CollisionMesh::Triangle) * triangle_count);
-
-	size_t area_count;
-
-	ifs.read(reinterpret_cast<char*>(&area_count), sizeof(size_t));
-
-	collision_mesh.areas.resize(area_count);
-
-	for (auto& area : collision_mesh.areas)
-	{
-		ifs.read(reinterpret_cast<char*>(&area.bounding_box), sizeof(DirectX::BoundingBox));
-
-		size_t index_count;
-
-		ifs.read(reinterpret_cast<char*>(&index_count), sizeof(size_t));
-
-		area.triangle_indices.resize(index_count);
-		ifs.read(reinterpret_cast<char*>(area.triangle_indices.data()),
-			sizeof(int) * index_count);
-	}
-	return true;
 }
 
 bool CollisionManager::Raycast(const XMFLOAT3& start, const XMFLOAT3& end, HitResult& hit_result) const
@@ -466,16 +400,4 @@ bool CollisionManager::SphereVsCylinder(
 	outCylinderPosition.z = spherePosition.z + (vz * range);
 
 	return true;
-}
-
-std::string CollisionManager::CreateCollisionCachePath(
-	const std::string& model_path)
-{
-	namespace fs = std::filesystem;
-
-	fs::path path(model_path);
-
-	path.replace_extension(".col");
-
-	return path.string();
 }

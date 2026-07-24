@@ -85,18 +85,12 @@ public:
 
 	void SetDivision(const bool space_division) { this->space_division = space_division; }
 
-	// パス変更関数
-	static std::string CreateCollisionCachePath(
-		const std::string& model_path
-	);
-
 private:
 	bool Raycast(const CollisionMesh* mesh, const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult* hit_result) const;
 
 	// 空間分割レイキャスト用
 	void SpaceDivision(CollisionMesh* mesh);
-	void SaveSpaceDivision(const char* filename); // 保存
-	bool LoadSpaceDivision(const char* filename); // 読み込み
+
 private:
 	std::vector<CollisionMesh*> meshes;
 	CollisionMesh collision_mesh;
