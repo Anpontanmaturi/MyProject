@@ -344,7 +344,25 @@ void Graphics::Update(float elapsed_time)
 		if (ImGui::CollapsingHeader("camera_mode", nullptr, ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			CameraMode current_mode = camera_controller.GetCameraMode();
-			ImGui::Text("now camera mode: %s", (current_mode == CameraMode::Normal) ? "Normal" : "LockOn");
+
+			const char* mode_name = "";
+
+			switch (current_mode)
+			{
+			case CameraMode::Normal:
+				mode_name = "Normal";
+				break;
+
+			case CameraMode::LockOn:
+				mode_name = "LockOn";
+				break;
+
+			case CameraMode::Enemy:
+				mode_name = "Enemy";
+				break;
+			}
+
+			ImGui::Text("now camera mode: %s", mode_name);
 
 			if (ImGui::Button("normal", { 100,20 }))
 			{
@@ -355,11 +373,6 @@ void Graphics::Update(float elapsed_time)
 			{
 				camera_controller.SetCameraMode(CameraMode::LockOn);
 				camera_controller.SetLockOnTarget(sandbag->GetPositionPtr());
-			}
-			if (ImGui::Button("2d", { 100,20 }))
-			{
-				camera_controller.SetCameraMode(CameraMode::Fixed2D);
-				camera_controller.SetLockOnTarget(nullptr);
 			}
 			if (ImGui::Button("enemy", { 100,20 }))
 			{

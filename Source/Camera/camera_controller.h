@@ -6,7 +6,6 @@ enum class CameraMode
 {
 	Normal,
 	LockOn,
-	Fixed2D,
 	Enemy,
 };
 

@@ -86,23 +86,6 @@ void CameraController::Update(float elapsed_time)
 
 		break;
 	}
-	case CameraMode::Fixed2D: {
-		DirectX::XMVECTOR player_pos = DirectX::XMLoadFloat3(&target);
-		DirectX::XMFLOAT3 playerPos;
-		DirectX::XMStoreFloat3(&playerPos, player_pos);
-
-		const float camera_dist = 10.0f;
-
-		focus.x = playerPos.x;
-		focus.y = playerPos.y; 
-		focus.z = playerPos.z;
-
-		eye.x = focus.x;
-		eye.y = playerPos.y;
-		eye.z = focus.z - camera_dist;
-
-		break;
-	}
 	case CameraMode::Enemy: {
 		if (lockon_target == nullptr)
 		{
@@ -127,14 +110,13 @@ void CameraController::Update(float elapsed_time)
 	// ï‚ä‘èàóù
 	float t = interpolation_speed * elapsed_time;
 	Camera& camera = Camera::Instance();
-	if (!(camera_mode == CameraMode::Fixed2D)) {
-		DirectX::XMVECTOR Eye = DirectX::XMLoadFloat3(&camera.GetEye());
-		DirectX::XMVECTOR Focus = DirectX::XMLoadFloat3(&camera.GetFocus());
-		DirectX::XMVECTOR FinalEye = DirectX::XMLoadFloat3(&eye);
-		DirectX::XMVECTOR FinalFocus = DirectX::XMLoadFloat3(&focus);
-		DirectX::XMStoreFloat3(&eye, DirectX::XMVectorLerp(Eye, FinalEye, t));
-		DirectX::XMStoreFloat3(&target, DirectX::XMVectorLerp(Focus, FinalFocus, t));
-	}
+	DirectX::XMVECTOR Eye = DirectX::XMLoadFloat3(&camera.GetEye());
+	DirectX::XMVECTOR Focus = DirectX::XMLoadFloat3(&camera.GetFocus());
+	DirectX::XMVECTOR FinalEye = DirectX::XMLoadFloat3(&eye);
+	DirectX::XMVECTOR FinalFocus = DirectX::XMLoadFloat3(&focus);
+	DirectX::XMStoreFloat3(&eye, DirectX::XMVectorLerp(Eye, FinalEye, t));
+	DirectX::XMStoreFloat3(&target, DirectX::XMVectorLerp(Focus, FinalFocus, t));
+
 	// ÉJÉÅÉâÇÃéãì_Ç∆íçéãì_Çê›íË
 	camera.SetLookat(eye, target, DirectX::XMFLOAT3(0, 1, 0));
 }
