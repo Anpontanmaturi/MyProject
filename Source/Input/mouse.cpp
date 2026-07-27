@@ -1,0 +1,61 @@
+#include "Input/mouse.h"
+
+static const int KeyMap[] =
+{
+	VK_LBUTTON,
+	VK_MBUTTON,
+	VK_RBUTTON,
+};
+
+Mouse::Mouse(HWND hWnd)
+	: hWnd(hWnd)
+{
+	RECT rc;
+	GetClientRect(hWnd, &rc);
+	screen_width = rc.right - rc.left;
+	screen_height = rc.bottom - rc.top;
+}
+
+void Mouse::Update()
+{
+	// スイッチ情報
+	MouseButton new_button_state = 0;
+
+	for (int i = 0; i < ARRAYSIZE(KeyMap); ++i)
+	{
+		if (::GetAsyncKeyState(KeyMap[i]) & 0x8000)
+		{
+			new_button_state |= (1 << i);
+		}
+	}
+
+	// ホイール
+	wheel[1] = wheel[0];
+	wheel[0] = 0;
+
+	// ボタン情報更新
+	button_state[1] = button_state[0];
+	button_state[0] = new_button_state;
+
+	button_down = ~button_state[1] & new_button_state;	// 押した瞬間
+	button_up = new_button_state & button_state[1];		// 離した瞬間
+
+	// カーソル位置の取得
+	POINT cursor;
+	::GetCursorPos(&cursor);
+	::ScreenToClient(hWnd, &cursor);
+
+	// 画面サイズを取得する
+	RECT rc;
+	GetClientRect(hWnd, &rc);
+	UINT screen_w = rc.right - rc.left;
+	UINT screen_h = rc.bottom - rc.top;
+	UINT viewport_w = screen_width;
+	UINT viewport_h = screen_height;
+
+	// 画面補正
+	position_x[1] = position_x[0];
+	position_y[1] = position_y[0];
+	position_x[0] = (LONG)(cursor.x / static_cast<float>(viewport_w) * static_cast<float>(screen_w));
+	position_y[0] = (LONG)(cursor.y / static_cast<float>(viewport_h) * static_cast<float>(screen_h));
+}

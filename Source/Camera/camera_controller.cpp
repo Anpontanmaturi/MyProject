@@ -1,4 +1,4 @@
-#include "Input/game_pad.h"
+#include "Input/input.h"
 #include "camera_controller.h"
 #include "camera.h"
 #include "Character/sandbag.h"
@@ -6,7 +6,7 @@
 // 更新処理
 void CameraController::Update(float elapsed_time)
 {
-	GamePad& game_pad = GamePad::Instance();
+	GamePad& game_pad = Input::Instance().GetGamePad();
 	float ax = game_pad.GetAxisRX();
 	float ay = game_pad.GetAxisRY();
 	// カメラの回転速度

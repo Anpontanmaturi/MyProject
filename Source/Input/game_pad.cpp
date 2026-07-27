@@ -1,4 +1,4 @@
-#include <windows.h>
+#include <Windows.h>
 #include <math.h>
 #include <Xinput.h>
 #include "game_pad.h"

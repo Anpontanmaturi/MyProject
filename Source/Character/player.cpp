@@ -1,6 +1,6 @@
 #include "player.h"
 #include "Camera/camera.h"
-#include "Input/game_pad.h"
+#include "Input/input.h"
 #include "Collision/collision_manager.h"
 
 #include "Weapon/projectile_straight.h"
@@ -109,7 +109,7 @@ void Player::UpdateStateMachine(float elapsed_time)
 DirectX::XMFLOAT3 Player::GetMoveVec()
 {
 	// 入力処理
-	GamePad& game_pad = GamePad::Instance();
+	GamePad& game_pad = Input::Instance().GetGamePad();
 	float axis_x = game_pad.GetAxisLX();
 	float axis_y = game_pad.GetAxisLY();
 
@@ -138,6 +138,9 @@ DirectX::XMFLOAT3 Player::GetMoveVec()
 // 移動入力処理
 bool Player::InputMove(float elapsed_time)
 {
+	if (!enable)
+		return false;
+
 	// 進行ベクトル
 	DirectX::XMFLOAT3 move_vec = GetMoveVec();
 
@@ -153,7 +156,10 @@ bool Player::InputMove(float elapsed_time)
 // ジャンプ入力処理
 bool Player::InputJump()
 {
-	GamePad& game_pad = GamePad::Instance();
+	if (!enable)
+		return false;
+
+	GamePad& game_pad = Input::Instance().GetGamePad();
 	if (game_pad.GetButtonDown() & GamePad::BTN_A)
 	{
 		velocity.y = jump_speed;
@@ -165,7 +171,7 @@ bool Player::InputJump()
 // チャージ判定用
 void Player::UpdateCharge(float elapsed_time)
 {
-	GamePad& game_pad = GamePad::Instance();
+	GamePad& game_pad = Input::Instance().GetGamePad();
 	if (game_pad.GetButton() & GamePad::BTN_B)
 	{
 		charge_timer += elapsed_time;
@@ -199,7 +205,10 @@ void Player::UpdateCharge(float elapsed_time)
 // 攻撃入力処理
 bool Player::InputAttack()
 {
-	GamePad& game_pad = GamePad::Instance();
+	if (!enable)
+		return false;
+
+	GamePad& game_pad = Input::Instance().GetGamePad();
 
 	auto CalculateLaunch = [&](DirectX::XMFLOAT3& out_pos, DirectX::XMFLOAT3& out_dir) {
 		out_pos.x = position.x;
@@ -263,7 +272,10 @@ bool Player::InputAttack()
 
 bool Player::InputDash()
 {
-	GamePad& game_pad = GamePad::Instance();
+	if (!enable)
+		return false;
+
+	GamePad& game_pad = Input::Instance().GetGamePad();
 	if (game_pad.GetButtonDown() & GamePad::BTN_X)
 	{
 		if (!IsGround() && dash_count <= 0)
@@ -498,7 +510,7 @@ void Player::WallSlideState::OnUpdate(float elapsed_time)
 	}
 
 	// 壁蹴り（ジャンプ）入力
-	GamePad& game_pad = GamePad::Instance();
+	GamePad& game_pad = Input::Instance().GetGamePad();
 	if (game_pad.GetButtonDown() & GamePad::BTN_A)
 	{
 		// 壁の法線方向へ弾き飛ばしつつ、上方向へジャンプ

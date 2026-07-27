@@ -319,10 +319,16 @@ Graphics::~Graphics()
 void Graphics::Update(float elapsed_time)
 {
 	stage->UpdateTransform();
+	player->SetEnable(!debug_camera.IsEnable());
 	player->Update(elapsed_time);
 	player->SetCameraMode(camera_controller.GetCameraMode());
 	sandbag->Update(elapsed_time);
 
+	if (debug_camera.IsEnable())
+	{
+		debug_camera.Update(elapsed_time);
+	}
+	else
 	{
 		camera_controller.SetTarget(player->GetCameraLookAt(), player->GetRotation());
 		camera_controller.SetMove(player->MoveOtherBack());
@@ -383,6 +389,7 @@ void Graphics::Update(float elapsed_time)
 	}
 	ImGui::End();
 	player->DebugRenderGUI();
+	debug_camera.DebugGui();
 #endif
 }
 

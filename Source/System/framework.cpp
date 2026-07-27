@@ -1,8 +1,7 @@
 #include "framework.h"
 #include "Graphics/shader.h"
-#include "Input/game_pad.h"
 
-Framework::Framework(HWND hwnd) : hwnd(hwnd)
+Framework::Framework(HWND hwnd) : hwnd(hwnd),input(hwnd)
 {
 }
 
@@ -15,7 +14,7 @@ bool Framework::Initialize()
 
 void Framework::Update(float elapsed_time/*Elapsed seconds from last frame*/)
 {
-	GamePad::Instance().Update();
+	input.Update();
 
 #ifdef USE_IMGUI
 	ImGui_ImplDX11_NewFrame();

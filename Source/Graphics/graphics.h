@@ -22,6 +22,7 @@ extern ImWchar glyphRangesJapanese[];
 #include "Character/sandbag.h"
 
 #include "Camera/camera_controller.h"
+#include "Camera/debug_camera.h"
 #include "debug_renderer.h"
 
 // グラフィックス
@@ -91,6 +92,7 @@ public:
 	std::unique_ptr<Sandbag> sandbag;
 
 	CameraController camera_controller;
+	DebugCamera debug_camera;
 
 private:
 	static Graphics* instance;

@@ -33,6 +33,9 @@ public:
 	// カメラモードをプレイヤーから見れるように
 	void SetCameraMode(CameraMode mode) { camera_mode = mode; }
 
+	// プレイヤーの有効無効を切り替える
+	void SetEnable(bool enable) { this->enable = enable; }
+
 protected:
 	// 着地した時に呼ばれる
 	void OnLanding() override;
@@ -74,6 +77,8 @@ private:
 	float charge_timer = 0.0f;
 	const float full_charge_time = 2.0f;
 	float flash_speed = 7.5f;
+
+	bool enable = false;
 
 	// 仮置き
 	bool space_division = true;

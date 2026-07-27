@@ -12,8 +12,7 @@
 #include "Graphics/fullscreen_quad.h"
 #include "Graphics/gltf_model.h"
 
-//#include "Camera/camera.h"
-//#include "Camera/free_camera_controller.h"
+#include "Input/input.h"
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
@@ -131,6 +130,8 @@ private:
 	void Update(float elapsed_time/*Elapsed seconds from last frame*/);
 	void Render(float elapsed_time/*Elapsed seconds from last frame*/);
 	bool Uninitialize();
+
+	Input	input;
 
 private:
 	HighResolutionTimer tictoc;
