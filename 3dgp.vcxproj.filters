@@ -37,6 +37,12 @@
     <Filter Include="Source\Character\Weapon">
       <UniqueIdentifier>{57aaa7cf-8053-4973-a281-425463d87f8f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Ai">
+      <UniqueIdentifier>{ca0f9d9a-821f-4239-a206-d7dc543f45d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Ai\BehaviorTree">
+      <UniqueIdentifier>{2ba86751-1bee-4d76-ae22-04ce012c40e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp">
@@ -149,6 +155,12 @@
     </ClCompile>
     <ClCompile Include="Source\Input\mouse.cpp">
       <Filter>Source\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="bt_node.cpp">
+      <Filter>Source\Ai\BehaviorTree</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Ai\BehaviorTree\behavior_tree.cpp">
+      <Filter>Source\Ai\BehaviorTree</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -271,6 +283,15 @@
     </ClInclude>
     <ClInclude Include="Source\Input\mouse.h">
       <Filter>Source\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="bt_node.h">
+      <Filter>Source\Ai\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ai\BehaviorTree\behavior_tree.h">
+      <Filter>Source\Ai\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ai\BehaviorTree\bt_state.h">
+      <Filter>Source\Ai\BehaviorTree</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
