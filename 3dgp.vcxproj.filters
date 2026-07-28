@@ -43,6 +43,15 @@
     <Filter Include="Source\Ai\BehaviorTree">
       <UniqueIdentifier>{2ba86751-1bee-4d76-ae22-04ce012c40e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Ai\BehaviorTree\Composite">
+      <UniqueIdentifier>{5eb6cb2d-57b9-4401-82a6-e7b556289dec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Ai\Test">
+      <UniqueIdentifier>{cc41b853-6cd2-420c-9c1e-6f402480f874}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Ai\BehaviorTree\Action">
+      <UniqueIdentifier>{e011d1c1-f8e4-4653-95bc-f6dc9c8579be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp">
@@ -156,11 +165,26 @@
     <ClCompile Include="Source\Input\mouse.cpp">
       <Filter>Source\Input</Filter>
     </ClCompile>
-    <ClCompile Include="bt_node.cpp">
-      <Filter>Source\Ai\BehaviorTree</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Ai\BehaviorTree\behavior_tree.cpp">
       <Filter>Source\Ai\BehaviorTree</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Ai\BehaviorTree\bt_node.cpp">
+      <Filter>Source\Ai\BehaviorTree</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Ai\BehaviorTree\Composite\composite_node.cpp">
+      <Filter>Source\Ai\BehaviorTree\Composite</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Ai\BehaviorTree\Composite\selector_node.cpp">
+      <Filter>Source\Ai\BehaviorTree\Composite</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Ai\BehaviorTree\Composite\sequence_node.cpp">
+      <Filter>Source\Ai\BehaviorTree\Composite</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Ai\Test\bt_test.cpp">
+      <Filter>Source\Ai\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Ai\BehaviorTree\Action\action_node.cpp">
+      <Filter>Source\Ai\BehaviorTree\Action</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -284,14 +308,29 @@
     <ClInclude Include="Source\Input\mouse.h">
       <Filter>Source\Input</Filter>
     </ClInclude>
-    <ClInclude Include="bt_node.h">
-      <Filter>Source\Ai\BehaviorTree</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Ai\BehaviorTree\behavior_tree.h">
       <Filter>Source\Ai\BehaviorTree</Filter>
     </ClInclude>
     <ClInclude Include="Source\Ai\BehaviorTree\bt_state.h">
       <Filter>Source\Ai\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ai\BehaviorTree\bt_node.h">
+      <Filter>Source\Ai\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ai\BehaviorTree\Composite\composite_node.h">
+      <Filter>Source\Ai\BehaviorTree\Composite</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ai\BehaviorTree\Composite\selector_node.h">
+      <Filter>Source\Ai\BehaviorTree\Composite</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ai\BehaviorTree\Composite\sequence_node.h">
+      <Filter>Source\Ai\BehaviorTree\Composite</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ai\Test\bt_test.h">
+      <Filter>Source\Ai\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ai\BehaviorTree\Action\action_node.h">
+      <Filter>Source\Ai\BehaviorTree\Action</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

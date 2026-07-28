@@ -193,14 +193,19 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="bt_node.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
     <ClCompile Include="imgui\imgui_impl_dx11.cpp" />
     <ClCompile Include="imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="imgui\imgui_ja_gryph_ranges.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Source\Ai\BehaviorTree\Action\action_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\behavior_tree.cpp" />
+    <ClCompile Include="Source\Ai\BehaviorTree\bt_node.cpp" />
+    <ClCompile Include="Source\Ai\BehaviorTree\Composite\composite_node.cpp" />
+    <ClCompile Include="Source\Ai\BehaviorTree\Composite\selector_node.cpp" />
+    <ClCompile Include="Source\Ai\BehaviorTree\Composite\sequence_node.cpp" />
+    <ClCompile Include="Source\Ai\Test\bt_test.cpp" />
     <ClCompile Include="Source\Camera\camera.cpp" />
     <ClCompile Include="Source\Camera\camera_controller.cpp" />
     <ClCompile Include="Source\Camera\debug_camera.cpp" />
@@ -234,7 +239,6 @@
     <ClCompile Include="Source\System\mathf.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bt_node.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_dx11.h" />
@@ -243,8 +247,14 @@
     <ClInclude Include="imgui\imstb_rectpack.h" />
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
+    <ClInclude Include="Source\Ai\BehaviorTree\Action\action_node.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\behavior_tree.h" />
+    <ClInclude Include="Source\Ai\BehaviorTree\bt_node.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\bt_state.h" />
+    <ClInclude Include="Source\Ai\BehaviorTree\Composite\composite_node.h" />
+    <ClInclude Include="Source\Ai\BehaviorTree\Composite\selector_node.h" />
+    <ClInclude Include="Source\Ai\BehaviorTree\Composite\sequence_node.h" />
+    <ClInclude Include="Source\Ai\Test\bt_test.h" />
     <ClInclude Include="Source\Camera\camera.h" />
     <ClInclude Include="Source\Camera\camera_controller.h" />
     <ClInclude Include="Source\Camera\debug_camera.h" />

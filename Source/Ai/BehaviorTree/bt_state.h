@@ -2,7 +2,7 @@
 
 enum class BTState
 {
-	Sucsess,
+	Success,
 	Failure,
-	Running,
+	Run,
 };
