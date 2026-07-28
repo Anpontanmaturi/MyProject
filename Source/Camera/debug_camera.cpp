@@ -170,7 +170,7 @@ void DebugCamera::DebugGui()
 
 				sprintf_s(
 					buffer,
-					"Camera.SetLookat(\n"
+					"Camera::Instance().SetLookat(\n"
 					"    { %.3ff, %.3ff, %.3ff },\n"
 					"    { %.3ff, %.3ff, %.3ff },\n"
 					"    { 0, 1, 0 });",
