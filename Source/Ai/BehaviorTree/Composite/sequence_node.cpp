@@ -1,23 +1,23 @@
 #include "sequence_node.h"
 
-BTState SequenceNode::Tick(float elapsed_time)
+BTState SequenceNode::Tick(BTContext& context, float elapsed_time)
 {
 	for (auto& child : children)
 	{
-		BTState result = child->Tick(elapsed_time);
+		BTState result = child->Tick(context,elapsed_time);
 
 		switch (result)
 		{
 		case BTState::Success:
-			return BTState::Success;
+			continue;
 
 		case BTState::Run:
 			return BTState::Run;
 
 		case BTState::Failure:
-			break;
+			return BTState::Failure;
 		}
 	}
 
-	return BTState::Failure;
+	return BTState::Success;
 }

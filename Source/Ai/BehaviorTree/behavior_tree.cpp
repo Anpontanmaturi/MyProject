@@ -6,9 +6,9 @@ void BehaviorTree::SetRoot(std::unique_ptr<BTNode> node)
 	root = std::move(node);
 }
 
-BTState BehaviorTree::Tick(float elapsed_time)
+BTState BehaviorTree::Tick(BTContext& context, float elapsed_time)
 {
 	if (!root) return BTState::Failure;
 
-	return root->Tick(elapsed_time);
+	return root->Tick(context,elapsed_time);
 }

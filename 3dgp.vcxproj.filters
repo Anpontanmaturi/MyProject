@@ -52,6 +52,12 @@
     <Filter Include="Source\Ai\BehaviorTree\Action">
       <UniqueIdentifier>{e011d1c1-f8e4-4653-95bc-f6dc9c8579be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Ai\BehaviorTree\Blackboard">
+      <UniqueIdentifier>{e717f34e-bf14-4081-af99-38251559101c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Ai\BehaviorTree\Decorator">
+      <UniqueIdentifier>{b01ef720-3a8d-4545-86da-34ff13769b0e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp">
@@ -168,9 +174,6 @@
     <ClCompile Include="Source\Ai\BehaviorTree\behavior_tree.cpp">
       <Filter>Source\Ai\BehaviorTree</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Ai\BehaviorTree\bt_node.cpp">
-      <Filter>Source\Ai\BehaviorTree</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Ai\BehaviorTree\Composite\composite_node.cpp">
       <Filter>Source\Ai\BehaviorTree\Composite</Filter>
     </ClCompile>
@@ -183,7 +186,16 @@
     <ClCompile Include="Source\Ai\Test\bt_test.cpp">
       <Filter>Source\Ai\Test</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Ai\BehaviorTree\Action\action_node.cpp">
+    <ClCompile Include="Source\Ai\BehaviorTree\Decorator\decorator_node.cpp">
+      <Filter>Source\Ai\BehaviorTree\Decorator</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Ai\BehaviorTree\Decorator\blackboard_decorator.cpp">
+      <Filter>Source\Ai\BehaviorTree\Decorator</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Ai\BehaviorTree\Action\print_node.cpp">
+      <Filter>Source\Ai\BehaviorTree\Action</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Ai\BehaviorTree\Action\wait_node.cpp">
       <Filter>Source\Ai\BehaviorTree\Action</Filter>
     </ClCompile>
   </ItemGroup>
@@ -330,6 +342,27 @@
       <Filter>Source\Ai\Test</Filter>
     </ClInclude>
     <ClInclude Include="Source\Ai\BehaviorTree\Action\action_node.h">
+      <Filter>Source\Ai\BehaviorTree\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ai\BehaviorTree\Blackboard\blackboard_value.h">
+      <Filter>Source\Ai\BehaviorTree\Blackboard</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ai\BehaviorTree\Blackboard\blackboard.h">
+      <Filter>Source\Ai\BehaviorTree\Blackboard</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ai\BehaviorTree\Decorator\decorator_node.h">
+      <Filter>Source\Ai\BehaviorTree\Decorator</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ai\BehaviorTree\Decorator\blackboard_decorator.h">
+      <Filter>Source\Ai\BehaviorTree\Decorator</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ai\BehaviorTree\Action\print_node.h">
+      <Filter>Source\Ai\BehaviorTree\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ai\BehaviorTree\bt_context.h">
+      <Filter>Source\Ai\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ai\BehaviorTree\Action\wait_node.h">
       <Filter>Source\Ai\BehaviorTree\Action</Filter>
     </ClInclude>
   </ItemGroup>

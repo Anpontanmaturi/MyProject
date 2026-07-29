@@ -2,6 +2,7 @@
 
 #include <memory>
 #include "bt_state.h"
+#include "bt_context.h"
 
 class BTNode;
 
@@ -11,7 +12,7 @@ public:
 	void SetRoot(std::unique_ptr<BTNode> node);
 
 	[[nodiscard]]
-	BTState Tick(float elpased_time);
+	BTState Tick(BTContext& context, float elapsed_time);
 
 private:
 	std::unique_ptr<BTNode> root;

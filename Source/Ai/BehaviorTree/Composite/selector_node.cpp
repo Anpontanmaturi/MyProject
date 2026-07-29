@@ -1,10 +1,10 @@
 #include "selector_node.h"
 
-BTState SelectorNode::Tick(float elapsed_time)
+BTState SelectorNode::Tick(BTContext& context, float elapsed_time)
 {
 	for (auto& child : children)
 	{
-		BTState result = child->Tick(elapsed_time);
+		BTState result = child->Tick(context, elapsed_time);
 
 		switch (result)
 		{
@@ -15,7 +15,7 @@ BTState SelectorNode::Tick(float elapsed_time)
 			return BTState::Run;
 
 		case BTState::Failure:
-			break;
+			continue;
 		}
 	}
 

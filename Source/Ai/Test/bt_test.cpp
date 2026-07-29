@@ -7,13 +7,14 @@
 
 #include "../BehaviorTree/Composite/selector_node.h"
 #include "../BehaviorTree/Composite/sequence_node.h"
+#include "../BehaviorTree/Action/wait_node.h"
 
 
 class TestSuccessNode : public BTNode
 {
 public:
 
-    BTState Tick(float) override
+    BTState Tick(BTContext&,float) override
     {
         return BTState::Success;
     }
@@ -23,7 +24,7 @@ class TestFailureNode : public BTNode
 {
 public:
 
-    BTState Tick(float) override
+    BTState Tick(BTContext&,float) override
     {
         return BTState::Failure;
     }
@@ -32,6 +33,8 @@ public:
 
 void BehaviorTreeTest()
 {
+    BTContext context;
+
     // Selector
     {
         auto root = std::make_unique<SelectorNode>();
@@ -42,7 +45,7 @@ void BehaviorTreeTest()
         BehaviorTree tree;
         tree.SetRoot(std::move(root));
 
-        assert(tree.Tick(0.0f) == BTState::Success);
+        assert(tree.Tick(context, 0.0f) == BTState::Success);
     }
 
     // Sequence
@@ -55,6 +58,26 @@ void BehaviorTreeTest()
         BehaviorTree tree;
         tree.SetRoot(std::move(root));
 
-        assert(tree.Tick(0.0f) == BTState::Failure);
+        assert(tree.Tick(context, 0.0f) == BTState::Failure);
+    }
+
+    // WaitNode
+    {
+        BehaviorTree tree;
+
+        auto root = std::make_unique<WaitNode>(2.0f);
+
+        tree.SetRoot(std::move(root));
+
+        BTContext context;
+
+        assert(tree.Tick(context, 1.0f) == BTState::Run);
+
+        assert(tree.Tick(context, 0.5f) == BTState::Run);
+
+        assert(tree.Tick(context, 0.5f) == BTState::Success);
+
+        // ê¨å˜å„ÇÕÉäÉZÉbÉgÇ≥ÇÍÇƒÇ¢ÇÈ
+        assert(tree.Tick(context, 1.0f) == BTState::Run);
     }
 }
