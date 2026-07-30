@@ -389,6 +389,7 @@ void Graphics::Update(float elapsed_time)
 	}
 	ImGui::End();
 	player->DebugRenderGUI();
+	sandbag->DebugRenderGui();
 	debug_camera.DebugGui();
 #endif
 }

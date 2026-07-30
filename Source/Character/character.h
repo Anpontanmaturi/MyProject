@@ -36,6 +36,11 @@ public:
 
 	bool IsWallTouch() const { return is_wall_touch; }
 
+	void MoveTo(const DirectX::XMFLOAT3& target,
+		float move_speed,
+		float turn_speed,
+		float elapsed_time);
+
 protected:
 	// ˆÚ“®
 	void Move(float vx, float vy, float speed);

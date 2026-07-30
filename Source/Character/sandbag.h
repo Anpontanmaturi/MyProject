@@ -4,6 +4,8 @@
 #include "Graphics/skinned_mesh.h"
 #include "animator.h"
 #include <memory>
+#include "Ai/BehaviorTree/behavior_tree.h"
+#include "Ai/BehaviorTree/Blackboard/blackboard.h"
 
 class Sandbag : public Character
 {
@@ -24,6 +26,8 @@ public:
 
 	void Render(ID3D11DeviceContext* device_context);
 
+	void DebugRenderGui();
+
 protected:
 	void OnDamaged() override;
 
@@ -36,6 +40,14 @@ private:
 	float	move_speed = 5.0f;
 	float	turn_speed = DirectX::XMConvertToRadians(720);
 	float	jump_speed = 5.0f;
+
+	bool use_behavior_tree = false;
+
+	// ‰¼’u‚«
+	BehaviorTree behavior_tree;
+	Blackboard black_board;
+	BTContext context;
+	void BuildBehaviorTree();
 
 	enum class StateId
 	{

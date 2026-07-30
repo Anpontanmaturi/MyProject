@@ -181,6 +181,31 @@ void Character::UpdateInvincibleTimer(float elapsed_time)
 	}
 }
 
+// AI—p
+void Character::MoveTo(const DirectX::XMFLOAT3& target,
+	float move_speed,
+	float turn_speed,
+	float elapsed_time)
+{
+	DirectX::XMVECTOR pos = DirectX::XMLoadFloat3(&position);
+	DirectX::XMVECTOR tag = DirectX::XMLoadFloat3(&target);
+
+	DirectX::XMVECTOR dir = DirectX::XMVectorSubtract(tag, pos);
+	dir = DirectX::XMVectorSetY(dir, 0.0f);
+
+	float length = DirectX::XMVectorGetX(DirectX::XMVector3Length(dir));
+	if (length < 0.01f) return;
+
+	dir = DirectX::XMVector3Normalize(dir);
+
+	DirectX::XMFLOAT3 d;
+	DirectX::XMStoreFloat3(&d, dir);
+
+	Turn(elapsed_time, d.x, d.z, turn_speed);
+
+	Move(d.x, d.z, move_speed);
+}
+
 // ˆÚ“®
 void Character::Move(float vx, float vz, float speed)
 {

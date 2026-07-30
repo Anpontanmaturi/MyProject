@@ -51,7 +51,7 @@ void Player::DebugRenderGUI()
 		if (ImGui::CollapsingHeader("player", nullptr, ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			ImGui::InputFloat3("player_position", &position.x);
-			ImGui::InputFloat3("player_position", &scale.x);
+			ImGui::InputFloat3("player_scale", &scale.x);
 			ImGui::Text("move other front: %s", MoveOtherBack() ? "true" : "false");
 			ImGui::Separator();
 			ImGui::Text("charge shot");

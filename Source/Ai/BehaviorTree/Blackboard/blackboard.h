@@ -5,11 +5,21 @@
 #include <string>
 #include <unordered_map>
 
+enum class BlackboardValueType
+{
+	Int,
+	Float,
+	Bool,
+	String,
+	Character,
+	Float3
+};
+
 struct BlackboardKey
 {
 	uint32_t id;
 	std::string name;
-	BlackboardValue value;
+	BlackboardValueType type;
 };
 
 class Blackboard

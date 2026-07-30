@@ -198,6 +198,9 @@
     <ClCompile Include="Source\Ai\BehaviorTree\Action\wait_node.cpp">
       <Filter>Source\Ai\BehaviorTree\Action</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Ai\BehaviorTree\Action\move_to_node.cpp">
+      <Filter>Source\Ai\BehaviorTree\Action</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -363,6 +366,9 @@
       <Filter>Source\Ai\BehaviorTree</Filter>
     </ClInclude>
     <ClInclude Include="Source\Ai\BehaviorTree\Action\wait_node.h">
+      <Filter>Source\Ai\BehaviorTree\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ai\BehaviorTree\Action\move_to_node.h">
       <Filter>Source\Ai\BehaviorTree\Action</Filter>
     </ClInclude>
   </ItemGroup>

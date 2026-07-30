@@ -2,6 +2,7 @@
 
 #include <variant>
 #include <string>
+#include <DirectXMath.h>
 
 class Character;
 
@@ -10,5 +11,6 @@ using BlackboardValue = std::variant<
 	float,
 	bool,
 	std::string,
-	Character*
+	Character*,
+	DirectX::XMFLOAT3
 >;

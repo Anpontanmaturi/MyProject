@@ -173,7 +173,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>USE_IMGUI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\DirectXTK-main\Inc;C:\Program Files\Autodesk\FBX\FBX SDK\2020.3.1\include;$(ProjectDir)Source\;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\DirectXTK-main\Inc;C:\Program Files\Autodesk\FBX\FBX SDK\2020.3.1\include;$(ProjectDir)Source\;.\cereal-master\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -199,6 +199,7 @@
     <ClCompile Include="imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="imgui\imgui_ja_gryph_ranges.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Source\Ai\BehaviorTree\Action\move_to_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Action\print_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Action\wait_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\behavior_tree.cpp" />
@@ -250,6 +251,7 @@
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\Action\action_node.h" />
+    <ClInclude Include="Source\Ai\BehaviorTree\Action\move_to_node.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\Action\print_node.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\Action\wait_node.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\behavior_tree.h" />
