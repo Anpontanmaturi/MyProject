@@ -7,7 +7,8 @@ class BehaviorTreeEditor
 public:
 	BehaviorTreeEditor();
 
-	void Update();
+	void Update(float elapsed_time);
+	void Draw();
 
 private:
 	EditorGraph graph;

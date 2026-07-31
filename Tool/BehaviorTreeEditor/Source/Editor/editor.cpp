@@ -12,9 +12,14 @@ BehaviorTreeEditor::BehaviorTreeEditor()
 
 }
 
-void BehaviorTreeEditor::Update()
+void BehaviorTreeEditor::Update(float elapsed_time)
 {
-	ImGui::Begin("Behavior Tree");
+	
+}
+
+void BehaviorTreeEditor::Draw()
+{
+	ImGui::Begin("Behavior Tree", nullptr, ImGuiWindowFlags_NoMove);
 
 	graph.Draw();
 

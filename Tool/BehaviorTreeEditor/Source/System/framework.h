@@ -15,14 +15,6 @@
 #define FULLSCREEN FALSE
 #define APPLICATION_NAME L"BehaviorTreeEditor"
 
-class BehaviorTreeEditor
-{
-public:
-	void Update(float);
-
-	void Draw();
-};
-
 class Framework
 {
 public:

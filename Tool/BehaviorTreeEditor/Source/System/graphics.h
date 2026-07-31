@@ -36,6 +36,9 @@ public:
     ID3D11DeviceContext* GetContext()const { return immediate_context.Get(); }
     IDXGISwapChain* GetSwapChain()const { return swap_chain.Get();}
 
+private:
+    void CreateDevice(HWND hwnd);
+    void CreateRenderTarget();
 
 private:
     static Graphics* instance;

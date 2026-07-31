@@ -3,7 +3,7 @@
 #include <memory>
 #include <vector>
 
-class EditorNode;
+#include "../Node/editor_node.h" 
 
 class EditorGraph
 {
@@ -15,4 +15,8 @@ public:
 private:
 	std::vector<std::unique_ptr<EditorNode>> nodes;
 
+	// 接続確認用
+	EditorPin* drag_pin = nullptr;
+
+	float line_slender = 3.0f;// 接続線用
 };

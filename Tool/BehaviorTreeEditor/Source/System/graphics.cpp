@@ -4,6 +4,17 @@ Graphics* Graphics::instance = nullptr;
 
 Graphics::Graphics(HWND hwnd)
 {
+	CreateDevice(hwnd);
+	CreateRenderTarget();
+}
+
+Graphics::~Graphics()
+{
+	instance = nullptr;
+}
+
+void Graphics::CreateDevice(HWND hwnd)
+{
 	_ASSERT_EXPR(instance == nullptr, L"already instantiated");
 	instance = this;
 
@@ -38,6 +49,11 @@ Graphics::Graphics(HWND hwnd)
 		NULL, create_device_flags, &feature_levels, 1, D3D11_SDK_VERSION, &swap_chain_desc,
 		swap_chain.GetAddressOf(), device.GetAddressOf(), NULL, immediate_context.GetAddressOf());
 	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+}
+
+void Graphics::CreateRenderTarget()
+{
+	HRESULT hr{ S_OK };
 
 	// レンダーターゲットビュー
 	ID3D11Texture2D* back_buffer{};
@@ -85,11 +101,6 @@ Graphics::Graphics(HWND hwnd)
 	viewport.MinDepth = 0.0f;
 	viewport.MaxDepth = 1.0f;
 	immediate_context->RSSetViewports(1, &viewport);
-
-}
-
-Graphics::~Graphics()
-{
 }
 
 void Graphics::BeginFrame()

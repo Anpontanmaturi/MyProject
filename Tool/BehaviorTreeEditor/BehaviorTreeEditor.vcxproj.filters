@@ -19,6 +19,12 @@
     <Filter Include="Source\System">
       <UniqueIdentifier>{4e6fbd8e-3541-4f41-b9c6-bbf5d6c69f35}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Pin">
+      <UniqueIdentifier>{9afb4a4b-e02c-4a72-b24e-95faed3964b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Link">
+      <UniqueIdentifier>{5547050c-e800-4e59-9850-8204f424e9da}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Node\editor_node.cpp">
@@ -53,6 +59,12 @@
     </ClCompile>
     <ClCompile Include="Source\System\graphics.cpp">
       <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\imgui\imgui_ja_gryph_ranges.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Pin\editor_pin.cpp">
+      <Filter>Source\Pin</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -100,6 +112,12 @@
     </ClInclude>
     <ClInclude Include="Source\System\graphics.h">
       <Filter>Source\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Pin\editor_pin.h">
+      <Filter>Source\Pin</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Link\editor_link.h">
+      <Filter>Source\Link</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

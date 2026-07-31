@@ -23,11 +23,16 @@
     <ClCompile Include="..\..\imgui\imgui_draw.cpp" />
     <ClCompile Include="..\..\imgui\imgui_impl_dx11.cpp" />
     <ClCompile Include="..\..\imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="..\..\imgui\imgui_ja_gryph_ranges.cpp" />
     <ClCompile Include="..\..\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Source\Editor\editor.cpp" />
     <ClCompile Include="Source\Graph\graph.cpp" />
-    <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Source\Node\editor_node.cpp" />
+    <ClCompile Include="Source\Pin\editor_pin.cpp" />
     <ClCompile Include="Source\System\framework.cpp" />
     <ClCompile Include="Source\System\graphics.cpp" />
   </ItemGroup>
@@ -42,7 +47,9 @@
     <ClInclude Include="..\..\imgui\imstb_truetype.h" />
     <ClInclude Include="Source\Editor\editor.h" />
     <ClInclude Include="Source\Graph\graph.h" />
+    <ClInclude Include="Source\Link\editor_link.h" />
     <ClInclude Include="Source\Node\editor_node.h" />
+    <ClInclude Include="Source\Pin\editor_pin.h" />
     <ClInclude Include="Source\System\framework.h" />
     <ClInclude Include="Source\System\graphics.h" />
     <ClInclude Include="Source\System\high_resolution_timer.h" />
@@ -135,12 +142,13 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader />
-      <AdditionalIncludeDirectories>$(SolutionDir)imgui</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)imgui;$(SolutionDir)DirectXTK-main\Inc;C:\Program Files\Autodesk\FBX\FBX SDK\2020.3.1\include;$(ProjectDir)Source\;.\cereal-master\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>d3d11.lib;dxgi.lib;DirectXTK.lib;zlib-md.lib;libxml2-md.lib;libfbxsdk-md.lib;Advapi32.lib;Xinput.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)DirectXTK-main\Bin\Desktop_2019\x64\Debug;C:\Program Files\Autodesk\FBX\FBX SDK\2020.3.1\lib\vs2019\x64\debug;C:\Program Files\Autodesk\FBX\FBX SDK\2020.3.1\lib\vs2019\x64\release</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -154,12 +162,13 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader />
-      <AdditionalIncludeDirectories>$(SolutionDir)imgui</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)imgui;$(SolutionDir)DirectXTK-main\Inc;C:\Program Files\Autodesk\FBX\FBX SDK\2020.3.1\include;$(ProjectDir)Source\;.\cereal-master\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>d3d11.lib;dxgi.lib;DirectXTK.lib;zlib-md.lib;libxml2-md.lib;libfbxsdk-md.lib;Advapi32.lib;Xinput.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)DirectXTK-main\Bin\Desktop_2019\x64\Release;C:\Program Files\Autodesk\FBX\FBX SDK\2020.3.1\lib\vs2019\x64\debug;C:\Program Files\Autodesk\FBX\FBX SDK\2020.3.1\lib\vs2019\x64\release</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

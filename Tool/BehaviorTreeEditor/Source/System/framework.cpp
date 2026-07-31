@@ -24,6 +24,16 @@ void Framework::Update(float elapsed_time/*Elapsed seconds from last frame*/)
 
 void Framework::Render(float elapsed_time/*Elapsed seconds from last frame*/)
 {
+	graphics_system->BeginFrame();
+
+	editor.Draw();
+
+#ifdef USE_IMGUI
+	ImGui::Render();
+	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+#endif
+
+	graphics_system->EndFrame();
 }
 
 bool Framework::Uninitialize()
