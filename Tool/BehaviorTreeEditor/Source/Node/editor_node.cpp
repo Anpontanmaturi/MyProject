@@ -1,8 +1,11 @@
 #include "editor_node.h"
 
-EditorNode::EditorNode(int id, const std::string& name) :id(id), name(name)
+EditorNode::EditorNode(int id, const std::string& name, NodeType type) :id(id), name(name), type(type)
 {
-	input_pins.emplace_back(this, "In", PinType::Input);
+	if (type != NodeType::Root)
+	{
+		input_pins.emplace_back(this, "In", PinType::Input);
+	}
 	output_pins.emplace_back(this, "Out", PinType::Output);
 
 	input_pins[0].SetLocalPosition({ 0, size.y * 0.5f });
@@ -55,5 +58,18 @@ void EditorNode::WriteNode()
 	for (auto& pin : output_pins)
 	{
 		pin.Draw();
+	}
+}
+
+bool EditorNode::CanAddTo() const
+{
+	switch (type)
+	{
+	case NodeType::Sequence:
+	case NodeType::Selector:
+		return true;
+
+	default:
+		return false;
 	}
 }
