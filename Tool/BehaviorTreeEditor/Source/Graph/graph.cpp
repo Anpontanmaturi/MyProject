@@ -3,7 +3,40 @@
 
 void EditorGraph::AddNode(std::unique_ptr<EditorNode> node)
 {
+	if (node->GetNodeType() == NodeType::Root)
+	{
+		if (HasRoot())
+		{
+			return;
+		}
+	}
+
 	nodes.push_back(std::move(node));
+}
+
+void EditorGraph::AddLink(EditorPin* from, EditorPin* to)
+{
+	if (from == nullptr || to == nullptr)
+	{
+		return;
+	}
+
+	EditorLink link;
+	link.from = from;
+	link.to = to;
+
+	links.push_back(link);
+}
+
+bool EditorGraph::HasRoot() const
+{
+	for (const auto& node : nodes)
+	{
+		if (node->GetNodeType() == NodeType::Root)
+		{
+			return true;
+		}
+	}
 }
 
 void EditorGraph::Draw()
@@ -131,4 +164,25 @@ void EditorGraph::HandleConnect()
 
 		drag_pin = nullptr;
 	}
+}
+
+void EditorGraph::Clear()
+{
+	links.clear();
+	nodes.clear();
+
+	drag_pin = nullptr;
+}
+
+EditorNode* EditorGraph::FinedNodeById(int id)
+{
+	for (auto& node : nodes)
+	{
+		if (node->GetId() == id)
+		{
+			return node.get();
+		}
+	}
+
+	return nullptr;
 }

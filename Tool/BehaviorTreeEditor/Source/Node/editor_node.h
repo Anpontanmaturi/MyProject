@@ -32,6 +32,7 @@ public:
 
 	int GetId() const { return id; }
 	ImVec2 GetPosition() const { return position; }
+	void SetPosition(const ImVec2& position) { this->position = position; }
 
 	std::vector<EditorPin>& GetInputPins() { return input_pins; }
 	std::vector<EditorPin>& GetOutputPins() { return output_pins; }

@@ -12,6 +12,23 @@ public:
 	void Draw();
 
 	void AddNode(std::unique_ptr<EditorNode> node);
+	void AddLink(EditorPin* from, EditorPin* to);
+
+	bool HasRoot() const;
+
+	void Clear();
+
+	EditorNode* FinedNodeById(int id);
+
+	const std::vector<std::unique_ptr<EditorNode>>& GetNodes()const
+	{
+		return nodes;
+	}
+
+	const std::vector<EditorLink>& GetLinks() const
+	{
+		return links;
+	}
 
 private:
 	// •`‰æ—p
