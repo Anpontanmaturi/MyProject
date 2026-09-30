@@ -8,11 +8,7 @@
 #include "Action/wait_node.h"
 #include "Action/move_to_node.h"
 
-#include "nlohmann/json.hpp"
-using json = nlohmann::json;
-
 std::unique_ptr<BTNode>
-
 BehaviorTreeFact::CreateNode(int type, const json& node_data)
 {
     switch (type)

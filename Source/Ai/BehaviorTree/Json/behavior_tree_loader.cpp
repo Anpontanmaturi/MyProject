@@ -25,7 +25,7 @@ BehaviorTreeLoader::Load(const char* filename)
 
 	std::unordered_map<int, std::unique_ptr<BTNode>>nodes;
 
-	int root_id;
+	int root_id = -1;
 
 	// ÉmÅ[ÉhÇÃê∂ê¨
 	for (const auto& node_data : data["nodes"])
@@ -33,20 +33,27 @@ BehaviorTreeLoader::Load(const char* filename)
 		int id = node_data["id"];
 		int type = node_data["type"];
 
+		if (type == 0) { root_id = id; continue; }
+
 		auto node = BehaviorTreeFact::CreateNode(type, node_data);
 
 		if (!node)continue;
 
 		nodes[id] = std::move(node);
-
-		if (type == 0) { root_id = id; }
 	}
 
+	int root_child_id = -1;
 	// êeéqä÷åWÇÃç\íz
 	for (const auto& link_data : data["links"])
 	{
 		int from_id = link_data["from"];
 		int to_id = link_data["to"];
+
+		if (from_id == root_id)
+		{
+			root_child_id = to_id;
+			continue;
+		}
 
 		auto from_it = nodes.find(from_id);
 		auto to_it = nodes.find(to_id);
@@ -62,7 +69,7 @@ BehaviorTreeLoader::Load(const char* filename)
 
 	if (root_id < 0)return nullptr;
 
-	auto root_it = nodes.find(root_id);
+	auto root_it = nodes.find(root_child_id);
 
 	if (root_it == nodes.end())return nullptr;
 

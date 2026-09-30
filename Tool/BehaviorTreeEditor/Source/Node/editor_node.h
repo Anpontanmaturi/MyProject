@@ -10,15 +10,15 @@ enum class NodeType
 {
 	Root,
 
-	Sequence,
-	Selector,
+	Sequence, // ã‚©‚ç‡‚É
+	Selector, // ’T‚·
 
 	Wait,
 	MoveTo,
 	Idle,
 
-	Inverter,
-	Repeater,
+	Inverter, // ”½“]
+	Repeater, // ŒJ‚è•Ô‚µ
 };
 
 class EditorNode
