@@ -1,6 +1,6 @@
 #include "gltf_model.h"
 #define TINYGLTF_IMPLEMENTATION
-#include "../tinygltf-release/tiny_gltf.h"
+#include "tinygltf-release/tiny_gltf.h"
 #include "System/misc.h"
 #include <stack>
 #include "shader.h"

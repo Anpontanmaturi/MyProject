@@ -41,6 +41,9 @@ public:
 
 	bool CanAddTo() const;// Ú‘±æì¬‚Å‚«‚é‚©
 
+	float GetWaitTime() const { return wait_time; }
+	void SetWaitTime(float value) { wait_time = value; }
+
 private:
 	void WriteNode();
 
@@ -49,6 +52,8 @@ private:
 	std::vector<EditorPin> output_pins;
 
 	NodeType type;
+
+	float wait_time = 1.0f;
 
 protected:
 	int id;

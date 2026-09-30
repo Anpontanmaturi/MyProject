@@ -28,6 +28,11 @@ bool BehaviorTreeConverter::Save(
 		node_data["type"] = static_cast<int>(node->GetNodeType());
 		node_data["position"]["x"] = node->GetPosition().x;
 		node_data["position"]["y"] = node->GetPosition().y;
+		if (node->GetNodeType() == NodeType::Wait)
+		{
+			node_data["properties"]["wait_time"] = node->GetWaitTime();
+		}
+
 		data["nodes"].push_back(node_data);
 	}
 
@@ -123,10 +128,42 @@ bool BehaviorTreeConverter::Load(
 			name,
 			type);
 
+		if (type == NodeType::Wait)
+		{
+			float wait_time = node_data["properties"].value("wait_time", 1.0f);
+			node->SetWaitTime(wait_time);
+		}
+
 		node->SetPosition({ node_data["position"]["x"],node_data["position"]["y"] });
 
 		// ƒm[ƒh’Ç‰Á
 		graph.AddNode(std::move(node));
+	}
+
+	for (const auto& link_data : data["links"])
+	{
+		int from_id = link_data["from"];
+		int to_id = link_data["to"];
+
+		EditorNode* from_node = graph.FinedNodeById(from_id);
+
+		EditorNode* to_node = graph.FinedNodeById(to_id);
+
+		if (from_node == nullptr || to_node == nullptr)
+		{
+			continue;
+		}
+
+		auto& outputs = from_node->GetOutputPins();
+
+		auto& inputs = to_node->GetInputPins();
+
+		if (outputs.empty() || inputs.empty())
+		{
+			continue;
+		}
+
+		graph.AddLink(&outputs[0], &inputs[0]);
 	}
 
 	return true;

@@ -50,6 +50,26 @@ void EditorNode::WriteNode()
 
 	draw->AddText(ImVec2(p1.x + 8, p1.y +5), IM_COL32_WHITE, name.c_str());
 
+	if (type == NodeType::Wait)
+	{
+		ImGui::SetCursorScreenPos(
+			ImVec2(
+				p1.x + 10,
+				p1.y + 40));
+
+		ImGui::PushItemWidth(100.0f);
+
+		ImGui::DragFloat(
+			"##WaitTime",
+			&wait_time,
+			0.1f,
+			0.0f,
+			100.0f,
+			"%.1f");
+
+		ImGui::PopItemWidth();
+	}
+
 	for (auto& pin : input_pins)
 	{
 		pin.Draw();

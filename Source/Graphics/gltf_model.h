@@ -6,7 +6,7 @@
 #define TINYGLTF_NO_EXTERNAL_IMAGE
 #define TINYGLTF_NO_STB_IMAGE
 #define TINYGLTF_NO_STB_IMAGE_WRITE
-#include "../tinygltf-release/tiny_gltf.h"
+#include "tinygltf-release/tiny_gltf.h"
 
 class GltfModel
 {
