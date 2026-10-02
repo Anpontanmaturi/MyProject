@@ -12,6 +12,8 @@ BehaviorTreeEditor::BehaviorTreeEditor()
 
 	graph.AddNode(std::make_unique<EditorNode>(2, "MoveTo", NodeType::MoveTo));
 
+	graph.AddNode(std::make_unique<EditorNode>(3, "DistCondition", NodeType::DistCondition));
+
 }
 
 void BehaviorTreeEditor::Update(float elapsed_time)

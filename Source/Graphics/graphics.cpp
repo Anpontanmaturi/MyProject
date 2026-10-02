@@ -322,6 +322,8 @@ void Graphics::Update(float elapsed_time)
 	player->SetEnable(!debug_camera.IsEnable());
 	player->Update(elapsed_time);
 	player->SetCameraMode(camera_controller.GetCameraMode());
+
+	sandbag->SetPlayer(player.get());
 	sandbag->Update(elapsed_time);
 
 	if (debug_camera.IsEnable())

@@ -210,6 +210,9 @@
     <ClCompile Include="Source\Ai\BehaviorTree\Json\behavior_tree_loader.cpp">
       <Filter>Source\Ai\BehaviorTree\Json</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Ai\BehaviorTree\Action\dist_condition_node.cpp">
+      <Filter>Source\Ai\BehaviorTree\Action</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\fullscreen_quad.h">
@@ -385,6 +388,12 @@
     </ClInclude>
     <ClInclude Include="Source\Ai\BehaviorTree\Json\behavior_tree_loader.h">
       <Filter>Source\Ai\BehaviorTree\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ai\BehaviorTree\Action\condition_node.h">
+      <Filter>Source\Ai\BehaviorTree\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ai\BehaviorTree\Action\dist_condition_node.h">
+      <Filter>Source\Ai\BehaviorTree\Action</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

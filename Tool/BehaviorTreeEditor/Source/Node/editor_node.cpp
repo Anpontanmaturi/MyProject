@@ -2,6 +2,15 @@
 
 EditorNode::EditorNode(int id, const std::string& name, NodeType type) :id(id), name(name), type(type)
 {
+	switch (type)
+	{
+	case NodeType::DistCondition:
+		size = { 180, 120 };break;
+
+	default:
+		size = { 180, 80 }; break;
+	}
+
 	if (type != NodeType::Root)
 	{
 		input_pins.emplace_back(this, "In", PinType::Input);
@@ -50,8 +59,9 @@ void EditorNode::WriteNode()
 
 	draw->AddText(ImVec2(p1.x + 8, p1.y +5), IM_COL32_WHITE, name.c_str());
 
-	if (type == NodeType::Wait)
+	switch (type)
 	{
+	case NodeType::Wait: {
 		ImGui::SetCursorScreenPos(
 			ImVec2(
 				p1.x + 10,
@@ -68,6 +78,41 @@ void EditorNode::WriteNode()
 			"%.1f");
 
 		ImGui::PopItemWidth();
+		break;
+	}
+
+	case NodeType::DistCondition: {
+		ImGui::SetCursorScreenPos(
+			ImVec2(
+				p1.x + 10,
+				p1.y + 35));
+
+		ImGui::PushItemWidth(100.0f);
+
+		// key
+		char key_buffer[128];
+		strcpy_s(key_buffer, dist_key.c_str());
+		if (ImGui::InputText("Key", key_buffer, sizeof(key_buffer)))
+		{
+			dist_key = key_buffer;
+		}
+
+		// Compare
+		const char* compare_items[] =
+		{
+			"<", "<=", ">", ">="
+		};
+		ImGui::Combo("Compare", &dist_compare, compare_items, IM_ARRAYSIZE(compare_items));
+
+		// distance
+		ImGui::InputFloat("Distance", &dist);
+
+		ImGui::PopItemWidth();
+		break;
+	}
+
+	default:
+		break;
 	}
 
 	for (auto& pin : input_pins)

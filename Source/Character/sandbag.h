@@ -7,6 +7,8 @@
 #include "Ai/BehaviorTree/behavior_tree.h"
 #include "Ai/BehaviorTree/Blackboard/blackboard.h"
 
+class Player;
+
 class Sandbag : public Character
 {
 public:
@@ -28,6 +30,8 @@ public:
 
 	void DebugRenderGui();
 
+	void SetPlayer(Player* player) { this->player = player; }
+
 protected:
 	void OnDamaged() override;
 
@@ -48,6 +52,7 @@ private:
 	Blackboard black_board;
 	BTContext context;
 	void BuildBehaviorTree();
+	Player* player = nullptr;
 
 	enum class StateId
 	{

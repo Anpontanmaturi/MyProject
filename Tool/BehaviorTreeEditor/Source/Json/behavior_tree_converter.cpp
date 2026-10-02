@@ -28,9 +28,20 @@ bool BehaviorTreeConverter::Save(
 		node_data["type"] = static_cast<int>(node->GetNodeType());
 		node_data["position"]["x"] = node->GetPosition().x;
 		node_data["position"]["y"] = node->GetPosition().y;
-		if (node->GetNodeType() == NodeType::Wait)
+		switch (node->GetNodeType())
 		{
+		case NodeType::Wait:
 			node_data["properties"]["wait_time"] = node->GetWaitTime();
+			break;
+
+		case NodeType::DistCondition:
+			node_data["properties"]["key"] = node->GetDistKey();
+			node_data["properties"]["compare"] = node->GetDistCompare();
+			node_data["properties"]["distance"] = node->GetDist();
+			break;
+
+		default:
+			break;
 		}
 
 		data["nodes"].push_back(node_data);

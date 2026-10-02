@@ -1,9 +1,22 @@
 #include "sandbag.h"
 #include "Collision/collision_manager.h"
 #include "Graphics/graphics.h"
+#include "player.h"
 
 #include "Ai/BehaviorTree/Composite/sequence_node.h"
-#include <Ai/BehaviorTree/Action/wait_node.h>
+#include "Ai/BehaviorTree/Action/wait_node.h"
+#include "Ai/BehaviorTree/Action/move_to_node.h"
+#include "Ai/BehaviorTree/Action/dist_condition_node.h"
+
+namespace
+{
+	BlackboardKey PlayerPositionKey
+	{
+		1,
+		"PlayerPosition",
+		{}
+	};
+}
 
 Sandbag::~Sandbag() = default;
 
@@ -27,6 +40,10 @@ Sandbag::Sandbag(ID3D11Device* device)
 
 void Sandbag::Update(float elapsed_time)
 {
+	black_board.SetValue(
+		PlayerPositionKey,
+		player->GetPosition());
+
 	if (use_behavior_tree)
 	{
 		behavior_tree.Tick(context, elapsed_time);
@@ -126,7 +143,12 @@ void Sandbag::BuildBehaviorTree()
 {
 	auto root = std::make_unique<SequenceNode>();
 
-	root->AddChild(std::make_unique<WaitNode>(2.0f));
+	root->AddChild(std::make_unique<DistConditionNode>(
+		PlayerPositionKey, DistanceCompare::Greater, 5.0f));
+
+	root->AddChild(std::make_unique<MoveToNode>(PlayerPositionKey, move_speed, turn_speed, 0.2f));
+
+	//root->AddChild(std::make_unique<WaitNode>(2.0f));
 
 	behavior_tree.SetRoot(std::move(root));
 }
