@@ -87,6 +87,8 @@ void EditorNode::WriteNode()
 				p1.x + 10,
 				p1.y + 35));
 
+		ImGui::BeginGroup();
+
 		ImGui::PushItemWidth(100.0f);
 
 		// key
@@ -108,6 +110,9 @@ void EditorNode::WriteNode()
 		ImGui::InputFloat("Distance", &dist);
 
 		ImGui::PopItemWidth();
+
+		ImGui::EndGroup();
+
 		break;
 	}
 

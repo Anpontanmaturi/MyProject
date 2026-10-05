@@ -17,7 +17,6 @@ enum class BlackboardValueType
 
 struct BlackboardKey
 {
-	uint32_t id;
 	std::string name;
 	BlackboardValueType type;
 };
@@ -28,20 +27,20 @@ public:
 	template<class T>
 	void SetValue(BlackboardKey key, const T& value)
 	{
-		values[key.id] = value;
+		values[key.name] = value;
 	}
 
 	template<class T>
 	T GetValue(BlackboardKey key) const
 	{
-		return std::get<T>(values.at(key.id));
+		return std::get<T>(values.at(key.name));
 	}
 
 	bool HasValue(BlackboardKey key) const
 	{
-		return values.find(key.id) != values.end();
+		return values.find(key.name) != values.end();
 	}
 
 private:
-	std::unordered_map<uint32_t, BlackboardValue> values;
+	std::unordered_map<std::string, BlackboardValue> values;
 };

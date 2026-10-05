@@ -10,17 +10,17 @@
 #include "Action/dist_condition_node.h"
 
 std::unique_ptr<BTNode>
-BehaviorTreeFact::CreateNode(int type, const json& node_data)
+BehaviorTreeFact::CreateNode(BTNodeType type, const json& node_data)
 {
     switch (type)
     {
-    case 1:
+    case BTNodeType::Sequence:
         return std::make_unique<SequenceNode>();
 
-    case 2:
+    case BTNodeType::Selector:
         return std::make_unique<SelectorNode>();
 
-    case 3:
+    case BTNodeType::Wait:
     {
         float wait_time = 1.0f;
         if (node_data.contains("properties"))
@@ -30,16 +30,16 @@ BehaviorTreeFact::CreateNode(int type, const json& node_data)
         return std::make_unique<WaitNode>(wait_time);
     }
 
-    case 4:
+    case BTNodeType::MoveTo:
         //return std::make_unique<MoveToNode>();
         break;
 
-    case 5:
+    case BTNodeType::DistCondition:
     {
         // ‰¼’u‚«
         BlackboardKey key
         {
-            1, "PlayerPosition",{}
+            node_data["properties"].value("key",std::string{}),BlackboardValueType::Float3
         };
         float dist;
 

@@ -395,6 +395,9 @@
     <ClInclude Include="Source\Ai\BehaviorTree\Action\dist_condition_node.h">
       <Filter>Source\Ai\BehaviorTree\Action</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Ai\BehaviorTree\bt_node_type.h">
+      <Filter>Source\Ai\BehaviorTree</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="HLSL\blur_ps.hlsl">

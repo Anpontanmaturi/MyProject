@@ -10,6 +10,42 @@
 
 using json = nlohmann::json;
 
+std::string GetNodeName(NodeType type)// ÉâÉxÉãÇÃñºëOê›íË
+{
+	switch (type)
+	{
+	case NodeType::Root:
+		return "Root";
+
+	case NodeType::Sequence:
+		return "Sequence";
+
+	case NodeType::Selector:
+		return "Selector";
+
+	case NodeType::Wait:
+		return "Wait";
+
+	case NodeType::MoveTo:
+		return "MoveTo";
+
+	case NodeType::Idle:
+		return "Idle";
+
+	case NodeType::DistCondition:
+		return "DistCondition";
+
+	case NodeType::Inverter:
+		return "Inverter";
+
+	case NodeType::Repeater:
+		return "Repeater";
+
+	default:
+		return "Unknown";
+	}
+}
+
 bool BehaviorTreeConverter::Save(
 	const EditorGraph& graph,
 	const char* filename)
@@ -99,50 +135,27 @@ bool BehaviorTreeConverter::Load(
 
 		std::string name;
 
-		switch (type)
-		{
-		case NodeType::Root:
-			name = "Root";
-			break;
-
-		case NodeType::Sequence:
-			name = "Sequence";
-			break;
-
-		case NodeType::Selector:
-			name = "Selector";
-			break;
-
-		case NodeType::Wait:
-			name = "Wait";
-			break;
-
-		case NodeType::MoveTo:
-			name = "MoveTo";
-			break;
-
-		case NodeType::Idle:
-			name = "Idle";
-			break;
-
-		case  NodeType::Inverter:
-			name = "Inverter";
-			break;
-
-		case NodeType::Repeater:
-			name = "Repeater";
-			break;
-		}
-
 		auto node = std::make_unique<EditorNode>(
 			id,
-			name,
+			GetNodeName(type),
 			type);
 
-		if (type == NodeType::Wait)
+		// ÇªÇÃëº
+		switch (type)
 		{
-			float wait_time = node_data["properties"].value("wait_time", 1.0f);
-			node->SetWaitTime(wait_time);
+		case NodeType::Wait:
+			node->SetWaitTime(node_data["properties"].value("wait_time", 1.0f));
+			break;
+
+		case NodeType::DistCondition:
+			node->SetDistKey(node_data["properties"].value("key", std::string("PlayerPosition")));
+			node->SetDistCompare(node_data["properties"].value("compare", 2));
+			node->SetDist(node_data["properties"].value("distance", 5.0f));
+			break;
+
+		default:
+			break;
+
 		}
 
 		node->SetPosition({ node_data["position"]["x"],node_data["position"]["y"] });

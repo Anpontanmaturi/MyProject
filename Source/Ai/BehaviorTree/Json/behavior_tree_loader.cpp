@@ -4,6 +4,7 @@
 #include "../behavior_tree_fact.h"
 #include "../bt_node.h"
 #include "../Composite/composite_node.h"
+#include "../bt_node_type.h"
 
 #include <nlohmann/json.hpp>
 #include <fstream>
@@ -31,9 +32,9 @@ BehaviorTreeLoader::Load(const char* filename)
 	for (const auto& node_data : data["nodes"])
 	{
 		int id = node_data["id"];
-		int type = node_data["type"];
+		BTNodeType type = static_cast<BTNodeType>(node_data["type"].get<int>());
 
-		if (type == 0) { root_id = id; continue; }
+		if (type == BTNodeType::Root) { root_id = id; continue; }
 
 		auto node = BehaviorTreeFact::CreateNode(type, node_data);
 

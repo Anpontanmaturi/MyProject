@@ -12,9 +12,8 @@ namespace
 {
 	BlackboardKey PlayerPositionKey
 	{
-		1,
 		"PlayerPosition",
-		{}
+		BlackboardValueType::Float3
 	};
 }
 
