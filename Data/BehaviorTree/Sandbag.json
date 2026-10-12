@@ -1,0 +1,54 @@
+{
+    "links": [
+        {
+            "from": 0,
+            "to": 3
+        },
+        {
+            "from": 0,
+            "to": 2
+        }
+    ],
+    "nodes": [
+        {
+            "id": 0,
+            "position": {
+                "x": 119.0,
+                "y": 154.0
+            },
+            "type": 1
+        },
+        {
+            "id": 1,
+            "position": {
+                "x": 361.0,
+                "y": 194.0
+            },
+            "properties": {
+                "wait_time": 1.0
+            },
+            "type": 3
+        },
+        {
+            "id": 2,
+            "position": {
+                "x": 357.0,
+                "y": 293.0
+            },
+            "type": 4
+        },
+        {
+            "id": 3,
+            "position": {
+                "x": 359.0,
+                "y": 62.0
+            },
+            "properties": {
+                "compare": 2,
+                "distance": 5.0,
+                "key": "PlayerPosition"
+            },
+            "type": 6
+        }
+    ]
+}

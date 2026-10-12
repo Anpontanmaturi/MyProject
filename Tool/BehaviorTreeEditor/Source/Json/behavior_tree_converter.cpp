@@ -7,6 +7,9 @@
 #include "nlohmann/json.hpp"
 
 #include <fstream>
+#include <Windows.h>
+#include <ShlObj.h>
+#include <string>
 
 using json = nlohmann::json;
 
@@ -98,7 +101,18 @@ bool BehaviorTreeConverter::Save(
 		data["links"].push_back(link_data);
 	}
 
-	std::ofstream file(filename); // ‘‚«o‚µ
+	std::string path = SelectJsonSavePath();
+
+	if (path.empty()) { return false; }
+
+	std::string file_path = path + "\\" + filename;
+
+	if (file_path.size() < 5 || file_path.substr(file_path.size() - 5) != ".json")
+	{
+		file_path += ".json";
+	}
+
+	std::ofstream file(file_path); // ‘‚«o‚µ
 
 	if (!file)
 	{
@@ -191,4 +205,25 @@ bool BehaviorTreeConverter::Load(
 	}
 
 	return true;
+}
+
+std::string BehaviorTreeConverter::SelectJsonSavePath()
+{
+	BROWSEINFOA bi{};
+	bi.lpszTitle = "JSON‚Ì•Û‘¶æ‚ğ‘I‘ğ";
+	bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;
+
+	LPITEMIDLIST item_list = SHBrowseForFolderA(&bi);
+
+	if (item_list == nullptr) { return{}; }
+
+	char folder[MAX_PATH]{};
+
+	bool success = SHGetPathFromIDListA(item_list, folder);
+
+	CoTaskMemFree(item_list);
+
+	if (!success) { return {}; }
+
+	return folder;
 }

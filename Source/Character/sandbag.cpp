@@ -4,9 +4,17 @@
 #include "player.h"
 
 #include "Ai/BehaviorTree/Composite/sequence_node.h"
+#include "Ai/BehaviorTree/Composite/selector_node.h"
 #include "Ai/BehaviorTree/Action/wait_node.h"
 #include "Ai/BehaviorTree/Action/move_to_node.h"
 #include "Ai/BehaviorTree/Action/dist_condition_node.h"
+
+#include <fstream>
+#include <string>
+#include <Windows.h>
+#include <nlohmann/json.hpp>
+
+#include "../Ai/BehaviorTree/behavior_tree_fact.h"
 
 namespace
 {
@@ -24,6 +32,8 @@ Sandbag::Sandbag(ID3D11Device* device)
 	const char* filename = ".\\Data\\Model\\Jammo\\Jammo.fbx";
 	mesh = std::make_unique<SkinnedMesh>(device, filename, true, 0.0f, axis_system::rhs_y_up);
 	animator = std::make_unique<Animator>(mesh.get());
+
+	black_board.RegisterKey(PlayerPositionKey);
 
 	BuildBehaviorTree();
 
@@ -140,15 +150,51 @@ void Sandbag::DamageState::OnUpdate(float elapsed_time)
 
 void Sandbag::BuildBehaviorTree()
 {
-	auto root = std::make_unique<SequenceNode>();
+	/*auto root = std::make_unique<SequenceNode>();
 
 	root->AddChild(std::make_unique<DistConditionNode>(
 		PlayerPositionKey, DistanceCompare::Greater, 5.0f));
 
-	root->AddChild(std::make_unique<MoveToNode>(PlayerPositionKey, move_speed, turn_speed, 0.2f));
+	root->AddChild(std::make_unique<MoveToNode>(PlayerPositionKey, move_speed, turn_speed, 0.2f));*/
 
 	//root->AddChild(std::make_unique<WaitNode>(2.0f));
 
-	behavior_tree.SetRoot(std::move(root));
+	/*auto sequence = std::make_unique<SequenceNode>();
+	BlackboardKey key{
+		"PlayerPosition",BlackboardValueType::Float3
+	};
+	auto condition = std::make_unique<DistConditionNode>(key, DistanceCompare::Greater, 5.0f);
+	auto move_to = std::make_unique<MoveToNode>(key, move_speed, turn_speed, 0.2f);
+	sequence->AddChild(std::move(condition));
+	sequence->AddChild(std::move(move_to));
+	behavior_tree.SetRoot(std::move(sequence));*/
+
+	const char* file_path = ".\\Data\\BehaviorTree\\Sandbag.json";
+
+	std::ifstream file(file_path);
+
+	if (!file.is_open()) {
+		OutputDebugStringA("Failed to open Data\\BehaviorTree\\Sandbag.json\n"); 
+		return; 
+	}
+
+	nlohmann::json data;
+
+	try { file >> data; }
+	catch (const nlohmann::json::exception& e)
+	{
+		std::string message = std::string("Failed to load JSON\n")+e.what();
+		OutputDebugStringA(message.c_str());
+		MessageBoxA(nullptr, message.c_str(), "BehaviorTree Error", MB_OK | MB_ICONERROR);
+		return;
+	}
+
+	// BehaviorTreeÇê∂ê¨
+	std::unique_ptr<BehaviorTree> tree = BehaviorTreeFact::CreateTree(data);
+
+	if (!tree) { OutputDebugStringA("Failed to create BehaviorTree from Sandbug.json\n"); return; }
+
+	behavior_tree = std::move(*tree);
+	//behavior_tree.SetRoot(std::move(tree))
 }
 

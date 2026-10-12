@@ -13,4 +13,6 @@ public:
 private:
 	EditorGraph graph;
 
+	char save_file_name[128] = {};
+
 };

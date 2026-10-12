@@ -58,7 +58,7 @@ protected:
 	void UpdateVelocity(float elapsed_time);
 
 	// –³“GŠÔXV
-	void UpdateInvincibleTimer(float elapsedTime);
+	void UpdateInvincibleTimer(float elapsed_time);
 
 	// ’…’n‚µ‚½‚ÉŒÄ‚Î‚ê‚é
 	virtual void OnLanding() {}

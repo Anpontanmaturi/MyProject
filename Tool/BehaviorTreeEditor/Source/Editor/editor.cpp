@@ -31,9 +31,11 @@ void BehaviorTreeEditor::Draw()
 
 	ImGui::Begin("button", nullptr);
 
+	ImGui::InputText("", save_file_name, sizeof(save_file_name));
+
 	if (ImGui::Button("Save"))
 	{
-		BehaviorTreeConverter::Save(graph, "test.json");
+		BehaviorTreeConverter::Save(graph, save_file_name);
 	}
 
 	if (ImGui::Button("Load"))

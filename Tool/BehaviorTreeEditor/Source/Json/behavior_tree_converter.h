@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 class EditorGraph;
 
 class BehaviorTreeConverter
@@ -12,4 +14,6 @@ public:
 	static bool Load(
 		EditorGraph& graph,
 		const char* filename);
+
+	static std::string SelectJsonSavePath();
 };

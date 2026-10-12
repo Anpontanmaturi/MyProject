@@ -149,7 +149,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;DirectXTK.lib;zlib-md.lib;libxml2-md.lib;libfbxsdk-md.lib;Advapi32.lib;Xinput.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;DirectXTK.lib;zlib-md.lib;libxml2-md.lib;libfbxsdk-md.lib;Advapi32.lib;Xinput.lib;Shell32.lib;Ole32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\DirectXTK-main\Bin\Desktop_2019\x64\Debug;$(SolutionDir)ThirdParty\FBX\FBX SDK\2020.3.1\lib\vs2019\x64\debug</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -169,7 +169,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;DirectXTK.lib;zlib-md.lib;libxml2-md.lib;libfbxsdk-md.lib;Advapi32.lib;Xinput.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;DirectXTK.lib;zlib-md.lib;libxml2-md.lib;libfbxsdk-md.lib;Advapi32.lib;Xinput.lib;Shell32.lib;Ole32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\DirectXTK-main\Bin\Desktop_2019\x64\Release;$(SolutionDir)ThirdParty\FBX\FBX SDK\2020.3.1\lib\vs2019\x64\release</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>

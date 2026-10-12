@@ -24,6 +24,12 @@ struct BlackboardKey
 class Blackboard
 {
 public:
+	void RegisterKey(const BlackboardKey& key);
+
+	bool HasKey(const std::string& name) const;
+
+	BlackboardKey GetKey(const std::string& name) const;
+
 	template<class T>
 	void SetValue(BlackboardKey key, const T& value)
 	{
@@ -42,5 +48,9 @@ public:
 	}
 
 private:
+	// 実際に入っている値
 	std::unordered_map<std::string, BlackboardValue> values;
+
+	// 使用可能なキー
+	std::unordered_map<std::string, BlackboardKey> keys;
 };

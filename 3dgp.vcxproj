@@ -199,6 +199,7 @@
     <ClCompile Include="Source\Ai\BehaviorTree\Action\wait_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\behavior_tree.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\behavior_tree_fact.cpp" />
+    <ClCompile Include="Source\Ai\BehaviorTree\Blackboard\blackboard.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Composite\composite_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Composite\selector_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Composite\sequence_node.cpp" />

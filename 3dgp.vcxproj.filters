@@ -213,6 +213,9 @@
     <ClCompile Include="Source\Ai\BehaviorTree\Action\dist_condition_node.cpp">
       <Filter>Source\Ai\BehaviorTree\Action</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Ai\BehaviorTree\Blackboard\blackboard.cpp">
+      <Filter>Source\Ai\BehaviorTree\Blackboard</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\fullscreen_quad.h">
