@@ -10,6 +10,8 @@
 #include <Windows.h>
 #include <ShlObj.h>
 #include <string>
+#include <Shlwapi.h>
+#pragma comment(lib, "Shlwapi.lib")
 
 using json = nlohmann::json;
 
@@ -73,6 +75,10 @@ bool BehaviorTreeConverter::Save(
 			node_data["properties"]["wait_time"] = node->GetWaitTime();
 			break;
 
+		case NodeType::MoveTo:
+			node_data["properties"]["key"] = node->GetMoveToKey();
+			break;
+
 		case NodeType::DistCondition:
 			node_data["properties"]["key"] = node->GetDistKey();
 			node_data["properties"]["compare"] = node->GetDistCompare();
@@ -125,10 +131,13 @@ bool BehaviorTreeConverter::Save(
 }
 
 bool BehaviorTreeConverter::Load(
-	EditorGraph& graph,
-	const char* filename)
+	EditorGraph& graph)
 {
-	std::ifstream file(filename);
+	std::string path = SelectJsonLoadPath();
+
+	if (path.empty()) { return false; }
+
+	std::ifstream file(path);
 
 	if (!file)
 	{
@@ -159,6 +168,10 @@ bool BehaviorTreeConverter::Load(
 		{
 		case NodeType::Wait:
 			node->SetWaitTime(node_data["properties"].value("wait_time", 1.0f));
+			break;
+
+		case NodeType::MoveTo:
+			node->SetMoveToKey(node_data["properties"].value("key", std::string("PlayerPosition")));
 			break;
 
 		case NodeType::DistCondition:
@@ -209,11 +222,11 @@ bool BehaviorTreeConverter::Load(
 
 std::string BehaviorTreeConverter::SelectJsonSavePath()
 {
-	BROWSEINFOA bi{};
-	bi.lpszTitle = "JSONの保存先を選択";
-	bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;
+	BROWSEINFOA sf{};
+	sf.lpszTitle = "JSONの保存先を選択";
+	sf.ulFlags = BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;
 
-	LPITEMIDLIST item_list = SHBrowseForFolderA(&bi);
+	LPITEMIDLIST item_list = SHBrowseForFolderA(&sf);
 
 	if (item_list == nullptr) { return{}; }
 
@@ -226,4 +239,36 @@ std::string BehaviorTreeConverter::SelectJsonSavePath()
 	if (!success) { return {}; }
 
 	return folder;
+}
+
+std::string BehaviorTreeConverter::SelectJsonLoadPath()
+{
+	char file_path[MAX_PATH]{};
+
+	OPENFILENAMEA lf{};
+	lf.lStructSize = sizeof(lf);
+	lf.lpstrFile = file_path;
+	lf.nMaxFile = MAX_PATH;
+	lf.lpstrFilter =
+		"JSONファイル (*.json)\0*.json\0"
+		"すべてのファイル (*.*)\0*.*\0";
+	lf.nFilterIndex = 1;
+	lf.lpstrTitle = "読み込むJSONファイルを選択";
+	lf.Flags = OFN_FILEMUSTEXIST
+		| OFN_PATHMUSTEXIST
+		| OFN_NOCHANGEDIR;
+
+	char initial_dir[MAX_PATH]{};
+
+	// 読み込み先のファイル指定
+	GetModuleFileNameA(nullptr, initial_dir, MAX_PATH);
+	PathRemoveFileSpecA(initial_dir);
+	PathRemoveFileSpecA(initial_dir);
+	PathRemoveFileSpecA(initial_dir);
+	PathAppendA(initial_dir, "Data\\BehaviorTree");
+	lf.lpstrInitialDir = initial_dir;
+
+	if (!GetOpenFileNameA(&lf)){return {};}
+
+	return file_path;
 }

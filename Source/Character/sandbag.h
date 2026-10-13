@@ -45,7 +45,7 @@ private:
 	float	turn_speed = DirectX::XMConvertToRadians(720);
 	float	jump_speed = 5.0f;
 
-	bool use_behavior_tree = false;
+	bool use_behavior_tree = true;
 
 	// ‰¼’u‚«
 	BehaviorTree behavior_tree;

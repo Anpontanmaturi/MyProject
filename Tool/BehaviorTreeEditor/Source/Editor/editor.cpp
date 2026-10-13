@@ -6,13 +6,6 @@
 
 BehaviorTreeEditor::BehaviorTreeEditor()
 {
-	graph.AddNode(std::make_unique<EditorNode>(0, "Sequence", NodeType::Sequence));
-
-	graph.AddNode(std::make_unique<EditorNode>(1, "Wait", NodeType::Wait));
-
-	graph.AddNode(std::make_unique<EditorNode>(2, "MoveTo", NodeType::MoveTo));
-
-	graph.AddNode(std::make_unique<EditorNode>(3, "DistCondition", NodeType::DistCondition));
 
 }
 
@@ -27,6 +20,48 @@ void BehaviorTreeEditor::Draw()
 
 	graph.Draw();
 
+    if (ImGui::IsWindowHovered() &&
+        ImGui::IsMouseClicked(ImGuiMouseButton_Right))
+    {
+        ImGui::OpenPopup("NodeContextMenu");
+    }
+
+    if (ImGui::BeginPopup("NodeContextMenu"))
+    {
+        ImVec2 mouse_pos = ImGui::GetMousePos();
+
+        if (ImGui::BeginMenu("ÉmÅ[ÉhÇí«â¡"))
+        {
+            if (ImGui::MenuItem("Sequence"))
+                graph.CreateNode(NodeType::Sequence, mouse_pos);
+
+            if (ImGui::MenuItem("Selector"))
+                graph.CreateNode(NodeType::Selector, mouse_pos);
+
+            if (ImGui::MenuItem("Wait"))
+                graph.CreateNode(NodeType::Wait, mouse_pos);
+
+            if (ImGui::MenuItem("MoveTo"))
+                graph.CreateNode(NodeType::MoveTo, mouse_pos);
+
+            if (ImGui::MenuItem("Idle"))
+                graph.CreateNode(NodeType::Idle, mouse_pos);
+
+            if (ImGui::MenuItem("DistCondition"))
+                graph.CreateNode(NodeType::DistCondition, mouse_pos);
+
+            if (ImGui::MenuItem("Inverter"))
+                graph.CreateNode(NodeType::Inverter, mouse_pos);
+
+            if (ImGui::MenuItem("Repeater"))
+                graph.CreateNode(NodeType::Repeater, mouse_pos);
+
+            ImGui::EndMenu();
+        }
+
+        ImGui::EndPopup();
+    }
+
 	ImGui::End();
 
 	ImGui::Begin("button", nullptr);
@@ -40,7 +75,7 @@ void BehaviorTreeEditor::Draw()
 
 	if (ImGui::Button("Load"))
 	{
-		BehaviorTreeConverter::Load(graph, "test.json");
+		BehaviorTreeConverter::Load(graph);
 	}
 
 	ImGui::End();

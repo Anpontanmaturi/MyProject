@@ -30,6 +30,9 @@ public:
 		return links;
 	}
 
+	void CreateNode(NodeType type, const ImVec2& position);
+	void RemoveNode(int id);
+
 private:
 	// •`‰æ—p
 	void DrawNodes();

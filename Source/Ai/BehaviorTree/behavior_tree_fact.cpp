@@ -2,7 +2,6 @@
 
 #include "behavior_tree.h"
 #include "bt_node.h"
-// #include "Blackboard/blackboard.h"
 
 #include "Composite/sequence_node.h"
 #include "Composite/selector_node.h"
@@ -43,7 +42,7 @@ BehaviorTreeFact::CreateNode(BTNodeType type, const json& node_data)
         {
             node_data["properties"].value("key",std::string{}),BlackboardValueType::Float3
         };
-        return std::make_unique<MoveToNode>(key, 2.0f, 90.0f);
+        return std::make_unique<MoveToNode>(key);
         break;
     }
 

@@ -53,6 +53,9 @@ void Sandbag::Update(float elapsed_time)
 		PlayerPositionKey,
 		player->GetPosition());
 
+	context.move_speed = move_speed;
+	context.turn_speed = turn_speed;
+
 	if (use_behavior_tree)
 	{
 		behavior_tree.Tick(context, elapsed_time);
@@ -195,6 +198,5 @@ void Sandbag::BuildBehaviorTree()
 	if (!tree) { OutputDebugStringA("Failed to create BehaviorTree from Sandbug.json\n"); return; }
 
 	behavior_tree = std::move(*tree);
-	//behavior_tree.SetRoot(std::move(tree))
 }
 

@@ -31,6 +31,17 @@ void EditorNode::Draw()
 
 	ImGui::InvisibleButton(("Node" + std::to_string(id)).c_str(), size);
 
+	std::string popup_id = "NodePopup##" + std::to_string(id);
+	if (ImGui::BeginPopupContextItem(popup_id.c_str()))
+	{
+		if (ImGui::MenuItem("delete"))
+		{
+			delete_request = true;
+		}
+
+		ImGui::EndPopup();
+	}
+
 	if (ImGui::IsItemActive() && ImGui::IsMouseDragging(ImGuiMouseButton_Left))
 	{
 		position.x += ImGui::GetIO().MouseDelta.x;

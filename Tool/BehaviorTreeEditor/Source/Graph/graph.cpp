@@ -14,6 +14,53 @@ void EditorGraph::AddNode(std::unique_ptr<EditorNode> node)
 	nodes.push_back(std::move(node));
 }
 
+void EditorGraph::RemoveNode(int id)
+{
+	// ノード探し
+	auto it = std::find_if(nodes.begin(), nodes.end(), [id](const std::unique_ptr<EditorNode>& node)
+		{
+			return node->GetId() == id;
+		}
+	);
+
+	if (it == nodes.end()) { return; }
+
+	EditorNode* target = it->get();
+
+	// 削除対象か
+	auto isTagpin = [target](EditorPin* pin)
+		{
+			if (pin == nullptr) { return false; }
+
+			for (auto& input : target->GetInputPins())
+			{
+				if (pin == &input) { return true; }
+			}
+
+			for (auto& output : target->GetOutputPins())
+			{
+				if (pin == &output) { return true; }
+			}
+
+			return false;
+		};
+
+	// リンク削除
+	links.erase(
+		std::remove_if(links.begin(), links.end(), [&isTagpin](const EditorLink& link)
+			{
+				return isTagpin(link.from) || isTagpin(link.to);
+			}
+		),
+		links.end()
+	);
+
+	if (isTagpin(drag_pin)) { drag_pin = nullptr; }
+
+	// ノード本体を削除
+	nodes.erase(it);
+}
+
 void EditorGraph::AddLink(EditorPin* from, EditorPin* to)
 {
 	if (from == nullptr || to == nullptr)
@@ -52,9 +99,21 @@ void EditorGraph::Draw()
 
 void EditorGraph::DrawNodes()
 {
+	std::vector<int> delete_id;
+
 	for (auto& node : nodes)
 	{
 		node->Draw();
+
+		if (node->WantDelete())
+		{
+			delete_id.push_back(node->GetId());
+		}
+	}
+
+	for (int id : delete_id)
+	{
+		RemoveNode(id);
 	}
 }
 
@@ -185,4 +244,38 @@ EditorNode* EditorGraph::FinedNodeById(int id)
 	}
 
 	return nullptr;
+}
+
+void EditorGraph::CreateNode(NodeType type, const ImVec2& position)
+{
+	int id = 0;
+
+	for (const auto& node : nodes)
+	{
+		if (node->GetId() >= id)
+		{
+			id = node->GetId() + 1;
+		}
+	}
+
+	std::string name;
+
+	switch (type)
+	{
+	case NodeType::Root:          name = "Root"; break;
+	case NodeType::Sequence:      name = "Sequence"; break;
+	case NodeType::Selector:      name = "Selector"; break;
+	case NodeType::Wait:          name = "Wait"; break;
+	case NodeType::MoveTo:        name = "MoveTo"; break;
+	case NodeType::Idle:          name = "Idle"; break;
+	case NodeType::DistCondition: name = "DistCondition"; break;
+	case NodeType::Inverter:      name = "Inverter"; break;
+	case NodeType::Repeater:      name = "Repeater"; break;
+	default: return;
+	}
+
+	auto node = std::make_unique<EditorNode>(id, name, type);
+	node->SetPosition(position);
+
+	AddNode(std::move(node));
 }

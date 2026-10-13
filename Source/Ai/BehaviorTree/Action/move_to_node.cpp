@@ -5,8 +5,8 @@
 
 #include <DirectXMath.h>
 
-MoveToNode::MoveToNode(const BlackboardKey& key, float move_speed, float turn_speed, float arrive_dist)
-	: key(key), move_speed(move_speed), turn_speed(turn_speed), arrive_dist(arrive_dist)
+MoveToNode::MoveToNode(const BlackboardKey& key, float arrive_dist)
+	: key(key), arrive_dist(arrive_dist)
 {
 
 }
@@ -17,7 +17,7 @@ BTState MoveToNode::Tick(BTContext& context, float elapsed_time)
 
 	DirectX::XMFLOAT3 target = context.blackboard->GetValue<DirectX::XMFLOAT3>(key);
 
-	context.owner->MoveTo(target, move_speed, turn_speed, elapsed_time);
+	context.owner->MoveTo(target, context.move_speed, context.turn_speed, elapsed_time);
 
 	DirectX::XMFLOAT3 pos = context.owner->GetPosition();
 

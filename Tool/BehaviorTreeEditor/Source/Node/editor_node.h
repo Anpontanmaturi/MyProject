@@ -42,6 +42,8 @@ public:
 
 	bool CanAddTo() const;// Ú‘±æì¬‚Å‚«‚é‚©
 
+	bool WantDelete() const { return delete_request; }
+
 	float GetWaitTime() const { return wait_time; }
 	void SetWaitTime(float value) { wait_time = value; }
 
@@ -52,6 +54,9 @@ public:
 	float GetDist()const { return dist; }
 	void SetDist(float value) { dist = value; }
 
+	const std::string& GetMoveToKey() const { return move_to_key; }
+	void SetMoveToKey(const std::string& value) { move_to_key = value; }
+
 private:
 	void WriteNode();
 
@@ -61,12 +66,17 @@ private:
 
 	NodeType type;
 
+	bool delete_request = false;
+
 	float wait_time = 1.0f;
 
 	// DistCondition—p
 	std::string dist_key = "PlayerPosition";
 	int dist_compare = 2;
 	float dist = 5.0f;
+
+	// MoveTo—p
+	std::string move_to_key = "PlayerPosition";
 
 protected:
 	int id;

@@ -12,8 +12,8 @@ public:
 		const char* filename);
 
 	static bool Load(
-		EditorGraph& graph,
-		const char* filename);
+		EditorGraph& graph);
 
 	static std::string SelectJsonSavePath();
+	static std::string SelectJsonLoadPath();
 };

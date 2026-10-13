@@ -216,6 +216,9 @@
     <ClCompile Include="Source\Ai\BehaviorTree\Blackboard\blackboard.cpp">
       <Filter>Source\Ai\BehaviorTree\Blackboard</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Ai\BehaviorTree\Action\idle_node.cpp">
+      <Filter>Source\Ai\BehaviorTree\Action</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\fullscreen_quad.h">
@@ -400,6 +403,9 @@
     </ClInclude>
     <ClInclude Include="Source\Ai\BehaviorTree\bt_node_type.h">
       <Filter>Source\Ai\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ai\BehaviorTree\Action\idle_node.h">
+      <Filter>Source\Ai\BehaviorTree\Action</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

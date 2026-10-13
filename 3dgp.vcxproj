@@ -194,6 +194,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Ai\BehaviorTree\Action\dist_condition_node.cpp" />
+    <ClCompile Include="Source\Ai\BehaviorTree\Action\idle_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Action\move_to_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Action\print_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Action\wait_node.cpp" />
@@ -249,6 +250,7 @@
     <ClInclude Include="Source\Ai\BehaviorTree\Action\action_node.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\Action\condition_node.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\Action\dist_condition_node.h" />
+    <ClInclude Include="Source\Ai\BehaviorTree\Action\idle_node.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\Action\move_to_node.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\Action\print_node.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\Action\wait_node.h" />
