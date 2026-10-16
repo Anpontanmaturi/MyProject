@@ -53,6 +53,8 @@ void EditorNode::Draw()
 
 void EditorNode::WriteNode()
 {
+	ImGui::PushID(id);
+
 	ImDrawList* draw = ImGui::GetWindowDrawList();
 
 	ImVec2 p1 = position;
@@ -93,6 +95,7 @@ void EditorNode::WriteNode()
 	}
 
 	case NodeType::DistCondition: {
+
 		ImGui::SetCursorScreenPos(
 			ImVec2(
 				p1.x + 10,
@@ -140,6 +143,8 @@ void EditorNode::WriteNode()
 	{
 		pin.Draw();
 	}
+
+	ImGui::PopID();
 }
 
 bool EditorNode::CanAddTo() const

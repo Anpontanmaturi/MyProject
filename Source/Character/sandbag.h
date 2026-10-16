@@ -48,7 +48,8 @@ private:
 	bool use_behavior_tree = true;
 
 	// ‰¼’u‚«
-	BehaviorTree behavior_tree;
+	//BehaviorTree behavior_tree;
+	std::unique_ptr<BehaviorTree> behavior_tree;
 	Blackboard black_board;
 	BTContext context;
 	void BuildBehaviorTree();

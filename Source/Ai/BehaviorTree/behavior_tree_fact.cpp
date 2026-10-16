@@ -8,12 +8,15 @@
 
 #include "Action/wait_node.h"
 #include "Action/move_to_node.h"
+#include "Action/idle_node.h"
 #include "Action/dist_condition_node.h"
 
 #include <functional>
 #include <unordered_map>
 #include <unordered_set>
 #include <stdexcept>
+#include <windows.h>
+#include <string>
 
 std::unique_ptr<BTNode>
 BehaviorTreeFact::CreateNode(BTNodeType type, const json& node_data)
@@ -43,8 +46,10 @@ BehaviorTreeFact::CreateNode(BTNodeType type, const json& node_data)
             node_data["properties"].value("key",std::string{}),BlackboardValueType::Float3
         };
         return std::make_unique<MoveToNode>(key);
-        break;
     }
+
+    case BTNodeType::Idle:
+        return std::make_unique<IdleNode>();
 
     case BTNodeType::DistCondition:
     {
@@ -137,7 +142,6 @@ BehaviorTreeFact::CreateTree(const json& data)
             auto node = CreateNode(type, node_data);
 
             if (!node) { return nullptr; }
-
 
             auto* composite = dynamic_cast<CompositeNode*>(node.get());
 

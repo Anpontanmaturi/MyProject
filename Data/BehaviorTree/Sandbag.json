@@ -10,34 +10,40 @@
         },
         {
             "from": 0,
-            "to": 3
+            "to": 4
+        },
+        {
+            "from": 0,
+            "to": 5
         }
     ],
     "nodes": [
         {
             "id": 0,
             "position": {
-                "x": 98.0,
-                "y": 215.0
+                "x": 41.0,
+                "y": 218.0
             },
             "type": 1
         },
         {
             "id": 1,
             "position": {
-                "x": 536.0,
-                "y": 37.0
+                "x": 391.0,
+                "y": 56.0
             },
             "properties": {
-                "wait_time": 3.0
+                "compare": 2,
+                "distance": 5.0,
+                "key": "PlayerPosition"
             },
-            "type": 3
+            "type": 6
         },
         {
             "id": 2,
             "position": {
-                "x": 532.0,
-                "y": 177.0
+                "x": 393.0,
+                "y": 181.0
             },
             "properties": {
                 "key": "PlayerPosition"
@@ -45,10 +51,23 @@
             "type": 4
         },
         {
-            "id": 3,
+            "id": 4,
             "position": {
-                "x": 535.0,
-                "y": 312.0
+                "x": 392.0,
+                "y": 277.0
+            },
+            "properties": {
+                "compare": 1,
+                "distance": 1.0,
+                "key": "PlayerPosition"
+            },
+            "type": 6
+        },
+        {
+            "id": 5,
+            "position": {
+                "x": 393.0,
+                "y": 410.0
             },
             "type": 5
         }
