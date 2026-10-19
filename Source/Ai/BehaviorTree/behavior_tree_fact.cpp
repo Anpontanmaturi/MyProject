@@ -143,6 +143,8 @@ BehaviorTreeFact::CreateTree(const json& data)
 
             if (!node) { return nullptr; }
 
+            node->SetNodeId(node_data["id"].get<int>());
+
             auto* composite = dynamic_cast<CompositeNode*>(node.get());
 
             auto it = children_map.find(id);

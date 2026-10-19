@@ -201,6 +201,7 @@
     <ClCompile Include="Source\Ai\BehaviorTree\behavior_tree.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\behavior_tree_fact.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Blackboard\blackboard.cpp" />
+    <ClCompile Include="Source\Ai\BehaviorTree\bt_debug_gui.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Composite\composite_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Composite\selector_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Composite\sequence_node.cpp" />
@@ -259,6 +260,7 @@
     <ClInclude Include="Source\Ai\BehaviorTree\Blackboard\blackboard.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\Blackboard\blackboard_value.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\bt_context.h" />
+    <ClInclude Include="Source\Ai\BehaviorTree\bt_debug_info.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\bt_node.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\bt_node_type.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\bt_state.h" />

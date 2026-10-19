@@ -6,5 +6,4 @@ class SequenceNode final : public CompositeNode
 {
 public:
 	BTState Tick(BTContext& context, float elpased_time) override;
-
 };

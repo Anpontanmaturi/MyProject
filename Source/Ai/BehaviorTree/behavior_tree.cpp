@@ -10,5 +10,14 @@ BTState BehaviorTree::Tick(BTContext& context, float elapsed_time)
 {
 	if (!root) return BTState::Failure;
 
-	return root->Tick(context,elapsed_time);
+	debug_info.Clear();
+
+	BTState state = root->Tick(context, elapsed_time);
+
+	debug_info.SetState(root->GetNodeId(),
+		state == BTState::Run ? BTDebugState::Run :
+		state == BTState::Success ? BTDebugState::Success :
+		BTDebugState::Failure);
+
+	return state;
 }
