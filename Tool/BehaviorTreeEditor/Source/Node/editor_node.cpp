@@ -2,6 +2,7 @@
 
 EditorNode::EditorNode(int id, const std::string& name, NodeType type) :id(id), name(name), type(type)
 {
+	// ノード追加時変更する
 	switch (type)
 	{
 	case NodeType::DistCondition:
@@ -72,6 +73,7 @@ void EditorNode::WriteNode()
 
 	draw->AddText(ImVec2(p1.x + 8, p1.y +5), IM_COL32_WHITE, name.c_str());
 
+	// ノード追加時変更する
 	switch (type)
 	{
 	case NodeType::Wait: {

@@ -413,6 +413,9 @@
     <ClInclude Include="Source\Ai\BehaviorTree\bt_debug_info.h">
       <Filter>Source\Ai\BehaviorTree</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Ai\BehaviorTree\bt_debug_gui.h">
+      <Filter>Source\Ai\BehaviorTree</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="HLSL\blur_ps.hlsl">

@@ -4,6 +4,7 @@
 #include "Graphics/skinned_mesh.h"
 #include "animator.h"
 #include <memory>
+#include <nlohmann/json.hpp>
 #include "Ai/BehaviorTree/behavior_tree.h"
 #include "Ai/BehaviorTree/Blackboard/blackboard.h"
 
@@ -46,6 +47,8 @@ private:
 	float	jump_speed = 5.0f;
 
 	bool use_behavior_tree = true;
+
+	nlohmann::json json_data;
 
 	// ‰¼’u‚«
 	//BehaviorTree behavior_tree;

@@ -260,6 +260,7 @@
     <ClInclude Include="Source\Ai\BehaviorTree\Blackboard\blackboard.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\Blackboard\blackboard_value.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\bt_context.h" />
+    <ClInclude Include="Source\Ai\BehaviorTree\bt_debug_gui.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\bt_debug_info.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\bt_node.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\bt_node_type.h" />

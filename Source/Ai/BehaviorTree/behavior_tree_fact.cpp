@@ -21,6 +21,7 @@
 std::unique_ptr<BTNode>
 BehaviorTreeFact::CreateNode(BTNodeType type, const json& node_data)
 {
+    // ƒm[ƒh’Ç‰Á•ÏX‚·‚é
     switch (type)
     {
     case BTNodeType::Sequence:

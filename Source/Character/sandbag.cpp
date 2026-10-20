@@ -12,9 +12,9 @@
 #include <fstream>
 #include <string>
 #include <Windows.h>
-#include <nlohmann/json.hpp>
 
-#include "../Ai/BehaviorTree/behavior_tree_fact.h"
+#include "Ai/BehaviorTree/behavior_tree_fact.h"
+#include "Ai/BehaviorTree/bt_debug_gui.h"
 
 namespace
 {
@@ -92,6 +92,9 @@ void Sandbag::DebugRenderGui()
 		ImGui::Checkbox("use_behavior_tree", &use_behavior_tree);
 	}
 	ImGui::End();
+	if (behavior_tree) {
+		DrawBTDebugGui(json_data, behavior_tree->GetDebugInfo());
+	}
 }
 
 void Sandbag::OnDamaged()
@@ -181,9 +184,7 @@ void Sandbag::BuildBehaviorTree()
 		return; 
 	}
 
-	nlohmann::json data;
-
-	try { file >> data; }
+	try { file >> json_data; }
 	catch (const nlohmann::json::exception& e)
 	{
 		std::string message = std::string("Failed to load JSON\n")+e.what();
@@ -193,7 +194,7 @@ void Sandbag::BuildBehaviorTree()
 	}
 
 	// BehaviorTreeÇê∂ê¨
-	std::unique_ptr<BehaviorTree> tree = BehaviorTreeFact::CreateTree(data);
+	std::unique_ptr<BehaviorTree> tree = BehaviorTreeFact::CreateTree(json_data);
 
 	if (!tree) { OutputDebugStringA("Failed to create BehaviorTree from Sandbug.json\n"); return; }
 

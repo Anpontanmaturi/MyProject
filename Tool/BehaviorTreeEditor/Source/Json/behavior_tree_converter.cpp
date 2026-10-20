@@ -17,6 +17,7 @@ using json = nlohmann::json;
 
 std::string GetNodeName(NodeType type)// ラベルの名前設定
 {
+	// ノード追加時変更する
 	switch (type)
 	{
 	case NodeType::Root:
@@ -164,6 +165,7 @@ bool BehaviorTreeConverter::Load(
 			type);
 
 		// その他
+		// ノード追加時変更する
 		switch (type)
 		{
 		case NodeType::Wait:

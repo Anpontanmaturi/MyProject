@@ -12,6 +12,8 @@ BTState BehaviorTree::Tick(BTContext& context, float elapsed_time)
 
 	debug_info.Clear();
 
+	context.debug_info = &debug_info;
+
 	BTState state = root->Tick(context, elapsed_time);
 
 	debug_info.SetState(root->GetNodeId(),

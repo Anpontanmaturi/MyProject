@@ -10,8 +10,6 @@ public:
 	BTState Tick(
 		BTContext& context, float elapsed_time) override;
 
-	const char* GetTypeNode() const override { return "MoveTo"; }
-
 private:
 	float wait_time = 0.0f;
 	float current_time = 0.0f;

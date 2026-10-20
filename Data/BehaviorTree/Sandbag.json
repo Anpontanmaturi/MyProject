@@ -1,36 +1,44 @@
 {
     "links": [
         {
-            "from": 0,
-            "to": 1
+            "from": 9,
+            "to": 10
         },
         {
-            "from": 0,
-            "to": 2
+            "from": 10,
+            "to": 11
         },
         {
-            "from": 0,
-            "to": 4
+            "from": 10,
+            "to": 12
         },
         {
-            "from": 0,
-            "to": 5
+            "from": 9,
+            "to": 13
         }
     ],
     "nodes": [
         {
-            "id": 0,
+            "id": 9,
             "position": {
-                "x": 41.0,
-                "y": 218.0
+                "x": 139.0,
+                "y": 132.0
+            },
+            "type": 2
+        },
+        {
+            "id": 10,
+            "position": {
+                "x": 370.0,
+                "y": 133.0
             },
             "type": 1
         },
         {
-            "id": 1,
+            "id": 11,
             "position": {
-                "x": 391.0,
-                "y": 56.0
+                "x": 632.0,
+                "y": 113.0
             },
             "properties": {
                 "compare": 2,
@@ -40,10 +48,10 @@
             "type": 6
         },
         {
-            "id": 2,
+            "id": 12,
             "position": {
-                "x": 393.0,
-                "y": 181.0
+                "x": 630.0,
+                "y": 242.0
             },
             "properties": {
                 "key": "PlayerPosition"
@@ -51,23 +59,10 @@
             "type": 4
         },
         {
-            "id": 4,
+            "id": 13,
             "position": {
-                "x": 392.0,
-                "y": 277.0
-            },
-            "properties": {
-                "compare": 1,
-                "distance": 1.0,
-                "key": "PlayerPosition"
-            },
-            "type": 6
-        },
-        {
-            "id": 5,
-            "position": {
-                "x": 393.0,
-                "y": 410.0
+                "x": 370.0,
+                "y": 333.0
             },
             "type": 5
         }

@@ -260,6 +260,8 @@ void EditorGraph::CreateNode(NodeType type, const ImVec2& position)
 
 	std::string name;
 
+	// 仮置き
+	// ノード追加時変更する
 	switch (type)
 	{
 	case NodeType::Root:          name = "Root"; break;

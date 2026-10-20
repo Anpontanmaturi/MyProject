@@ -2,6 +2,7 @@
 
 enum class BTNodeType
 {
+	// ƒm[ƒh’Ç‰Á•ÏX‚·‚é
 	Root = 0,
 
 	Sequence, // ã‚©‚ç‡‚É

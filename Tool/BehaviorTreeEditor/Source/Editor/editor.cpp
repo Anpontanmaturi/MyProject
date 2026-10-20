@@ -32,6 +32,7 @@ void BehaviorTreeEditor::Draw()
 
         if (ImGui::BeginMenu("ノードを追加"))
         {
+            // ノード追加時変更する
             if (ImGui::MenuItem("Sequence"))
                 graph.CreateNode(NodeType::Sequence, mouse_pos);
 

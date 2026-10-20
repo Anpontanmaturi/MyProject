@@ -8,6 +8,7 @@
 
 enum class NodeType
 {
+	// ƒm[ƒh’Ç‰Á•ÏX‚·‚é
 	Root,
 
 	Sequence, // ã‚©‚ç‡‚É
