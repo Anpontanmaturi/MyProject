@@ -5,8 +5,6 @@ void DrawBTDebugGui(
 {
 	ImGui::Begin("Behavior Tree Debug");
 
-	bool running = false;
-
 	if (graph.contains("nodes") && graph["nodes"].is_array())
 	{
 		for (const auto& node : graph["nodes"])
@@ -34,20 +32,39 @@ void DrawBTDebugGui(
 			case BTNodeType::Repeater: node_name = "Repeater"; break;
 			}
 
-			if (state == BTDebugState::Run)
+			//if (state == BTDebugState::Run)
 			{
-				running = true;
+				const char* state_name = "";
 
-				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.2f, 1.0f, 0.3f, 1.0f));
-				ImGui::Text("Now Running : %s (ID: %d)", node_name, id);
+				switch (state)
+				{
+				case BTDebugState::NotExecuted:
+					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+					state_name = "NotExecuted";
+					break;
+
+				case BTDebugState::Run:
+					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.2f, 1.0f, 0.3f, 1.0f));
+					state_name = "Run";
+					break;
+
+				case BTDebugState::Success:
+					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 1.0f, 1.0f, 1.0f));
+					state_name = "Success";
+					break;
+
+				case BTDebugState::Failure:
+					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+					state_name = "Failure";
+					break;
+				}
+
+				ImGui::Text("%s (ID: %d) : %s",
+					node_name, id, state_name);
+
 				ImGui::PopStyleColor();
 			}
 		}
-	}
-
-	if (!running)
-	{
-		ImGui::TextUnformatted("Not running node.");
 	}
 
 	ImGui::End();

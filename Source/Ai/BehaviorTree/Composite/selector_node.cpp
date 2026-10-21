@@ -1,5 +1,6 @@
 #include "selector_node.h"
 #include "../bt_debug_info.h"
+#include <windows.h>
 
 BTState SelectorNode::Tick(BTContext& context, float elapsed_time)
 {
