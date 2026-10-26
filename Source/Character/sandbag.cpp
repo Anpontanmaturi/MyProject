@@ -40,9 +40,13 @@ Sandbag::Sandbag(ID3D11Device* device)
 	context.owner = this;
 	context.blackboard = &black_board;
 
+	this->SetHitPoint(max_hp);
+
 	// ステート生成
 	states[static_cast<size_t>(StateId::Idle)] = std::make_unique<IdleState>(this);
 	states[static_cast<size_t>(StateId::Damage)] = std::make_unique<DamageState>(this);
+	states[static_cast<size_t>(StateId::Death)] = std::make_unique<DeathState>(this);
+	states[static_cast<size_t>(StateId::Revive)] = std::make_unique<ReviveState>(this);
 
 	SetState(StateId::Idle);
 }
@@ -89,16 +93,25 @@ void Sandbag::DebugRenderGui()
 		ImGui::InputFloat3("position", &position.x);
 		ImGui::InputFloat3("rotation", &rotation.x);
 		ImGui::InputFloat4("color", &static_cast<float>(color.x));
+		ImGui::Text("HP: %d", this->GetHitPoint());
 		ImGui::Checkbox("use_behavior_tree", &use_behavior_tree);
 	}
 	ImGui::End();
-	if (behavior_tree) {
+	if (behavior_tree && use_behavior_tree) {
 		DrawBTDebugGui(json_data, behavior_tree->GetDebugInfo());
 	}
 }
 
 void Sandbag::OnDamaged()
 {
+	--this->hp;
+
+	if (this->hp <= 0)
+	{
+		this->SetState(StateId::Death);
+		return;
+	}
+
 	this->SetState(StateId::Damage);
 }
 
@@ -150,6 +163,33 @@ void Sandbag::DamageState::OnUpdate(float elapsed_time)
 {
 	if (owner->animator->IsFinished())
 	{
+		owner->SetState(StateId::Idle);
+	}
+}
+
+void Sandbag::DeathState::OnEnter()
+{
+	owner->animator->Play("Death", false);
+}
+
+void Sandbag::DeathState::OnUpdate(float elapsed_time)
+{
+	if (owner->animator->IsFinished())
+	{
+		owner->SetState(StateId::Revive);
+	}
+}
+
+void Sandbag::ReviveState::OnEnter()
+{
+	owner->animator->Play("Revive", false);
+}
+
+void Sandbag::ReviveState::OnUpdate(float elapsed_time)
+{
+	if (owner->animator->IsFinished())
+	{
+		owner->SetHitPoint(owner->max_hp);
 		owner->SetState(StateId::Idle);
 	}
 }

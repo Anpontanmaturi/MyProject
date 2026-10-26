@@ -16,6 +16,8 @@ Player::Player(ID3D11Device* device)
 	p_device = device;
 	speed = move_speed;
 
+	SetHitPoint(max_hp);
+
 	// ステート生成
 	states[static_cast<size_t>(StateId::Idle)] = std::make_unique<IdleState>(this);
 	states[static_cast<size_t>(StateId::Move)] = std::make_unique<MoveState>(this);
@@ -58,6 +60,7 @@ void Player::DebugRenderGUI()
 			ImGui::SameLine();
 			ImGui::ProgressBar(charge_timer / full_charge_time, ImVec2(-1, 0));
 			ImGui::SliderFloat("charge_flash_spead", &flash_speed, 1.0f, 25.0f);
+			ImGui::Text("HP: %d", this->GetHitPoint());
 		}
 		if (ImGui::CollapsingHeader("any", nullptr, ImGuiTreeNodeFlags_DefaultOpen))
 		{
@@ -66,6 +69,11 @@ void Player::DebugRenderGUI()
 		}
 	}
 	ImGui::End();
+}
+
+void Player::OnDamaged()
+{
+	--this->hp;
 }
 
 void Player::Render(ID3D11DeviceContext* device_context)

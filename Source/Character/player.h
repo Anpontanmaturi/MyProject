@@ -40,6 +40,9 @@ protected:
 	// 着地した時に呼ばれる
 	void OnLanding() override;
 
+	// ダメージ処理
+	void OnDamaged() override;
+
 private:
 	void UpdateStateMachine(float elapsed_time);
 
@@ -65,6 +68,7 @@ private:
 	float	turn_speed = DirectX::XMConvertToRadians(720);
 	float	jump_speed = 5.0f;
 	bool	move_otherback = false;
+	int		max_hp = 5;
 
 	ID3D11Device* p_device = nullptr;
 

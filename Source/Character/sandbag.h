@@ -46,7 +46,9 @@ private:
 	float	turn_speed = DirectX::XMConvertToRadians(720);
 	float	jump_speed = 5.0f;
 
-	bool use_behavior_tree = true;
+	int		max_hp = 10;
+
+	bool use_behavior_tree = false;
 
 	nlohmann::json json_data;
 
@@ -63,6 +65,8 @@ private:
 		None = -1,
 		Idle,
 		Damage,
+		Death,
+		Revive,
 
 		EnumCount
 	};
@@ -96,6 +100,22 @@ public:
 	{
 	public:
 		DamageState(Sandbag* owner) : State(owner) {}
+		void OnEnter() override;
+		void OnUpdate(float elapsed_time) override;
+	};
+
+	class DeathState : public State
+	{
+	public:
+		DeathState(Sandbag* owner):State(owner){}
+		void OnEnter() override;
+		void OnUpdate(float elapsed_time) override;
+	};
+
+	class ReviveState : public State
+	{
+	public:
+		ReviveState(Sandbag* owner):State(owner){}
 		void OnEnter() override;
 		void OnUpdate(float elapsed_time) override;
 	};

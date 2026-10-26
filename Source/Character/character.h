@@ -25,10 +25,15 @@ public:
 
 	float GetRadius() const { return radius; }
 	float GetHeight() const { return height; }
+	void SetRadius(const float& radius) { this->radius = radius; }
+	void SetHeight(const float& height) { this->height = height; }
 
 	const DirectX::XMFLOAT3& GetWallNormal() const { return wall_normal; }
 
 	const DirectX::XMFLOAT3* GetPositionPtr() const { return &position; }
+
+	void SetHitPoint(const int& hp) { this->hp = hp; }
+	const int& GetHitPoint() const { return hp; }
 
 	bool IsGround() const { return is_ground; }
 
@@ -88,6 +93,8 @@ protected:
 	bool	is_ground = false;
 	float	invincible_timer = 1.0f;
 	float	jump_speed = 5.0f;
+	int		hp = 10;
+
 	float	air_control = 0.8f;
 
 	bool is_wall_touch = false;
