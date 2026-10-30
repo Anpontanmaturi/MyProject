@@ -1,6 +1,7 @@
 #pragma once
 
 #include<DirectXMath.h>
+#include<d3d11.h>
 
 class Character
 {
@@ -46,6 +47,12 @@ public:
 		float turn_speed,
 		float elapsed_time);
 
+	void MoveStop();
+
+	void TurnTo(const DirectX::XMFLOAT3& target,
+		float turn_speed,
+		float elpased_time);
+
 protected:
 	// à⁄ìÆ
 	void Move(float vx, float vy, float speed);
@@ -81,6 +88,8 @@ protected:
 	};
 	DirectX::XMFLOAT4	color = { 1, 1, 1, 1 };
 
+	ID3D11Device* device = nullptr;
+
 	DirectX::XMFLOAT3	velocity = {};
 	float	gravity = 10.0f;
 	float	radius = 0.5f;
@@ -91,7 +100,8 @@ protected:
 	float	input_move_z = 0.0f;
 	float	max_move_speed = 20.0f;
 	bool	is_ground = false;
-	float	invincible_timer = 1.0f;
+	float	invincible_timer = 1.0f; // ñ≥ìGéûä‘
+	bool	is_invincible_state = false; // ñ≥ìGèÛë‘Ç©Ç«Ç§Ç©
 	float	jump_speed = 5.0f;
 	int		hp = 10;
 

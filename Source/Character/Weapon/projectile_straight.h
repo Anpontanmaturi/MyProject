@@ -19,6 +19,4 @@ public:
 
 private:
 	std::unique_ptr<SkinnedMesh> model = nullptr;
-	float	speed = 10.0f;
-	float	life_timer = 3.0f;
 };

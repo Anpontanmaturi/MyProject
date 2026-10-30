@@ -13,7 +13,7 @@ Player::Player(ID3D11Device* device)
 	const char* filename = ".\\Data\\Model\\Jammo\\Jammo.fbx";
 	mesh = std::make_unique<SkinnedMesh>(device, filename, true, 0.0f, axis_system::rhs_y_up);
 	animator = std::make_unique<Animator>(mesh.get());
-	p_device = device;
+	this->device = device;
 	speed = move_speed;
 
 	SetHitPoint(max_hp);
@@ -22,6 +22,7 @@ Player::Player(ID3D11Device* device)
 	states[static_cast<size_t>(StateId::Idle)] = std::make_unique<IdleState>(this);
 	states[static_cast<size_t>(StateId::Move)] = std::make_unique<MoveState>(this);
 	states[static_cast<size_t>(StateId::Jump)] = std::make_unique<JumpState>(this);
+	states[static_cast<size_t>(StateId::Damage)] = std::make_unique<DamageState>(this);
 	states[static_cast<size_t>(StateId::Attack)] = std::make_unique<AttackState>(this);
 	states[static_cast<size_t>(StateId::Dash)] = std::make_unique<DashState>(this);
 	states[static_cast<size_t>(StateId::WallSlide)] = std::make_unique<WallSlideState>(this);
@@ -39,6 +40,8 @@ void Player::Update(float elapsed_time)
 
 	ProjectileManager::Instance().Update(elapsed_time);
 
+	UpdateInvincibleTimer(elapsed_time);
+
 	CollisionProjectilesVsEnemys();
 
 	animator->Update(elapsed_time);
@@ -48,6 +51,9 @@ void Player::Update(float elapsed_time)
 
 void Player::DebugRenderGUI()
 {
+	DebugRenderer* debugRenderer = Graphics::Instance().GetDebugRenderer();
+	debugRenderer->DrawCylinder(position, radius, height, DirectX::XMFLOAT4(0, 1, 0, 1));
+
 	ImGui::Begin("ImGUI");
 	{
 		if (ImGui::CollapsingHeader("player", nullptr, ImGuiTreeNodeFlags_DefaultOpen))
@@ -60,7 +66,7 @@ void Player::DebugRenderGUI()
 			ImGui::SameLine();
 			ImGui::ProgressBar(charge_timer / full_charge_time, ImVec2(-1, 0));
 			ImGui::SliderFloat("charge_flash_spead", &flash_speed, 1.0f, 25.0f);
-			ImGui::Text("HP: %d", this->GetHitPoint());
+			ImGui::Text("HP: %d", GetHitPoint());
 		}
 		if (ImGui::CollapsingHeader("any", nullptr, ImGuiTreeNodeFlags_DefaultOpen))
 		{
@@ -73,7 +79,9 @@ void Player::DebugRenderGUI()
 
 void Player::OnDamaged()
 {
-	--this->hp;
+	if (is_invincible_state) return;
+
+	--hp;
 }
 
 void Player::Render(ID3D11DeviceContext* device_context)
@@ -253,7 +261,8 @@ bool Player::InputAttack()
 		DirectX::XMFLOAT3 pos{}, dir{};
 		CalculateLaunch(pos, dir);
 
-		ProjectileStraight* proj = new ProjectileStraight(&ProjectileManager::Instance(), p_device);
+		ProjectileStraight* proj = new ProjectileStraight(&ProjectileManager::Instance(), this->device);
+		proj->SetOwner(this);
 		proj->Launch(dir, pos);
 
 		return true;
@@ -266,7 +275,8 @@ bool Player::InputAttack()
 			DirectX::XMFLOAT3 pos{}, dir{};
 			CalculateLaunch(pos, dir);
 
-			ProjectileStraight* proj = new ProjectileStraight(&ProjectileManager::Instance(), p_device);
+			ProjectileStraight* proj = new ProjectileStraight(&ProjectileManager::Instance(), this->device);
+			proj->SetOwner(this);
 			proj->ChargeLaunch(dir, pos);
 
 			charge_timer = 0.0f;
@@ -318,6 +328,8 @@ void Player::CollisionProjectilesVsEnemys()
 	for (int i = 0; i < projectile_count; i++)
 	{
 		Projectile* projectile = ProjectileManager::Instance().GetProjectile(i);
+
+		if (projectile->GetOwner() != this) continue;
 
 		DirectX::XMFLOAT3 out_position;
 		if (CollisionManager::SphereVsCylinder(
@@ -464,6 +476,19 @@ void Player::AttackState::OnUpdate(float elapsed_time)
 		{
 			owner->SetState(StateId::Idle);
 		}
+	}
+}
+
+void Player::DamageState::OnEnter()
+{
+	owner->animator->Play("GetHit1", false);
+}
+
+void Player::DamageState::OnUpdate(float elapsed_time)
+{
+	if (owner->animator->IsFinished())
+	{
+		owner->SetState(StateId::Idle);
 	}
 }
 

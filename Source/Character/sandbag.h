@@ -8,6 +8,8 @@
 #include "Ai/BehaviorTree/behavior_tree.h"
 #include "Ai/BehaviorTree/Blackboard/blackboard.h"
 
+#define EPSILON 1e-6f
+
 class Player;
 
 class Sandbag : public Character
@@ -39,6 +41,8 @@ protected:
 private:
 	void UpdateStateMachine(float elapsed_time);
 
+	void CollisionProjectilesVsPlayer(); // 自身の弾とプレイヤー
+
 	std::unique_ptr<SkinnedMesh>	mesh;
 	std::unique_ptr<Animator>	animator;
 	
@@ -67,6 +71,9 @@ private:
 		Damage,
 		Death,
 		Revive,
+		ChargeAttack,
+		ShotAttack,
+		Escape,
 
 		EnumCount
 	};
@@ -118,6 +125,68 @@ public:
 		ReviveState(Sandbag* owner):State(owner){}
 		void OnEnter() override;
 		void OnUpdate(float elapsed_time) override;
+	};
+
+	class ChargeAttackState : public State
+	{
+	public:
+		ChargeAttackState(Sandbag* owner):State(owner){}
+		void OnEnter() override;
+		void OnUpdate(float elapsed_time) override;
+
+	private:
+		enum class Phase
+		{
+			Ready,
+			Active,
+			Recovery
+		};
+
+		Phase phase = Phase::Ready;
+		float timer{};
+
+		DirectX::XMFLOAT3 dash_start_position{};
+		DirectX::XMFLOAT3 dash_direction{};
+
+		DirectX::XMFLOAT3 target{};
+	};
+
+	class ShotAttackState : public State
+	{
+	public:
+		ShotAttackState(Sandbag* owner):State(owner){}
+		void OnEnter() override;
+		void OnUpdate(float elapsed_time) override;
+
+	private:
+		float timer{};
+		float shot_timer {};
+		float shot_interval = 0.1f;
+		float shot_speed = 30.0f;
+		float shot_scale = 5.0f;
+		DirectX::XMFLOAT3 target{};
+	};
+
+	class EscapeState : public State
+	{
+	public:
+		EscapeState(Sandbag* owner):State(owner){}
+		void OnEnter() override;
+		void OnUpdate(float elapsed_time) override;
+
+	private:
+		enum class Phase
+		{
+			Ready,
+			Active,
+			Recovery
+		};
+
+		Phase phase = Phase::Ready;
+
+		float base_dist = 40.0f;
+
+		DirectX::XMFLOAT3 target{};
 	};
 
 	StateId current_state = StateId::None;

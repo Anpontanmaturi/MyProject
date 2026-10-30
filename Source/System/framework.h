@@ -17,7 +17,7 @@
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 #define FULLSCREEN FALSE
-#define APPLICATION_NAME L"X3DGP"
+#define APPLICATION_NAME L"MyProject"
 
 class Framework
 {
@@ -144,7 +144,7 @@ private:
 			float fps = static_cast<float>(frames_per_second);
 			std::wostringstream outs;
 			outs.precision(6);
-			outs << L"X3DGP" << L" : FPS : " << fps << L" / " << L"Frame Time : " << 1000.0f / fps << L" (ms)";
+			outs << APPLICATION_NAME << L" : FPS : " << fps << L" / " << L"Frame Time : " << 1000.0f / fps << L" (ms)";
 			SetWindowTextW(hwnd, outs.str().c_str());
 
 			frames_per_second = 0;

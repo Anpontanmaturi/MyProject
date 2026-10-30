@@ -3,18 +3,21 @@
 #include "Graphics/graphics.h"
 #include "player.h"
 
+#include "Weapon/projectile_straight.h"
+#include "projectile_manager.h"
+
 #include "Ai/BehaviorTree/Composite/sequence_node.h"
 #include "Ai/BehaviorTree/Composite/selector_node.h"
 #include "Ai/BehaviorTree/Action/wait_node.h"
 #include "Ai/BehaviorTree/Action/move_to_node.h"
 #include "Ai/BehaviorTree/Action/dist_condition_node.h"
 
+#include "Ai/BehaviorTree/behavior_tree_fact.h"
+#include "Ai/BehaviorTree/bt_debug_gui.h"
+
 #include <fstream>
 #include <string>
 #include <Windows.h>
-
-#include "Ai/BehaviorTree/behavior_tree_fact.h"
-#include "Ai/BehaviorTree/bt_debug_gui.h"
 
 namespace
 {
@@ -32,6 +35,7 @@ Sandbag::Sandbag(ID3D11Device* device)
 	const char* filename = ".\\Data\\Model\\Jammo\\Jammo.fbx";
 	mesh = std::make_unique<SkinnedMesh>(device, filename, true, 0.0f, axis_system::rhs_y_up);
 	animator = std::make_unique<Animator>(mesh.get());
+	this->device = device;
 
 	black_board.RegisterKey(PlayerPositionKey);
 
@@ -42,11 +46,17 @@ Sandbag::Sandbag(ID3D11Device* device)
 
 	this->SetHitPoint(max_hp);
 
-	// ステート生成
+	// 仮置き
+	// ステート生成 
 	states[static_cast<size_t>(StateId::Idle)] = std::make_unique<IdleState>(this);
 	states[static_cast<size_t>(StateId::Damage)] = std::make_unique<DamageState>(this);
 	states[static_cast<size_t>(StateId::Death)] = std::make_unique<DeathState>(this);
 	states[static_cast<size_t>(StateId::Revive)] = std::make_unique<ReviveState>(this);
+	states[static_cast<size_t>(StateId::Escape)] = std::make_unique<EscapeState>(this);
+
+	// 攻撃系
+	states[static_cast<size_t>(StateId::ChargeAttack)] = std::make_unique<ChargeAttackState>(this);
+	states[static_cast<size_t>(StateId::ShotAttack)] = std::make_unique<ShotAttackState>(this);
 
 	SetState(StateId::Idle);
 }
@@ -73,6 +83,8 @@ void Sandbag::Update(float elapsed_time)
 
 	UpdateInvincibleTimer(elapsed_time);
 
+	CollisionProjectilesVsPlayer();
+
 	animator->Update(elapsed_time);
 
 	UpdateTransform();
@@ -93,8 +105,12 @@ void Sandbag::DebugRenderGui()
 		ImGui::InputFloat3("position", &position.x);
 		ImGui::InputFloat3("rotation", &rotation.x);
 		ImGui::InputFloat4("color", &static_cast<float>(color.x));
-		ImGui::Text("HP: %d", this->GetHitPoint());
+		ImGui::Text("HP: %d", GetHitPoint());
 		ImGui::Checkbox("use_behavior_tree", &use_behavior_tree);
+		ImGui::Separator();
+		if (ImGui::Button("Charge Attack")) { SetState(Sandbag::StateId::ChargeAttack); }
+		if (ImGui::Button("Shot Attack")) { SetState(Sandbag::StateId::ShotAttack); }
+		if (ImGui::Button("Escape")) { SetState(Sandbag::StateId::Escape); }
 	}
 	ImGui::End();
 	if (behavior_tree && use_behavior_tree) {
@@ -104,15 +120,47 @@ void Sandbag::DebugRenderGui()
 
 void Sandbag::OnDamaged()
 {
-	--this->hp;
+	if (is_invincible_state) return;
 
-	if (this->hp <= 0)
+	--hp;
+
+	if (hp <= 0)
 	{
-		this->SetState(StateId::Death);
+		SetState(StateId::Death);
 		return;
 	}
 
-	this->SetState(StateId::Damage);
+	SetState(StateId::Damage);
+}
+
+void Sandbag::CollisionProjectilesVsPlayer()
+{
+	int projectile_count = ProjectileManager::Instance().GetProjectileCount();
+	for (int i = 0; i < projectile_count; i++)
+	{
+		Projectile* projectile = ProjectileManager::Instance().GetProjectile(i);
+
+		if (projectile->GetOwner() != this) continue;
+
+		projectile->SetScale(0.005f);
+		projectile->SetSpeed(50.0f);
+
+		DirectX::XMFLOAT3 out_position;
+		if (CollisionManager::SphereVsCylinder(
+			projectile->GetPosition(),
+			projectile->GetRadius(),
+			player->GetPosition(),
+			player->GetRadius(),
+			player->GetHeight(),
+			out_position))
+		{
+			if (player->TakeDamege(1, 0.1f))
+			{
+				// 弾丸破棄
+				projectile->Destroy();
+			}
+		}
+	}
 }
 
 void Sandbag::UpdateStateMachine(float elapsed_time)
@@ -190,6 +238,197 @@ void Sandbag::ReviveState::OnUpdate(float elapsed_time)
 	if (owner->animator->IsFinished())
 	{
 		owner->SetHitPoint(owner->max_hp);
+		owner->SetState(StateId::Idle);
+	}
+}
+
+void Sandbag::EscapeState::OnEnter()
+{
+	phase = Phase::Ready;
+	owner->is_invincible_state = true;
+}
+
+void Sandbag::EscapeState::OnUpdate(float elapsed_time)
+{
+	switch (phase)
+	{
+	case Phase::Ready: {
+		DirectX::XMFLOAT3 center = {};
+		DirectX::XMFLOAT3 pos = owner->GetPosition();
+
+		// 中心->敵
+		float dx = pos.x - center.x;
+		float dz = pos.z - center.z;
+		float len = sqrtf(dx * dx + dz * dz);
+
+		if (len < EPSILON)
+		{
+			target = { center.x, pos.y, center.z + base_dist };
+			phase = Phase::Active;
+			owner->Jump(owner->jump_speed * 4.0f);
+			break;
+		}
+
+		// 反対へ
+		dx = -dx / len;
+		dz = -dz / len;
+
+		target = { center.x + dx * base_dist, pos.y, center.z + dz * base_dist };
+		phase = Phase::Active;
+		owner->Jump(owner->jump_speed * 4.0f);
+		break;
+	}
+	case Phase::Active: {
+		DirectX::XMFLOAT3 pos = owner->GetPosition();
+
+		owner->MoveTo(target, owner->move_speed * base_dist, owner->turn_speed, elapsed_time);
+
+		// 仮置き
+		float dx = target.x - pos.x;
+		float dz = target.z - pos.z;
+		float distsq = dx * dx + dz * dz;
+
+		if (distsq <= 1.0f)
+		{
+			owner->MoveStop();
+			if (owner->is_ground)
+			{
+				phase = Phase::Recovery;
+				break;
+			}
+		}
+		break;
+	}
+	case Phase::Recovery: {
+		owner->SetState(StateId::Idle);
+		owner->is_invincible_state = false;
+		break;
+	}
+	}
+}
+
+void Sandbag::ChargeAttackState::OnEnter()
+{
+	phase = Phase::Ready;
+	owner->is_invincible_state = true;
+	owner->SetColor({ 0.0f, 0.2f, 1.0f, 1.0f });
+	timer = 0.0f;
+}
+
+void Sandbag::ChargeAttackState::OnUpdate(float elapsed_time)
+{
+	timer += elapsed_time;
+
+	switch (phase)
+	{
+	case Phase::Ready: {
+		DirectX::XMFLOAT3 pos{};
+		DirectX::XMFLOAT3 player_pos{};
+
+		if (owner->player != nullptr)
+		{
+			target = owner->player->GetPosition();
+
+			owner->TurnTo(target, owner->turn_speed, elapsed_time);
+
+			pos = owner->GetPosition();
+			player_pos = owner->player->GetPosition();
+		}
+
+		if (timer > 0.5f)
+		{
+			phase = Phase::Active;
+			timer = 0.0f;
+			float dx = player_pos.x - pos.x;
+			float dz = player_pos.z - pos.z;
+			float len = sqrtf(dx * dx + dz * dz);
+			if (len > EPSILON) { dash_direction = { dx / len, 0.0f, dz / len }; }
+			dash_start_position = pos;
+		}
+		break;
+	}
+	case Phase::Active: {
+		DirectX::XMFLOAT3 pos = owner->GetPosition();
+		DirectX::XMFLOAT3 player_pos = owner->player->GetPosition();
+
+		// 仮置き
+		// ここのあたり判定は後ほど細かいのに変える
+		float dx = player_pos.x - pos.x;
+		float dz = player_pos.z - pos.z;
+		float distsq = dx * dx + dz * dz;
+
+		if (timer >= 1.0f || distsq <= 0.1f)
+		{
+			phase = Phase::Recovery;
+			timer = 0.0f;
+			break;
+		}
+
+		owner->Move(dash_direction.x, dash_direction.z, owner->move_speed * 50.0f);
+		break;
+	}
+	case Phase::Recovery: {
+		owner->MoveStop();
+		owner->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
+		owner->is_invincible_state = false;
+		if (timer >= 1.0f)
+		{
+			owner->SetState(StateId::Idle);
+		}
+		break;
+	}
+	}
+}
+
+void Sandbag::ShotAttackState::OnEnter()
+{
+	timer = 0.0f;
+	shot_timer = 0.0f;
+}
+
+void Sandbag::ShotAttackState::OnUpdate(float elapsed_time)
+{
+	timer += elapsed_time;
+	shot_timer += elapsed_time;
+
+	if (owner->player == nullptr) return;
+	DirectX::XMFLOAT3 pos = owner->GetPosition();
+	target = owner->player->GetPosition();
+
+	if (timer < 3.0f)
+	{
+		if (shot_timer >= shot_interval)
+		{
+			shot_timer -= shot_interval;
+
+			DirectX::XMFLOAT3 shot_pos = // 発射位置
+			{
+				pos.x, pos.y + ((owner->mesh->GetModelHeight() * owner->GetScale().y) * 0.15f), pos.z
+			};
+
+			target.y += 1.0f;
+			// 向かう方向
+			DirectX::XMFLOAT3 d = {
+				target.x - shot_pos.x,
+				target.y - shot_pos.y,
+				target.z - shot_pos.z
+			};
+			float len = sqrtf(d.x * d.x + d.y * d.y + d.z * d.z);
+			if (len < EPSILON) return;
+
+			DirectX::XMFLOAT3 direction = {
+				d.x / len, d.y / len, d.z / len
+			};
+
+			auto* proj = new ProjectileStraight(&ProjectileManager::Instance(), owner->device);
+
+			proj->SetOwner(owner);
+
+			proj->Launch(direction, shot_pos);
+		}
+	}
+	else
+	{
 		owner->SetState(StateId::Idle);
 	}
 }

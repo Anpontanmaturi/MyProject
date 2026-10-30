@@ -70,8 +70,6 @@ private:
 	bool	move_otherback = false;
 	int		max_hp = 5;
 
-	ID3D11Device* p_device = nullptr;
-
 	Sandbag* enemy_target = nullptr;
 	CameraMode camera_mode = CameraMode::Normal;
 
@@ -94,6 +92,7 @@ private:
 		Move,
 		Jump,
 		Attack,
+		Damage,
 		Dash,
 		WallSlide,
 
@@ -145,6 +144,14 @@ public:
 	{
 	public:
 		AttackState(Player* owner):State(owner){}
+		void OnEnter() override;
+		void OnUpdate(float elapsed_time) override;
+	};
+
+	class DamageState : public State
+	{
+	public:
+		DamageState(Player* owner) : State(owner) {}
 		void OnEnter() override;
 		void OnUpdate(float elapsed_time) override;
 	};
