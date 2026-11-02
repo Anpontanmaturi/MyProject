@@ -82,9 +82,11 @@ private:
 
 	bool enable = false;
 
-	// ‰¼’u‚«
 	bool space_division = true;
 
+	Blackboard black_board;
+
+	// ‰¼’u‚«
 	enum class StateId
 	{
 		None = -1,

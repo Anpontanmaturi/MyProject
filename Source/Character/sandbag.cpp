@@ -19,15 +19,6 @@
 #include <string>
 #include <Windows.h>
 
-namespace
-{
-	BlackboardKey PlayerPositionKey
-	{
-		"PlayerPosition",
-		BlackboardValueType::Float3
-	};
-}
-
 Sandbag::~Sandbag() = default;
 
 Sandbag::Sandbag(ID3D11Device* device)
@@ -37,7 +28,9 @@ Sandbag::Sandbag(ID3D11Device* device)
 	animator = std::make_unique<Animator>(mesh.get());
 	this->device = device;
 
-	black_board.RegisterKey(PlayerPositionKey);
+	black_board.RegisterKey(BlackboardKeys::PlayerPosition);
+	black_board.RegisterKey(BlackboardKeys::Enemy);
+	black_board.SetValue(BlackboardKeys::Enemy, this);
 
 	BuildBehaviorTree();
 
@@ -64,7 +57,7 @@ Sandbag::Sandbag(ID3D11Device* device)
 void Sandbag::Update(float elapsed_time)
 {
 	black_board.SetValue(
-		PlayerPositionKey,
+		BlackboardKeys::PlayerPosition,
 		player->GetPosition());
 
 	context.move_speed = move_speed;
@@ -263,7 +256,7 @@ void Sandbag::EscapeState::OnUpdate(float elapsed_time)
 
 		if (len < EPSILON)
 		{
-			target = { center.x, pos.y, center.z + base_dist };
+			target_pos = { center.x, pos.y, center.z + base_dist };
 			phase = Phase::Active;
 			owner->Jump(owner->jump_speed * 4.0f);
 			break;
@@ -273,7 +266,7 @@ void Sandbag::EscapeState::OnUpdate(float elapsed_time)
 		dx = -dx / len;
 		dz = -dz / len;
 
-		target = { center.x + dx * base_dist, pos.y, center.z + dz * base_dist };
+		target_pos = { center.x + dx * base_dist, pos.y, center.z + dz * base_dist };
 		phase = Phase::Active;
 		owner->Jump(owner->jump_speed * 4.0f);
 		break;
@@ -281,11 +274,11 @@ void Sandbag::EscapeState::OnUpdate(float elapsed_time)
 	case Phase::Active: {
 		DirectX::XMFLOAT3 pos = owner->GetPosition();
 
-		owner->MoveTo(target, owner->move_speed * base_dist, owner->turn_speed, elapsed_time);
+		owner->MoveTo(target_pos, owner->move_speed * base_dist, owner->turn_speed, elapsed_time);
 
 		// ‰¼’u‚«
-		float dx = target.x - pos.x;
-		float dz = target.z - pos.z;
+		float dx = target_pos.x - pos.x;
+		float dz = target_pos.z - pos.z;
 		float distsq = dx * dx + dz * dz;
 
 		if (distsq <= 1.0f)

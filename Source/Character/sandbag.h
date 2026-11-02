@@ -6,7 +6,6 @@
 #include <memory>
 #include <nlohmann/json.hpp>
 #include "Ai/BehaviorTree/behavior_tree.h"
-#include "Ai/BehaviorTree/Blackboard/blackboard.h"
 
 #define EPSILON 1e-6f
 
@@ -186,7 +185,7 @@ public:
 
 		float base_dist = 40.0f;
 
-		DirectX::XMFLOAT3 target{};
+		DirectX::XMFLOAT3 target_pos{};
 	};
 
 	StateId current_state = StateId::None;

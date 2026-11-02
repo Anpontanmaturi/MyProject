@@ -2,11 +2,12 @@
 
 #include<DirectXMath.h>
 #include<d3d11.h>
+#include "Ai/BehaviorTree/Blackboard/blackboard.h"
 
 class Character
 {
 public:
-	Character() {}
+	Character();
 	virtual ~Character() {}
 
 	void UpdateTransform();

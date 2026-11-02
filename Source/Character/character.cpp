@@ -1,6 +1,10 @@
 #include "character.h"
 #include <Collision/collision_manager.h>
 
+Character::Character()
+{
+}
+
 void Character::UpdateTransform()
 {
 	DirectX::XMMATRIX S = DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);

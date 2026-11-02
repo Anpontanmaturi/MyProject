@@ -16,6 +16,9 @@ Player::Player(ID3D11Device* device)
 	this->device = device;
 	speed = move_speed;
 
+	black_board.RegisterKey(BlackboardKeys::Player);
+	black_board.SetValue(BlackboardKeys::Player, this);
+
 	SetHitPoint(max_hp);
 
 	// ステート生成
