@@ -61,6 +61,11 @@ public:
 private:
 	void WriteNode();
 
+	void DrawBlackboardKeyCombo(
+		const char* label,
+		std::string& select_key,
+		BlackboardValueType required_type);
+
 private:
 	std::vector<EditorPin> input_pins;
 	std::vector<EditorPin> output_pins;

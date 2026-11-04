@@ -1,7 +1,23 @@
 #pragma once
 
-#include "blackboard_value.h"
-#include "blackboard.h"
+#include <string>
+
+enum class BlackboardValueType
+{
+    Int,
+    Float,
+    Bool,
+    String,
+    Character,
+    Float3
+};
+
+struct BlackboardKey
+{
+    std::string name;
+    BlackboardValueType type;
+};
+
 
 namespace BlackboardKeys
 {
@@ -13,13 +29,13 @@ namespace BlackboardKeys
 
     inline const BlackboardKey Player
     {
-        "Character::Player",
+        "Player",
         BlackboardValueType::Character
     };
 
-    inline const BlackboardKey Sandbag
+    inline const BlackboardKey Enemy
     {
-        "Character::Sandbag",
+        "Enemy",
         BlackboardValueType::Character
     };
 }

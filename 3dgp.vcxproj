@@ -118,7 +118,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>USE_IMGUI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)ThirdParty\DirectXTK-main\Inc;$(ProjectDir)ThirdParty\FBX\FBX SDK\2020.3.1\include;$(ProjectDir)Source\;$(ProjectDir)ThirdParty\cereal-master\include;$(ProjectDir)ThirdParty\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)ThirdParty\DirectXTK-main\Inc;$(ProjectDir)ThirdParty\FBX\FBX SDK\2020.3.1\include;$(ProjectDir)Source\;$(ProjectDir)ThirdParty\cereal-master\include;$(ProjectDir)ThirdParty\;$(ProjectDir)Common\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
@@ -173,7 +173,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>USE_IMGUI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)ThirdParty\DirectXTK-main\Inc;$(ProjectDir)ThirdParty\FBX\FBX SDK\2020.3.1\include;$(ProjectDir)Source\;$(ProjectDir)ThirdParty\cereal-master\include;$(ProjectDir)ThirdParty\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)ThirdParty\DirectXTK-main\Inc;$(ProjectDir)ThirdParty\FBX\FBX SDK\2020.3.1\include;$(ProjectDir)Source\;$(ProjectDir)ThirdParty\cereal-master\include;$(ProjectDir)ThirdParty\;$(ProjectDir)Common\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -258,7 +258,6 @@
     <ClInclude Include="Source\Ai\BehaviorTree\behavior_tree.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\behavior_tree_fact.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\Blackboard\blackboard.h" />
-    <ClInclude Include="Source\Ai\BehaviorTree\Blackboard\blackboard_keys.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\Blackboard\blackboard_value.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\bt_context.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\bt_debug_gui.h" />

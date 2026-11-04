@@ -416,9 +416,6 @@
     <ClInclude Include="Source\Ai\BehaviorTree\bt_debug_gui.h">
       <Filter>Source\Ai\BehaviorTree</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Ai\BehaviorTree\Blackboard\blackboard_keys.h">
-      <Filter>Source\Ai\BehaviorTree\Blackboard</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="HLSL\blur_ps.hlsl">

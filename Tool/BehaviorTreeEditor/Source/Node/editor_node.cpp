@@ -1,4 +1,15 @@
 #include "editor_node.h"
+#include "Blackboard/blackboard_keys.h"
+
+namespace
+{
+	const BlackboardKey* BlackboardKeyList[] =
+	{
+		&BlackboardKeys::PlayerPosition,
+		&BlackboardKeys::Player,
+		&BlackboardKeys::Enemy
+	};
+}
 
 EditorNode::EditorNode(int id, const std::string& name, NodeType type) :id(id), name(name), type(type)
 {
@@ -159,5 +170,20 @@ bool EditorNode::CanAddTo() const
 
 	default:
 		return false;
+	}
+}
+
+void EditorNode::DrawBlackboardKeyCombo(
+	const char* label,
+	std::string& select_key,
+	BlackboardValueType required_type)
+{
+	ImGui::Text("%s", label);
+
+	ImGui::PushItemWidth(140.0f);
+
+	if (ImGui::BeginCombo((std::string("##") + label).c_str(), select_key.c_str()))
+	{
+
 	}
 }

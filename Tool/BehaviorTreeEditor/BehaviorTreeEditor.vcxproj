@@ -144,7 +144,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader />
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\imgui;$(SolutionDir)ThirdParty\DirectXTK-main\Inc;$(SolutionDir)ThirdParty\FBX\FBX SDK\2020.3.1\include;$(ProjectDir)Source\;$(SolutionDir)ThirdParty\cereal-master\include;$(SolutionDir)ThirdParty\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\imgui;$(SolutionDir)ThirdParty\DirectXTK-main\Inc;$(SolutionDir)ThirdParty\FBX\FBX SDK\2020.3.1\include;$(ProjectDir)Source\;$(SolutionDir)ThirdParty\cereal-master\include;$(SolutionDir)ThirdParty\;$(SolutionDir)Common\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -164,7 +164,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader />
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\imgui;$(SolutionDir)ThirdParty\DirectXTK-main\Inc;$(SolutionDir)ThirdParty\FBX\FBX SDK\2020.3.1\include;$(ProjectDir)Source\;$(SolutionDir)ThirdParty\cereal-master\include;$(SolutionDir)ThirdParty\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\imgui;$(SolutionDir)ThirdParty\DirectXTK-main\Inc;$(SolutionDir)ThirdParty\FBX\FBX SDK\2020.3.1\include;$(ProjectDir)Source\;$(SolutionDir)ThirdParty\cereal-master\include;$(SolutionDir)ThirdParty\;$(SolutionDir)Common\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
