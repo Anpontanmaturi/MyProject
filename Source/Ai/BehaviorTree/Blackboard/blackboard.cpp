@@ -1,4 +1,5 @@
 #include "blackboard.h"
+#include "Blackboard/blackboard_keys.h"
 
 void Blackboard::RegisterKey(const BlackboardKey& key)
 {

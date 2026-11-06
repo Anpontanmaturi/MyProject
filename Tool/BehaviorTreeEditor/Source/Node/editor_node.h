@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "../Pin/editor_pin.h"
+#include "Blackboard/blackboard_keys.h"
 
 enum class NodeType
 {
@@ -64,7 +65,7 @@ private:
 	void DrawBlackboardKeyCombo(
 		const char* label,
 		std::string& select_key,
-		BlackboardValueType required_type);
+		const std::vector<BlackboardValueType>& required_type);
 
 private:
 	std::vector<EditorPin> input_pins;
@@ -77,12 +78,12 @@ private:
 	float wait_time = 1.0f;
 
 	// DistCondition—p
-	std::string dist_key = "PlayerPosition";
+	std::string dist_key = {};
 	int dist_compare = 2;
 	float dist = 5.0f;
 
 	// MoveTo—p
-	std::string move_to_key = "PlayerPosition";
+	std::string move_to_key = {};
 
 protected:
 	int id;

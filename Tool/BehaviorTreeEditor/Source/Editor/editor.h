@@ -14,5 +14,6 @@ private:
 	EditorGraph graph;
 
 	char save_file_name[128] = {};
+	std::string current_file_path;
 
 };

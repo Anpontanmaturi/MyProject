@@ -15,6 +15,8 @@
 #include "Ai/BehaviorTree/behavior_tree_fact.h"
 #include "Ai/BehaviorTree/bt_debug_gui.h"
 
+#include "Blackboard/blackboard_keys.h"
+
 #include <fstream>
 #include <string>
 #include <Windows.h>

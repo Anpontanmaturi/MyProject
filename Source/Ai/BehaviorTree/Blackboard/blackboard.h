@@ -5,22 +5,6 @@
 #include <string>
 #include <unordered_map>
 
-enum class BlackboardValueType
-{
-	Int,
-	Float,
-	Bool,
-	String,
-	Character,
-	Float3
-};
-
-struct BlackboardKey
-{
-	std::string name;
-	BlackboardValueType type;
-};
-
 class Blackboard
 {
 public:

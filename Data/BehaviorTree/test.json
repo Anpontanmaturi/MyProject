@@ -7,39 +7,52 @@
         {
             "from": 0,
             "to": 2
+        },
+        {
+            "from": 0,
+            "to": 3
         }
     ],
     "nodes": [
         {
             "id": 0,
             "position": {
-                "x": 207.0,
-                "y": 189.0
+                "x": 219.0,
+                "y": 270.0
             },
-            "type": 1
+            "type": 2
         },
         {
             "id": 1,
             "position": {
-                "x": 563.0,
-                "y": 82.0
+                "x": 546.0,
+                "y": 124.0
             },
             "properties": {
-                "compare": 2,
-                "distance": 5.0,
                 "key": "PlayerPosition"
             },
-            "type": 6
+            "type": 4
         },
         {
             "id": 2,
             "position": {
-                "x": 564.0,
-                "y": 212.0
+                "x": 546.0,
+                "y": 233.0
+            },
+            "properties": {
+                "key": "Player"
+            },
+            "type": 4
+        },
+        {
+            "id": 3,
+            "position": {
+                "x": 544.0,
+                "y": 374.0
             },
             "properties": {
                 "compare": 1,
-                "distance": 10.0,
+                "distance": 1.5199999809265137,
                 "key": "PlayerPosition"
             },
             "type": 6

@@ -1,5 +1,4 @@
 #include "editor_node.h"
-#include "Blackboard/blackboard_keys.h"
 
 namespace
 {
@@ -119,12 +118,11 @@ void EditorNode::WriteNode()
 		ImGui::PushItemWidth(100.0f);
 
 		// key
-		char key_buffer[128];
-		strcpy_s(key_buffer, dist_key.c_str());
-		if (ImGui::InputText("Key", key_buffer, sizeof(key_buffer)))
-		{
-			dist_key = key_buffer;
-		}
+		DrawBlackboardKeyCombo(
+			"Key",
+			dist_key,
+			{ BlackboardValueType::Float3 }
+		);
 
 		// Compare
 		const char* compare_items[] =
@@ -137,6 +135,25 @@ void EditorNode::WriteNode()
 		ImGui::InputFloat("Distance", &dist);
 
 		ImGui::PopItemWidth();
+
+		ImGui::EndGroup();
+
+		break;
+	}
+
+	case NodeType::MoveTo: {
+
+		ImGui::SetCursorScreenPos(
+			ImVec2(p1.x + 10, p1.y + 35));
+
+		ImGui::BeginGroup();
+
+		DrawBlackboardKeyCombo(
+			"Target Position",
+			move_to_key,
+			{ BlackboardValueType::Float3,
+			  BlackboardValueType::Character }
+		);
 
 		ImGui::EndGroup();
 
@@ -176,7 +193,7 @@ bool EditorNode::CanAddTo() const
 void EditorNode::DrawBlackboardKeyCombo(
 	const char* label,
 	std::string& select_key,
-	BlackboardValueType required_type)
+	const std::vector<BlackboardValueType>& required_type)
 {
 	ImGui::Text("%s", label);
 
@@ -184,6 +201,28 @@ void EditorNode::DrawBlackboardKeyCombo(
 
 	if (ImGui::BeginCombo((std::string("##") + label).c_str(), select_key.c_str()))
 	{
+		for (const BlackboardKey* key : BlackboardKeyList)
+		{
+			bool parmission = std::find(
+				required_type.begin(),
+				required_type.end(),
+				key->type
+			) != required_type.end();
 
+			if (!parmission) continue;
+
+			bool selected = (select_key == key->name);
+
+			if (ImGui::Selectable(key->name.c_str(), selected))
+			{
+				select_key = key->name;
+			}
+			if (selected)
+			{
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
 	}
+	ImGui::PopItemWidth();
 }

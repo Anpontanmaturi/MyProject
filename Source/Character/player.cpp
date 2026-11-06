@@ -6,6 +6,8 @@
 #include "Weapon/projectile_straight.h"
 #include "projectile_manager.h"
 
+#include "Blackboard/blackboard_keys.h"
+
 Player::~Player() = default;
 
 Player::Player(ID3D11Device* device)
