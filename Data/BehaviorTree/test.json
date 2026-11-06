@@ -11,14 +11,18 @@
         {
             "from": 0,
             "to": 3
+        },
+        {
+            "from": 0,
+            "to": 4
         }
     ],
     "nodes": [
         {
             "id": 0,
             "position": {
-                "x": 219.0,
-                "y": 270.0
+                "x": 221.0,
+                "y": 125.0
             },
             "type": 2
         },
@@ -56,6 +60,17 @@
                 "key": "PlayerPosition"
             },
             "type": 6
+        },
+        {
+            "id": 4,
+            "position": {
+                "x": 542.0,
+                "y": 514.0
+            },
+            "properties": {
+                "key": "Player"
+            },
+            "type": 4
         }
     ]
 }

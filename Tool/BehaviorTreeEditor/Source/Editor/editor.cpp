@@ -67,16 +67,60 @@ void BehaviorTreeEditor::Draw()
 
 	ImGui::Begin("button", nullptr);
 
-	ImGui::InputText("", save_file_name, sizeof(save_file_name));
+    if (ImGui::Button("Seve(new)"))
+    {
+        ImGui::OpenPopup("SaveAs");
+    }
+    if (ImGui::BeginPopupModal("SaveAs", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+    {
+        ImGui::Text("•Û‘¶ƒtƒ@ƒCƒ‹–¼‚ð“ü—Í");
 
-	if (ImGui::Button("Save"))
+        ImGui::InputText("", save_file_name, sizeof(save_file_name));
+
+        if (ImGui::Button("Save"))
+        {
+            std::string save_path;
+            if (BehaviorTreeConverter::SaveAs(graph, save_file_name, save_path))
+            {
+                current_file_path = save_path;
+                ImGui::CloseCurrentPopup();
+            }
+        }
+
+        ImGui::SameLine();
+
+        if (ImGui::Button("Cancel"))
+        {
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::EndPopup();
+
+    }
+
+	if (ImGui::Button("Save(overwrite)"))
 	{
-		BehaviorTreeConverter::Save(graph, save_file_name);
+        if (!current_file_path.empty())
+        {
+            BehaviorTreeConverter::Save(graph, current_file_path);
+        }
+        else
+        {
+            std::string save_path;
+            if (BehaviorTreeConverter::SaveAs(graph, save_file_name, save_path))
+            {
+                current_file_path = save_path;
+            }
+        }
 	}
 
 	if (ImGui::Button("Load"))
 	{
-		BehaviorTreeConverter::Load(graph);
+        std::string load_path;
+        if (BehaviorTreeConverter::Load(graph, load_path))
+        {
+            current_file_path = load_path;
+        }
 	}
 
 	ImGui::End();

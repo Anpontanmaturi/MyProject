@@ -54,7 +54,7 @@ std::string GetNodeName(NodeType type)// ƒ‰ƒxƒ‹‚Ì–¼‘Oİ’è
 
 bool BehaviorTreeConverter::Save(
 	const EditorGraph& graph,
-	const char* filename)
+	const std::string& file_path)
 {
 	json data;
 
@@ -108,16 +108,18 @@ bool BehaviorTreeConverter::Save(
 		data["links"].push_back(link_data);
 	}
 
-	std::string path = SelectJsonSavePath();
+	//std::string path = SelectJsonSavePath();
 
-	if (path.empty()) { return false; }
+	//if (path.empty()) { return false; }
 
-	std::string file_path = path + "\\" + filename;
+	/*std::string file_path = path + "\\" + filename;
 
 	if (file_path.size() < 5 || file_path.substr(file_path.size() - 5) != ".json")
 	{
 		file_path += ".json";
-	}
+	}*/
+
+	if (file_path.empty()) { return false; }
 
 	std::ofstream file(file_path); // ‘‚«o‚µ
 
@@ -131,8 +133,35 @@ bool BehaviorTreeConverter::Save(
 	return true;
 }
 
+bool BehaviorTreeConverter::SaveAs(
+	const EditorGraph& graph,
+	const char* file_name,
+	std::string& save_path)
+{
+	std::string path = SelectJsonSavePath();
+
+	std::string file_path = path + "\\" + file_name;
+
+	if (file_path.size() < 5 || file_path.substr(file_path.size() - 5) != ".json")
+	{
+		file_path += ".json";
+	}
+
+	if (Save(graph, file_path))
+	{
+		save_path = file_path;
+	}
+	else
+	{
+		assert("couldn't save jsonfile!!");
+	}
+
+	return true;
+}
+
 bool BehaviorTreeConverter::Load(
-	EditorGraph& graph)
+	EditorGraph& graph,
+	std::string& load_path)
 {
 	std::string path = SelectJsonLoadPath();
 
@@ -218,6 +247,8 @@ bool BehaviorTreeConverter::Load(
 
 		graph.AddLink(&outputs[0], &inputs[0]);
 	}
+
+	load_path = path;
 
 	return true;
 }
