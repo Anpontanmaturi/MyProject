@@ -1,6 +1,7 @@
 #pragma once
 
 #include "blackboard_value.h"
+#include "Blackboard/blackboard_keys.h"
 
 #include <string>
 #include <unordered_map>

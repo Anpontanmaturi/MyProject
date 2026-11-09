@@ -11,6 +11,8 @@
 #include "Action/idle_node.h"
 #include "Action/dist_condition_node.h"
 
+#include "Blackboard/blackboard_keys.h"
+
 #include <functional>
 #include <unordered_map>
 #include <unordered_set>

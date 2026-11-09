@@ -7,7 +7,7 @@ PrintNode::PrintNode(const std::string& text) :text(text)
 
 }
 
-BTState PrintNode::Tick(BTContext& context, float elapsed_time)
+BTState PrintNode::OnTick(BTContext& context, float elapsed_time)
 {
 	std::cout << text << std::endl;
 

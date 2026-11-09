@@ -197,11 +197,13 @@
     <ClCompile Include="Source\Ai\BehaviorTree\Action\idle_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Action\move_to_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Action\print_node.cpp" />
+    <ClCompile Include="Source\Ai\BehaviorTree\Action\shot_attack_state.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Action\wait_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\behavior_tree.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\behavior_tree_fact.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Blackboard\blackboard.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\bt_debug_gui.cpp" />
+    <ClCompile Include="Source\Ai\BehaviorTree\bt_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Composite\composite_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Composite\selector_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Composite\sequence_node.cpp" />
@@ -254,6 +256,7 @@
     <ClInclude Include="Source\Ai\BehaviorTree\Action\idle_node.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\Action\move_to_node.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\Action\print_node.h" />
+    <ClInclude Include="Source\Ai\BehaviorTree\Action\shot_attack_node.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\Action\wait_node.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\behavior_tree.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\behavior_tree_fact.h" />

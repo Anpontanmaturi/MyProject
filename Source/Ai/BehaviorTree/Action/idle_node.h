@@ -5,7 +5,7 @@
 class IdleNode : public BTNode
 {
 public:
-	BTState Tick(
+	BTState OnTick(
 		BTContext& context,
 		float elapsed_time
 	)override;

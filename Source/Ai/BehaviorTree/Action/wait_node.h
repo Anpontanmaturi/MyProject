@@ -7,7 +7,9 @@ class WaitNode : public ActionNode
 public:
 	explicit WaitNode(float wait_node);
 
-	BTState Tick(
+	void OnEnter(BTContext& context)override;
+
+	BTState OnTick(
 		BTContext& context, float elapsed_time) override;
 
 private:

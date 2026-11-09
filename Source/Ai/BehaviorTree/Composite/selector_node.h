@@ -5,5 +5,5 @@
 class SelectorNode final : public CompositeNode
 {
 public:
-	BTState Tick(BTContext& context, float elapsed_time) override;
+	BTState OnTick(BTContext& context, float elapsed_time) override;
 };

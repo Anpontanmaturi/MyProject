@@ -11,7 +11,7 @@ MoveToNode::MoveToNode(const BlackboardKey& key, float arrive_dist)
 
 }
 
-BTState MoveToNode::Tick(BTContext& context, float elapsed_time)
+BTState MoveToNode::OnTick(BTContext& context, float elapsed_time)
 {
 	if ((!context.owner)||(!context.blackboard)||(!context.blackboard->HasValue(key))) return BTState::Failure;
 

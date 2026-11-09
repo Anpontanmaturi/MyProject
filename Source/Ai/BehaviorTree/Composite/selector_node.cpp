@@ -2,7 +2,7 @@
 #include "../bt_debug_info.h"
 #include <windows.h>
 
-BTState SelectorNode::Tick(BTContext& context, float elapsed_time)
+BTState SelectorNode::OnTick(BTContext& context, float elapsed_time)
 {
 	for (auto& child : children)
 	{

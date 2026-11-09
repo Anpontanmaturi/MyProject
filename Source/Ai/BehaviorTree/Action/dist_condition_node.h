@@ -19,7 +19,7 @@ public:
 		DistanceCompare compare,
 		float dist);
 
-	BTState Tick(
+	BTState OnTick(
 		BTContext& context,
 		float elapsed_time) override;
 

@@ -1,7 +1,7 @@
 #include "sequence_node.h"
 #include "../bt_debug_info.h"
 
-BTState SequenceNode::Tick(BTContext& context, float elapsed_time)
+BTState SequenceNode::OnTick(BTContext& context, float elapsed_time)
 {
 	for (auto& child : children)
 	{

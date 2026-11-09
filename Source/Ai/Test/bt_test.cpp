@@ -14,7 +14,7 @@ class TestSuccessNode : public BTNode
 {
 public:
 
-    BTState Tick(BTContext&,float) override
+    BTState OnTick(BTContext&,float) override
     {
         return BTState::Success;
     }
@@ -24,7 +24,7 @@ class TestFailureNode : public BTNode
 {
 public:
 
-    BTState Tick(BTContext&,float) override
+    BTState OnTick(BTContext&,float) override
     {
         return BTState::Failure;
     }

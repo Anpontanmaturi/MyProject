@@ -13,7 +13,7 @@ DistConditionNode::DistConditionNode(
 
 }
 
-BTState DistConditionNode::Tick(
+BTState DistConditionNode::OnTick(
 	BTContext& context,
 	float elapsed_time)
 {

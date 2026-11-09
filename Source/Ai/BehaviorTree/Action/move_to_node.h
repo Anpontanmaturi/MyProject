@@ -10,7 +10,7 @@ public:
 		const BlackboardKey& key,
 		float arrive_dist = 0.2f);
 
-	BTState Tick(BTContext& context, float elapsed_time) override;
+	BTState OnTick(BTContext& context, float elapsed_time) override;
 
 private:
 	BlackboardKey key;
