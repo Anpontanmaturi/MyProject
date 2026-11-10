@@ -13,8 +13,8 @@ Player::~Player() = default;
 Player::Player(ID3D11Device* device)
 {
 	const char* filename = ".\\Data\\Model\\Jammo\\Jammo.fbx";
-	mesh = std::make_unique<SkinnedMesh>(device, filename, true, 0.0f, axis_system::rhs_y_up);
-	animator = std::make_unique<Animator>(mesh.get());
+	this->mesh = std::make_unique<SkinnedMesh>(device, filename, true, 0.0f, axis_system::rhs_y_up);
+	animator = std::make_unique<Animator>(this->mesh.get());
 	this->device = device;
 	speed = move_speed;
 
@@ -91,7 +91,7 @@ void Player::OnDamaged()
 
 void Player::Render(ID3D11DeviceContext* device_context)
 {
-	mesh->Render(device_context, transform, color, animator->GetCurrentKeyframe());
+	this->mesh->Render(device_context, transform, color, animator->GetCurrentKeyframe());
 
 	ProjectileManager::Instance().Render(device_context);
 
@@ -233,7 +233,7 @@ bool Player::InputAttack()
 
 	auto CalculateLaunch = [&](DirectX::XMFLOAT3& out_pos, DirectX::XMFLOAT3& out_dir) {
 		out_pos.x = position.x;
-		out_pos.y = position.y + ((mesh->GetModelHeight() * scale.y) * 0.15f);
+		out_pos.y = position.y + ((this->mesh->GetModelHeight() * scale.y) * 0.15f);
 		out_pos.z = position.z;
 
 		if (camera_mode == CameraMode::LockOn) 

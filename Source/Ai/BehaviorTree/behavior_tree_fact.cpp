@@ -10,6 +10,7 @@
 #include "Action/move_to_node.h"
 #include "Action/idle_node.h"
 #include "Action/dist_condition_node.h"
+#include "Action/shot_attack_node.h"
 
 #include "Blackboard/blackboard_keys.h"
 
@@ -32,8 +33,7 @@ BehaviorTreeFact::CreateNode(BTNodeType type, const json& node_data)
     case BTNodeType::Selector:
         return std::make_unique<SelectorNode>();
 
-    case BTNodeType::Wait:
-    {
+    case BTNodeType::Wait:{
         float wait_time = 1.0f;
         if (node_data.contains("properties"))
         {
@@ -42,8 +42,7 @@ BehaviorTreeFact::CreateNode(BTNodeType type, const json& node_data)
         return std::make_unique<WaitNode>(wait_time);
     }
 
-    case BTNodeType::MoveTo:
-    {
+    case BTNodeType::MoveTo:{
         BlackboardKey key
         {
             node_data["properties"].value("key",std::string{}),BlackboardValueType::Float3
@@ -54,17 +53,30 @@ BehaviorTreeFact::CreateNode(BTNodeType type, const json& node_data)
     case BTNodeType::Idle:
         return std::make_unique<IdleNode>();
 
-    case BTNodeType::DistCondition:
-    {
-        // ‰¼’u‚«
+    case BTNodeType::ShotStreight: {
+        const auto& properties = node_data["properties"];
+
         BlackboardKey key
         {
-            node_data["properties"].value("key",std::string{}),BlackboardValueType::Float3
-        };        
+            properties.value("key",std::string{}),BlackboardValueType::Float3
+        };
+
+        float shot_interval = properties.value("shot_interval", 0.1f);
+        float attack_time = properties.value("attack_time", 1.0f);
+
+        return std::make_unique<ShotAttackNode>(key, shot_interval, attack_time);
+    }
+
+    case BTNodeType::DistCondition: {
+        // ‰¼’u‚«
+        const auto& properties = node_data["properties"];
+
+        BlackboardKey key
+        {
+            properties.value("key",std::string{}),BlackboardValueType::Float3
+        };
 
         DistanceCompare compare = DistanceCompare::Greater;
-        
-        const auto& properties = node_data["properties"];
 
         float dist = properties.value("distance", 5.0f);
         int compare_type = properties.value("compare", 2);

@@ -42,7 +42,6 @@ private:
 
 	void CollisionProjectilesVsPlayer(); // 自身の弾とプレイヤー
 
-	std::unique_ptr<SkinnedMesh>	mesh;
 	std::unique_ptr<Animator>	animator;
 	
 	float	move_speed = 5.0f;
@@ -161,8 +160,6 @@ public:
 		float timer{};
 		float shot_timer {};
 		float shot_interval = 0.1f;
-		float shot_speed = 30.0f;
-		float shot_scale = 5.0f;
 		DirectX::XMFLOAT3 target{};
 	};
 

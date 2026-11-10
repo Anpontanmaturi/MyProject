@@ -3,6 +3,7 @@
 #include<DirectXMath.h>
 #include<d3d11.h>
 #include "Ai/BehaviorTree/Blackboard/blackboard.h"
+#include "Graphics/skinned_mesh.h"
 
 class Character
 {
@@ -31,8 +32,8 @@ public:
 	void SetHeight(const float& height) { this->height = height; }
 
 	const DirectX::XMFLOAT3& GetWallNormal() const { return wall_normal; }
-
 	const DirectX::XMFLOAT3* GetPositionPtr() const { return &position; }
+	const float GetModelHeight() const { return this->mesh->GetModelHeight(); }
 
 	void SetHitPoint(const int& hp) { this->hp = hp; }
 	const int& GetHitPoint() const { return hp; }
@@ -53,6 +54,11 @@ public:
 	void TurnTo(const DirectX::XMFLOAT3& target,
 		float turn_speed,
 		float elpased_time);
+
+	void ShotProjectileSt(
+		const DirectX::XMFLOAT3& direction,
+		const DirectX::XMFLOAT3& position
+	);
 
 protected:
 	// ˆÚ“®
@@ -90,6 +96,8 @@ protected:
 	DirectX::XMFLOAT4	color = { 1, 1, 1, 1 };
 
 	ID3D11Device* device = nullptr;
+
+	std::unique_ptr<SkinnedMesh> mesh;
 
 	DirectX::XMFLOAT3	velocity = {};
 	float	gravity = 10.0f;

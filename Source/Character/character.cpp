@@ -1,6 +1,10 @@
 #include "character.h"
 #include <Collision/collision_manager.h>
 
+#include "Weapon/projectile_straight.h"
+#include "projectile_manager.h"
+
+
 Character::Character()
 {
 }
@@ -236,6 +240,18 @@ void Character::TurnTo(const DirectX::XMFLOAT3& target,
 	DirectX::XMStoreFloat3(&d, dir);
 
 	Turn(elapsed_time, d.x, d.z, turn_speed);
+}
+void Character::ShotProjectileSt(
+	const DirectX::XMFLOAT3& direction,
+	const DirectX::XMFLOAT3& position)
+{
+	auto* proj = new ProjectileStraight(
+		&ProjectileManager::Instance(),
+		device
+	);
+
+	proj->SetOwner(this);
+	proj->Launch(direction, position);
 }
 
 

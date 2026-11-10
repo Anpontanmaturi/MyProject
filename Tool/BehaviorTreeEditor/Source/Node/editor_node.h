@@ -3,6 +3,7 @@
 #include <string>
 #include <imgui.h>
 #include <vector>
+#include <variant>
 
 #include "../Pin/editor_pin.h"
 #include "Blackboard/blackboard_keys.h"
@@ -15,14 +16,49 @@ enum class NodeType
 	Sequence, // è„Ç©ÇÁèáÇ…
 	Selector, // íTÇ∑
 
-	Wait,
+	Wait,		// çsìÆån
 	MoveTo,
 	Idle,
-	DistCondition,
+	ShotStreight,
+
+	DistCondition, // èåèån
 
 	Inverter, // îΩì]
 	Repeater, // åJÇËï‘Çµ
 };
+
+struct WaitData
+{
+	float wait_time = 1.0f;
+};
+
+struct DistConditionData
+{
+	std::string key = {};
+	int compare = 2;
+	float dist = 5.0f;
+};
+
+struct MoveToData
+{
+	std::string key = {};
+};
+
+struct ShotAttackData
+{
+	std::string key = {};
+	float shot_interval = 0.1f;
+	float attack_time = 1.0f;
+};
+
+using EditorNodeData = std::variant<
+	// ÉmÅ[Éhí«â¡éûïœçX
+	std::monostate,
+	WaitData,
+	DistConditionData,
+	MoveToData,
+	ShotAttackData
+>;
 
 class EditorNode
 {
@@ -46,18 +82,7 @@ public:
 
 	bool WantDelete() const { return delete_request; }
 
-	float GetWaitTime() const { return wait_time; }
-	void SetWaitTime(float value) { wait_time = value; }
-
-	const std::string& GetDistKey() const { return dist_key; }
-	void SetDistKey(const std::string& value) { dist_key = value; }
-	int GetDistCompare()const { return dist_compare; }
-	void SetDistCompare(int value) { dist_compare = value; }
-	float GetDist()const { return dist; }
-	void SetDist(float value) { dist = value; }
-
-	const std::string& GetMoveToKey() const { return move_to_key; }
-	void SetMoveToKey(const std::string& value) { move_to_key = value; }
+	EditorNodeData& GetData() { return data; }
 
 private:
 	void WriteNode();
@@ -72,18 +97,9 @@ private:
 	std::vector<EditorPin> output_pins;
 
 	NodeType type;
+	EditorNodeData data;
 
 	bool delete_request = false;
-
-	float wait_time = 1.0f;
-
-	// DistConditionóp
-	std::string dist_key = {};
-	int dist_compare = 2;
-	float dist = 5.0f;
-
-	// MoveToóp
-	std::string move_to_key = {};
 
 protected:
 	int id;

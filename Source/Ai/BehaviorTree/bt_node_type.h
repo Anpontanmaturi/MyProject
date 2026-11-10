@@ -8,10 +8,12 @@ enum class BTNodeType
 	Sequence, // ã‚©‚ç‡‚É
 	Selector, // ’T‚·
 
-	Wait,
+	Wait,		// s“®Œn
 	MoveTo,
 	Idle,
-	DistCondition,
+	ShotStreight,
+
+	DistCondition, // ğŒŒn
 
 	Inverter, // ”½“]
 	Repeater, // ŒJ‚è•Ô‚µ

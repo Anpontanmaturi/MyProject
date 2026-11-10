@@ -38,6 +38,9 @@ std::string GetNodeName(NodeType type)// ラベルの名前設定
 	case NodeType::Idle:
 		return "Idle";
 
+	case NodeType::ShotStreight:
+		return "ShotStreight";
+
 	case NodeType::DistCondition:
 		return "DistCondition";
 
@@ -72,25 +75,39 @@ bool BehaviorTreeConverter::Save(
 		node_data["position"]["y"] = node->GetPosition().y;
 		switch (node->GetNodeType())
 		{
-		case NodeType::Wait:
-			node_data["properties"]["wait_time"] = node->GetWaitTime();
+		case NodeType::Wait: {
+			const auto& data = std::get<WaitData>(node->GetData()); // 取り出し
+			node_data["properties"]["wait_time"] = data.wait_time;
 			break;
+		}
 
-		case NodeType::MoveTo:
-			node_data["properties"]["key"] = node->GetMoveToKey();
+		case NodeType::MoveTo: {
+			const auto& data = std::get<MoveToData>(node->GetData());
+			node_data["properties"]["key"] = data.key;
 			break;
+		}
 
-		case NodeType::DistCondition:
-			node_data["properties"]["key"] = node->GetDistKey();
-			node_data["properties"]["compare"] = node->GetDistCompare();
-			node_data["properties"]["distance"] = node->GetDist();
+		case NodeType::DistCondition: {
+			const auto& data = std::get<DistConditionData>(node->GetData());
+			node_data["properties"]["key"] = data.key;
+			node_data["properties"]["compare"] = data.compare;
+			node_data["properties"]["distance"] = data.dist;
 			break;
+		}
+
+		case NodeType::ShotStreight: {
+			const auto& data = std::get<ShotAttackData>(node->GetData());
+			node_data["properties"]["key"] = data.key;
+			node_data["properties"]["shot_interval"] = data.shot_interval;
+			node_data["properties"]["attack_time"] = data.attack_time;
+			break;
+		}
 
 		default:
 			break;
 		}
 
-		data["nodes"].push_back(node_data);
+		data["nodes"].push_back(node_data); // 書き込み
 	}
 
 	// リンク保存
@@ -197,19 +214,33 @@ bool BehaviorTreeConverter::Load(
 		// ノード追加時変更する
 		switch (type)
 		{
-		case NodeType::Wait:
-			node->SetWaitTime(node_data["properties"].value("wait_time", 1.0f));
+		case NodeType::Wait: {
+			auto& data = std::get<WaitData>(node->GetData());
+			data.wait_time = node_data["properties"].value("wait_time", 1.0f);
 			break;
+		}
 
-		case NodeType::MoveTo:
-			node->SetMoveToKey(node_data["properties"].value("key", std::string("PlayerPosition")));
+		case NodeType::MoveTo: {
+			auto& data = std::get<MoveToData>(node->GetData());
+			data.key = node_data["properties"].value("key", std::string("PlayerPosition"));
 			break;
+		}
 
-		case NodeType::DistCondition:
-			node->SetDistKey(node_data["properties"].value("key", std::string("PlayerPosition")));
-			node->SetDistCompare(node_data["properties"].value("compare", 2));
-			node->SetDist(node_data["properties"].value("distance", 5.0f));
+		case NodeType::ShotStreight: {
+			auto& data = std::get<ShotAttackData>(node->GetData());
+			data.key = node_data["properties"].value("key", std::string(""));
+			data.shot_interval = node_data["properties"].value("shot_interval", 0.1f);
+			data.attack_time = node_data["properties"].value("attack_time", 1.0f);
 			break;
+		}
+
+		case NodeType::DistCondition: {
+			auto& data = std::get<DistConditionData>(node->GetData());
+			data.key = node_data["properties"].value("key", std::string("PlayerPosition"));
+			data.compare = node_data["properties"].value("compare", 2);
+			data.dist = node_data["properties"].value("distance", 5.0f);
+			break;
+		}
 
 		default:
 			break;

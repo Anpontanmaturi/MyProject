@@ -12,14 +12,26 @@ namespace
 
 EditorNode::EditorNode(int id, const std::string& name, NodeType type) :id(id), name(name), type(type)
 {
+	size = { 180, 80 };
+
 	// ÉmÅ[Éhí«â¡éûïœçXÇ∑ÇÈ
 	switch (type)
 	{
+	case NodeType::Wait:
+		data = WaitData{};
+		break;
+
 	case NodeType::DistCondition:
+		data = DistConditionData{};
 		size = { 180, 120 };break;
 
-	default:
-		size = { 180, 80 }; break;
+	case NodeType::MoveTo:
+		data = MoveToData{};
+		break;
+
+	case NodeType::ShotStreight:
+		data = ShotAttackData{};
+		break;
 	}
 
 	if (type != NodeType::Root)
@@ -94,13 +106,16 @@ void EditorNode::WriteNode()
 
 		ImGui::PushItemWidth(100.0f);
 
-		ImGui::DragFloat(
-			"##WaitTime",
-			&wait_time,
-			0.1f,
-			0.0f,
-			100.0f,
-			"%.1f");
+		if (auto* wait = std::get_if<WaitData>(&data))
+		{
+			ImGui::DragFloat(
+				"WaitTime",
+				&wait->wait_time,
+				0.1f,
+				0.0f,
+				100.0f,
+				"%.1f");
+		}
 
 		ImGui::PopItemWidth();
 		break;
@@ -117,22 +132,25 @@ void EditorNode::WriteNode()
 
 		ImGui::PushItemWidth(100.0f);
 
-		// key
-		DrawBlackboardKeyCombo(
-			"Key",
-			dist_key,
-			{ BlackboardValueType::Float3 }
-		);
-
-		// Compare
-		const char* compare_items[] =
+		if (auto* dist_condition = std::get_if<DistConditionData>(&data))
 		{
-			"<", "<=", ">", ">="
-		};
-		ImGui::Combo("Compare", &dist_compare, compare_items, IM_ARRAYSIZE(compare_items));
+			// key
+			DrawBlackboardKeyCombo(
+				"Key",
+				dist_condition->key,
+				{ BlackboardValueType::Float3 }
+			);
 
-		// distance
-		ImGui::InputFloat("Distance", &dist);
+			// Compare
+			const char* compare_items[] =
+			{
+				"<", "<=", ">", ">="
+			};
+			ImGui::Combo("Compare", &dist_condition->compare, compare_items, IM_ARRAYSIZE(compare_items));
+
+			// distance
+			ImGui::InputFloat("Distance", &dist_condition->dist);
+		}
 
 		ImGui::PopItemWidth();
 
@@ -148,12 +166,39 @@ void EditorNode::WriteNode()
 
 		ImGui::BeginGroup();
 
-		DrawBlackboardKeyCombo(
-			"Target Position",
-			move_to_key,
-			{ BlackboardValueType::Float3,
-			  BlackboardValueType::Character }
-		);
+		if (auto* move_to = std::get_if<MoveToData>(&data))
+		{
+			DrawBlackboardKeyCombo(
+				"Target Position",
+				move_to->key,
+				{ BlackboardValueType::Float3,
+				  BlackboardValueType::Character }
+			);
+		}
+
+		ImGui::EndGroup();
+
+		break;
+	}
+
+	case NodeType::ShotStreight: {
+
+		ImGui::SetCursorScreenPos(
+			ImVec2(p1.x + 10, p1.y + 35));
+
+		ImGui::BeginGroup();
+
+		if (auto* shot = std::get_if<ShotAttackData>(&data))
+		{
+			DrawBlackboardKeyCombo(
+				"Target",
+				shot->key,
+				{ BlackboardValueType::Character }
+			);
+
+			ImGui::InputFloat("Shot Interval", &shot->shot_interval);
+			ImGui::InputFloat("Attack Time", &shot->attack_time);
+		}
 
 		ImGui::EndGroup();
 

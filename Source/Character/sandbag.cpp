@@ -26,8 +26,8 @@ Sandbag::~Sandbag() = default;
 Sandbag::Sandbag(ID3D11Device* device)
 {
 	const char* filename = ".\\Data\\Model\\Jammo\\Jammo.fbx";
-	mesh = std::make_unique<SkinnedMesh>(device, filename, true, 0.0f, axis_system::rhs_y_up);
-	animator = std::make_unique<Animator>(mesh.get());
+	this->mesh = std::make_unique<SkinnedMesh>(device, filename, true, 0.0f, axis_system::rhs_y_up);
+	animator = std::make_unique<Animator>(this->mesh.get());
 	this->device = device;
 
 	black_board.RegisterKey(BlackboardKeys::PlayerPosition);
@@ -87,7 +87,7 @@ void Sandbag::Update(float elapsed_time)
 
 void Sandbag::Render(ID3D11DeviceContext* device_context)
 {
-	mesh->Render(device_context, transform, color, animator->GetCurrentKeyframe());
+	this->mesh->Render(device_context, transform, color, animator->GetCurrentKeyframe());
 }
 
 void Sandbag::DebugRenderGui()
@@ -415,11 +415,7 @@ void Sandbag::ShotAttackState::OnUpdate(float elapsed_time)
 				d.x / len, d.y / len, d.z / len
 			};
 
-			auto* proj = new ProjectileStraight(&ProjectileManager::Instance(), owner->device);
-
-			proj->SetOwner(owner);
-
-			proj->Launch(direction, shot_pos);
+			owner->ShotProjectileSt(direction, shot_pos);
 		}
 	}
 	else

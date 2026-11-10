@@ -197,7 +197,7 @@
     <ClCompile Include="Source\Ai\BehaviorTree\Action\idle_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Action\move_to_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Action\print_node.cpp" />
-    <ClCompile Include="Source\Ai\BehaviorTree\Action\shot_attack_state.cpp" />
+    <ClCompile Include="Source\Ai\BehaviorTree\Action\shot_attack_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Action\wait_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\behavior_tree.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\behavior_tree_fact.cpp" />

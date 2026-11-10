@@ -39,6 +39,7 @@ void BehaviorTreeEditor::Draw()
             if (ImGui::MenuItem("Selector"))
                 graph.CreateNode(NodeType::Selector, mouse_pos);
 
+            // çsìÆån
             if (ImGui::MenuItem("Wait"))
                 graph.CreateNode(NodeType::Wait, mouse_pos);
 
@@ -48,8 +49,13 @@ void BehaviorTreeEditor::Draw()
             if (ImGui::MenuItem("Idle"))
                 graph.CreateNode(NodeType::Idle, mouse_pos);
 
+            if (ImGui::MenuItem("ShotStreight"))
+                graph.CreateNode(NodeType::ShotStreight, mouse_pos);
+
+            // èåèån
             if (ImGui::MenuItem("DistCondition"))
                 graph.CreateNode(NodeType::DistCondition, mouse_pos);
+
 
             if (ImGui::MenuItem("Inverter"))
                 graph.CreateNode(NodeType::Inverter, mouse_pos);

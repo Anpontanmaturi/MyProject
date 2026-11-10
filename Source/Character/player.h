@@ -24,7 +24,7 @@ public:
 
 	DirectX::XMFLOAT3 GetCameraLookAt() const
 	{
-		float offset_y = (mesh->GetModelHeight() * scale.y) * 0.25f;
+		float offset_y = (this->mesh->GetModelHeight() * scale.y) * 0.25f;
 		return DirectX::XMFLOAT3(position.x, position.y + offset_y, position.z);
 	}
 
@@ -59,7 +59,6 @@ private:
 
 	void CollisionProjectilesVsEnemys();
 
-	std::unique_ptr<SkinnedMesh>	mesh;
 	std::unique_ptr<Animator>	animator;
 	
 	float	speed = {};

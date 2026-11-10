@@ -225,7 +225,7 @@
     <ClCompile Include="Source\Ai\BehaviorTree\bt_node.cpp">
       <Filter>Source\Ai\BehaviorTree</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Ai\BehaviorTree\Action\shot_attack_state.cpp">
+    <ClCompile Include="Source\Ai\BehaviorTree\Action\shot_attack_node.cpp">
       <Filter>Source\Ai\BehaviorTree\Action</Filter>
     </ClCompile>
   </ItemGroup>

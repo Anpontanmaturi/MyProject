@@ -3,6 +3,8 @@
 #include "action_node.h"
 #include "../Blackboard/blackboard.h"
 
+#define EPSILON 1e-6f
+
 class ShotAttackNode :public ActionNode
 {
 public:
@@ -17,8 +19,8 @@ private:
 	float timer{};
 	float shot_timer{};
 	float shot_interval = 0.1f;
-	float shot_speed = 30.0f;
-	float shot_scale = 5.0f;
+	/*float shot_speed = 30.0f;
+	float shot_scale = 5.0f;*/
 
 	float attack_time;
 
