@@ -63,4 +63,6 @@ BTState ShotAttackNode::OnTick(BTContext& context, float elapsed_time)
 			context.owner->ShotProjectileSt(direction, shot_pos);
 		}
 	}
+
+	return BTState::Run;
 }

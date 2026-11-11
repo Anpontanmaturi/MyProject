@@ -6,15 +6,27 @@
         },
         {
             "from": 10,
-            "to": 11
+            "to": 14
         },
         {
             "from": 10,
-            "to": 12
+            "to": 15
         },
         {
             "from": 9,
-            "to": 13
+            "to": 16
+        },
+        {
+            "from": 16,
+            "to": 17
+        },
+        {
+            "from": 16,
+            "to": 18
+        },
+        {
+            "from": 16,
+            "to": 19
         }
     ],
     "nodes": [
@@ -35,23 +47,23 @@
             "type": 1
         },
         {
-            "id": 11,
+            "id": 14,
             "position": {
-                "x": 632.0,
-                "y": 113.0
+                "x": 659.0,
+                "y": 103.0
             },
             "properties": {
                 "compare": 2,
                 "distance": 5.0,
                 "key": "PlayerPosition"
             },
-            "type": 6
+            "type": 7
         },
         {
-            "id": 12,
+            "id": 15,
             "position": {
-                "x": 630.0,
-                "y": 242.0
+                "x": 658.0,
+                "y": 260.0
             },
             "properties": {
                 "key": "PlayerPosition"
@@ -59,12 +71,46 @@
             "type": 4
         },
         {
-            "id": 13,
+            "id": 16,
             "position": {
-                "x": 370.0,
-                "y": 333.0
+                "x": 390.0,
+                "y": 473.0
+            },
+            "type": 1
+        },
+        {
+            "id": 17,
+            "position": {
+                "x": 659.0,
+                "y": 348.0
+            },
+            "properties": {
+                "compare": 1,
+                "distance": 5.0,
+                "key": "PlayerPosition"
+            },
+            "type": 7
+        },
+        {
+            "id": 18,
+            "position": {
+                "x": 657.0,
+                "y": 496.0
             },
             "type": 5
+        },
+        {
+            "id": 19,
+            "position": {
+                "x": 660.0,
+                "y": 581.0
+            },
+            "properties": {
+                "attack_time": 3.0,
+                "key": "Player",
+                "shot_interval": 0.10000000149011612
+            },
+            "type": 6
         }
     ]
 }

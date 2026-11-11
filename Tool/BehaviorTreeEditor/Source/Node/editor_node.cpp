@@ -23,7 +23,8 @@ EditorNode::EditorNode(int id, const std::string& name, NodeType type) :id(id), 
 
 	case NodeType::DistCondition:
 		data = DistConditionData{};
-		size = { 180, 120 };break;
+		size = { 180, 140 };
+		break;
 
 	case NodeType::MoveTo:
 		data = MoveToData{};
@@ -31,6 +32,7 @@ EditorNode::EditorNode(int id, const std::string& name, NodeType type) :id(id), 
 
 	case NodeType::ShotStreight:
 		data = ShotAttackData{};
+		size = { 220, 140 };
 		break;
 	}
 
@@ -188,6 +190,8 @@ void EditorNode::WriteNode()
 
 		ImGui::BeginGroup();
 
+		ImGui::PushItemWidth(100.0f);
+		
 		if (auto* shot = std::get_if<ShotAttackData>(&data))
 		{
 			DrawBlackboardKeyCombo(
@@ -198,7 +202,9 @@ void EditorNode::WriteNode()
 
 			ImGui::InputFloat("Shot Interval", &shot->shot_interval);
 			ImGui::InputFloat("Attack Time", &shot->attack_time);
+
 		}
+		ImGui::PopItemWidth();
 
 		ImGui::EndGroup();
 

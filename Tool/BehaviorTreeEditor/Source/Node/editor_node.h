@@ -32,13 +32,6 @@ struct WaitData
 	float wait_time = 1.0f;
 };
 
-struct DistConditionData
-{
-	std::string key = {};
-	int compare = 2;
-	float dist = 5.0f;
-};
-
 struct MoveToData
 {
 	std::string key = {};
@@ -51,13 +44,24 @@ struct ShotAttackData
 	float attack_time = 1.0f;
 };
 
+struct DistConditionData
+{
+	std::string key = {};
+	int compare = 2;
+	float dist = 5.0f;
+};
+
 using EditorNodeData = std::variant<
 	// ƒm[ƒh’Ç‰ÁŽž•ÏX
 	std::monostate,
+
+	// s“®Œn
 	WaitData,
-	DistConditionData,
 	MoveToData,
-	ShotAttackData
+	ShotAttackData,
+
+	// ðŒŒn
+	DistConditionData,
 >;
 
 class EditorNode

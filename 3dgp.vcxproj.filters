@@ -228,6 +228,9 @@
     <ClCompile Include="Source\Ai\BehaviorTree\Action\shot_attack_node.cpp">
       <Filter>Source\Ai\BehaviorTree\Action</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Ai\BehaviorTree\Action\move_stop_node.cpp">
+      <Filter>Source\Ai\BehaviorTree\Action</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\fullscreen_quad.h">
@@ -423,6 +426,9 @@
       <Filter>Source\Ai\BehaviorTree</Filter>
     </ClInclude>
     <ClInclude Include="Source\Ai\BehaviorTree\Action\shot_attack_node.h">
+      <Filter>Source\Ai\BehaviorTree\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ai\BehaviorTree\Action\move_stop_node.h">
       <Filter>Source\Ai\BehaviorTree\Action</Filter>
     </ClInclude>
   </ItemGroup>

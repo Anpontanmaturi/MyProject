@@ -2,7 +2,7 @@
 
 enum class BTState
 {
-	Success,
-	Failure,
-	Run,
+	Success, // ¬Œ÷
+	Failure, // ¸”s
+	Run,	 // Às’†
 };

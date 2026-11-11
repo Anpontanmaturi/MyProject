@@ -27,6 +27,7 @@ void DrawBTDebugGui(
 			case BTNodeType::Wait: node_name = "Wait"; break;
 			case BTNodeType::MoveTo: node_name = "MoveTo"; break;
 			case BTNodeType::Idle: node_name = "Idle"; break;
+			case BTNodeType::ShotStreight: node_name = "ShotStreight"; break;
 			case BTNodeType::DistCondition: node_name = "DistCondition"; break;
 			case BTNodeType::Inverter: node_name = "Inverter"; break;
 			case BTNodeType::Repeater: node_name = "Repeater"; break;
