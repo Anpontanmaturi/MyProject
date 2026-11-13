@@ -8,6 +8,7 @@
 
 #include "Action/wait_node.h"
 #include "Action/move_to_node.h"
+#include "Action/move_stop_node.h"
 #include "Action/idle_node.h"
 #include "Action/dist_condition_node.h"
 #include "Action/shot_attack_node.h"
@@ -49,6 +50,9 @@ BehaviorTreeFact::CreateNode(BTNodeType type, const json& node_data)
         };
         return std::make_unique<MoveToNode>(key);
     }
+
+    case BTNodeType::MoveStop:
+        return std::make_unique<StopNode>();
 
     case BTNodeType::Idle:
         return std::make_unique<IdleNode>();

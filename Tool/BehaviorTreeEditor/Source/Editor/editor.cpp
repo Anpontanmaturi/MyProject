@@ -46,6 +46,9 @@ void BehaviorTreeEditor::Draw()
             if (ImGui::MenuItem("MoveTo"))
                 graph.CreateNode(NodeType::MoveTo, mouse_pos);
 
+            if (ImGui::MenuItem("MoveStop"))
+                graph.CreateNode(NodeType::MoveStop, mouse_pos);
+
             if (ImGui::MenuItem("Idle"))
                 graph.CreateNode(NodeType::Idle, mouse_pos);
 

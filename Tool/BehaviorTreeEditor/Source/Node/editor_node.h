@@ -18,8 +18,10 @@ enum class NodeType
 
 	Wait,		// s“®Œn
 	MoveTo,
+	MoveStop,
 	Idle,
 	ShotStreight,
+
 
 	DistCondition, // ğŒŒn
 

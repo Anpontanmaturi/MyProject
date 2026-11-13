@@ -17,7 +17,6 @@ void DrawBTDebugGui(
 			const BTDebugState state = debug_info.GetState(id);
 			const char* node_name = "";
 
-			// 仮置き
 			// ノード追加時変更する
 			switch (type)
 			{
@@ -26,6 +25,7 @@ void DrawBTDebugGui(
 			case BTNodeType::Selector: node_name = "Selector"; break;
 			case BTNodeType::Wait: node_name = "Wait"; break;
 			case BTNodeType::MoveTo: node_name = "MoveTo"; break;
+			case BTNodeType::MoveStop: node_name = "MoveStop"; break;
 			case BTNodeType::Idle: node_name = "Idle"; break;
 			case BTNodeType::ShotStreight: node_name = "ShotStreight"; break;
 			case BTNodeType::DistCondition: node_name = "DistCondition"; break;

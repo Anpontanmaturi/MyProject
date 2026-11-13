@@ -270,6 +270,7 @@ void EditorGraph::CreateNode(NodeType type, const ImVec2& position)
 	// çsìÆån 
 	case NodeType::Wait:          name = "Wait"; break;
 	case NodeType::MoveTo:        name = "MoveTo"; break;
+	case NodeType::MoveStop:	  name = "MoveStop"; break;
 	case NodeType::Idle:          name = "Idle"; break;
 	case NodeType::ShotStreight:  name = "ShotStreight"; break;
 	// èåèån

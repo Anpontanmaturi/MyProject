@@ -10,6 +10,7 @@ enum class BTNodeType
 
 	Wait,		// çsìÆån
 	MoveTo,
+	MoveStop,
 	Idle,
 	ShotStreight,
 

@@ -34,6 +34,10 @@ EditorNode::EditorNode(int id, const std::string& name, NodeType type) :id(id), 
 		data = ShotAttackData{};
 		size = { 220, 140 };
 		break;
+
+	default:
+		data = std::monostate{};
+		break;
 	}
 
 	if (type != NodeType::Root)

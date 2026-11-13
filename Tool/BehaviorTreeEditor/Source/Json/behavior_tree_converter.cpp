@@ -35,6 +35,9 @@ std::string GetNodeName(NodeType type)// ƒ‰ƒxƒ‹‚Ì–¼‘Oİ’è
 	case NodeType::MoveTo:
 		return "MoveTo";
 
+	case NodeType::MoveStop:
+		return "MoveStop";
+
 	case NodeType::Idle:
 		return "Idle";
 
