@@ -63,7 +63,7 @@ using EditorNodeData = std::variant<
 	ShotAttackData,
 
 	// ðŒŒn
-	DistConditionData,
+	DistConditionData
 >;
 
 class EditorNode

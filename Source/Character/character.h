@@ -4,6 +4,7 @@
 #include<d3d11.h>
 #include "Ai/BehaviorTree/Blackboard/blackboard.h"
 #include "Graphics/skinned_mesh.h"
+#include "animator.h"
 
 class Character
 {
@@ -38,12 +39,18 @@ public:
 	void SetHitPoint(const int& hp) { this->hp = hp; }
 	const int& GetHitPoint() const { return hp; }
 
+	Animator* GetAnimator()const { return animator.get(); } // 外部からアニメーターを使用した時に
+
+
 	bool IsGround() const { return is_ground; }
 
 	virtual bool TakeDamege(int damage, float invincible_time);
 
 	bool IsWallTouch() const { return is_wall_touch; }
+	void SetInvincible(bool is) { this->is_invincible_state = is; }
+	bool IsInvincible() const { return is_invincible_state; }
 
+	// AI用関数
 	void MoveTo(const DirectX::XMFLOAT3& target,
 		float move_speed,
 		float turn_speed,
@@ -59,6 +66,8 @@ public:
 		const DirectX::XMFLOAT3& direction,
 		const DirectX::XMFLOAT3& position
 	);
+
+	void ExecuteJump(float speed);
 
 protected:
 	// 移動
@@ -98,6 +107,7 @@ protected:
 	ID3D11Device* device = nullptr;
 
 	std::unique_ptr<SkinnedMesh> mesh;
+	std::unique_ptr<Animator> animator;
 
 	DirectX::XMFLOAT3	velocity = {};
 	float	gravity = 10.0f;

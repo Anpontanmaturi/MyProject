@@ -41,8 +41,6 @@ private:
 	void UpdateStateMachine(float elapsed_time);
 
 	void CollisionProjectilesVsPlayer(); // 自身の弾とプレイヤー
-
-	std::unique_ptr<Animator>	animator;
 	
 	float	move_speed = 5.0f;
 	float	turn_speed = DirectX::XMConvertToRadians(720);

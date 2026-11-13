@@ -21,6 +21,8 @@ BTState ShotAttackNode::OnTick(BTContext& context, float elapsed_time)
 		return BTState::Failure;
 	}
 
+	Character* owner = context.owner;
+
 	timer += elapsed_time;
 	shot_timer += elapsed_time;
 
@@ -29,7 +31,7 @@ BTState ShotAttackNode::OnTick(BTContext& context, float elapsed_time)
 		return BTState::Success;
 	}
 
-	DirectX::XMFLOAT3 pos = context.owner->GetPosition();
+	DirectX::XMFLOAT3 pos = owner->GetPosition();
 	target = context.blackboard->GetValue<DirectX::XMFLOAT3>(key);
 
 	if (shot_timer >= shot_interval)
@@ -38,7 +40,7 @@ BTState ShotAttackNode::OnTick(BTContext& context, float elapsed_time)
 
 		DirectX::XMFLOAT3 shot_pos =
 		{
-			pos.x, pos.y + (context.owner->GetModelHeight() * context.owner->GetScale().y) * 0.15f, pos.z
+			pos.x, pos.y + (owner->GetModelHeight() * owner->GetScale().y) * 0.15f, pos.z
 		};
 
 		target.y += 1.0f;
@@ -60,7 +62,7 @@ BTState ShotAttackNode::OnTick(BTContext& context, float elapsed_time)
 				d.z / len
 			};
 
-			context.owner->ShotProjectileSt(direction, shot_pos);
+			owner->ShotProjectileSt(direction, shot_pos);
 		}
 	}
 

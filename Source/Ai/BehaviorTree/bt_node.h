@@ -9,7 +9,7 @@ public:
 	virtual ~BTNode() = default;
 
 	virtual BTState Tick(BTContext& context, float elapsed_time);
-	void Break(BTContext& context);
+	void Break(BTContext& context); // ’†’f—p
 
 	void SetNodeId(int id) { node_id = id; }
 	int GetNodeId()const { return node_id; }
@@ -18,6 +18,7 @@ protected:
 	virtual void OnEnter(BTContext& context) {}
 	virtual BTState OnTick(BTContext& context, float elapsed_time) = 0;
 	virtual void OnExit(BTContext& context, BTState result) {}
+	// ‰¼’u‚«
 	virtual void OnBreak(BTContext& context){}
 
 private:

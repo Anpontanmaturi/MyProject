@@ -201,7 +201,7 @@ void EditorNode::WriteNode()
 			DrawBlackboardKeyCombo(
 				"Target",
 				shot->key,
-				{ BlackboardValueType::Character }
+				{ BlackboardValueType::Float3 }
 			);
 
 			ImGui::InputFloat("Shot Interval", &shot->shot_interval);

@@ -253,6 +253,10 @@ void Character::ShotProjectileSt(
 	proj->SetOwner(this);
 	proj->Launch(direction, position);
 }
+void Character::ExecuteJump(float speed)
+{
+	Jump(speed);
+}
 
 
 // ˆÚ“®

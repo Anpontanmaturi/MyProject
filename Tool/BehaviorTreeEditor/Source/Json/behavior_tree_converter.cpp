@@ -160,6 +160,8 @@ bool BehaviorTreeConverter::SaveAs(
 {
 	std::string path = SelectJsonSavePath();
 
+	if (path.empty()) { return false; }
+
 	std::string file_path = path + "\\" + file_name;
 
 	if (file_path.size() < 5 || file_path.substr(file_path.size() - 5) != ".json")
@@ -167,15 +169,12 @@ bool BehaviorTreeConverter::SaveAs(
 		file_path += ".json";
 	}
 
-	if (Save(graph, file_path))
+	if (!Save(graph, file_path))
 	{
-		save_path = file_path;
-	}
-	else
-	{
-		assert("couldn't save jsonfile!!");
+		return false;
 	}
 
+	save_path = file_path;
 	return true;
 }
 
