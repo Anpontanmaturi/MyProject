@@ -38,4 +38,11 @@ namespace BlackboardKeys
         "Enemy",
         BlackboardValueType::Character
     };
+
+    // “¦‘–’†‚©‚Ç‚¤‚©
+    inline const BlackboardKey IsEscape
+    {
+        "IsEscape",
+        BlackboardValueType::Bool
+    };
 }

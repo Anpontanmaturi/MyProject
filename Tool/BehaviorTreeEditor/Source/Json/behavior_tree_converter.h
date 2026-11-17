@@ -22,4 +22,10 @@ public:
 
 	static std::string SelectJsonSavePath();
 	static std::string SelectJsonLoadPath();
+
+private:
+	static void CheckKey(
+		const std::string& keyconst,
+		const std::string& node_type,
+		int node_id); // キーがあるかチェック
 };

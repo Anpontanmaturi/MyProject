@@ -11,7 +11,7 @@
 enum class NodeType
 {
 	// ƒm[ƒh’Ç‰Á•ÏX‚·‚é
-	Root,
+	Root = 0,
 
 	Sequence, // ã‚©‚ç‡‚É
 	Selector, // ’T‚·
@@ -22,11 +22,11 @@ enum class NodeType
 	Idle,
 	ShotStreight,
 
-	Escape,
+	Escape = 50,
 
 	DistCondition, // ğŒŒn
 
-	Inverter, // ”½“]
+	Inverter = 70, // ”½“]
 	Repeater, // ŒJ‚è•Ô‚µ
 };
 

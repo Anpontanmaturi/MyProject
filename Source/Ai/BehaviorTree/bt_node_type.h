@@ -14,10 +14,10 @@ enum class BTNodeType
 	Idle,
 	ShotStreight,
 
-	Escape,
+	Escape = 50,
 
 	DistCondition, // ğŒŒn
 
-	Inverter, // ”½“]
+	Inverter = 70, // ”½“]
 	Repeater, // ŒJ‚è•Ô‚µ
 };

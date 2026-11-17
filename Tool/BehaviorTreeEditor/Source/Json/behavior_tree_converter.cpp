@@ -44,6 +44,10 @@ std::string GetNodeName(NodeType type)// ラベルの名前設定
 	case NodeType::ShotStreight:
 		return "ShotStreight";
 
+
+	case NodeType::Escape:
+		return "Escape";
+
 	case NodeType::DistCondition:
 		return "DistCondition";
 
@@ -86,12 +90,14 @@ bool BehaviorTreeConverter::Save(
 
 		case NodeType::MoveTo: {
 			const auto& data = std::get<MoveToData>(node->GetData());
+			CheckKey(data.key, GetNodeName(node->GetNodeType()), node->GetId());
 			node_data["properties"]["key"] = data.key;
 			break;
 		}
 
 		case NodeType::DistCondition: {
 			const auto& data = std::get<DistConditionData>(node->GetData());
+			CheckKey(data.key, GetNodeName(node->GetNodeType()), node->GetId());
 			node_data["properties"]["key"] = data.key;
 			node_data["properties"]["compare"] = data.compare;
 			node_data["properties"]["distance"] = data.dist;
@@ -100,9 +106,19 @@ bool BehaviorTreeConverter::Save(
 
 		case NodeType::ShotStreight: {
 			const auto& data = std::get<ShotAttackData>(node->GetData());
+			CheckKey(data.key, GetNodeName(node->GetNodeType()), node->GetId());
 			node_data["properties"]["key"] = data.key;
 			node_data["properties"]["shot_interval"] = data.shot_interval;
 			node_data["properties"]["attack_time"] = data.attack_time;
+			break;
+		}
+
+		case NodeType::Escape: {
+			const auto& data = std::get<EscapeData>(node->GetData());
+			CheckKey(data.key, GetNodeName(node->GetNodeType()), node->GetId());
+			node_data["properties"]["key"] = data.key;
+			node_data["properties"]["base_dist"] = data.base_dist;
+			node_data["properties"]["jump_scale"] = data.jump_scale;
 			break;
 		}
 
@@ -218,35 +234,37 @@ bool BehaviorTreeConverter::Load(
 		{
 		case NodeType::Wait: {
 			auto& data = std::get<WaitData>(node->GetData());
-			data.wait_time = node_data["properties"].value("wait_time", 1.0f);
+			data.wait_time = node_data["properties"]["wait_time"];
 			break;
 		}
 
 		case NodeType::MoveTo: {
 			auto& data = std::get<MoveToData>(node->GetData());
-			data.key = node_data["properties"].value("key", std::string("PlayerPosition"));
+			data.key = node_data["properties"]["key"];
 			break;
 		}
 
 		case NodeType::ShotStreight: {
 			auto& data = std::get<ShotAttackData>(node->GetData());
-			data.key = node_data["properties"].value("key", std::string(""));
-			data.shot_interval = node_data["properties"].value("shot_interval", 0.1f);
-			data.attack_time = node_data["properties"].value("attack_time", 1.0f);
+			data.key = node_data["properties"]["key"];
+			data.shot_interval = node_data["properties"]["shot_interval"];
+			data.attack_time = node_data["properties"]["attack_time"];
 			break;
 		}
 
 		case NodeType::Escape: {
 			auto& data = std::get<EscapeData>(node->GetData());
-			data.key = node_data["properties"].value("key", std::string(""));
-			data.jump_scale = node_data["properties"].value("jump_scale", 4.0f);
+			data.key = node_data["properties"]["key"];
+			data.jump_scale = node_data["properties"]["jump_scale"];
+			data.base_dist = node_data["properties"]["base_dist"];
+			break;
 		}
 
 		case NodeType::DistCondition: {
 			auto& data = std::get<DistConditionData>(node->GetData());
-			data.key = node_data["properties"].value("key", std::string("PlayerPosition"));
-			data.compare = node_data["properties"].value("compare", 2);
-			data.dist = node_data["properties"].value("distance", 5.0f);
+			data.key = node_data["properties"]["key"];
+			data.compare = node_data["properties"]["compare"];
+			data.dist = node_data["properties"]["distance"];
 			break;
 		}
 
@@ -343,4 +361,12 @@ std::string BehaviorTreeConverter::SelectJsonLoadPath()
 	if (!GetOpenFileNameA(&lf)){return {};}
 
 	return file_path;
+}
+
+void BehaviorTreeConverter::CheckKey(
+	const std::string& key,
+	const std::string& node_type,
+	int node_id)
+{
+	_ASSERT_EXPR(!key.empty(), node_type + "Node(ID: " + std::to_string(node_id) + ")のキーが空です！");
 }

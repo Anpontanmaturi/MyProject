@@ -39,7 +39,7 @@ BehaviorTreeFact::CreateNode(BTNodeType type, const json& node_data)
         float wait_time = 1.0f;
         if (node_data.contains("properties"))
         {
-            wait_time = node_data["properties"].value("wait_time", 1.0f);
+            wait_time = node_data["properties"]["wait_time"];
         }
         return std::make_unique<WaitNode>(wait_time);
     }
@@ -47,7 +47,7 @@ BehaviorTreeFact::CreateNode(BTNodeType type, const json& node_data)
     case BTNodeType::MoveTo:{
         BlackboardKey key
         {
-            node_data["properties"].value("key",std::string{}),BlackboardValueType::Float3
+            node_data["properties"]["key"],BlackboardValueType::Float3
         };
         return std::make_unique<MoveToNode>(key);
     }
@@ -63,11 +63,11 @@ BehaviorTreeFact::CreateNode(BTNodeType type, const json& node_data)
 
         BlackboardKey key
         {
-            properties.value("key",std::string{}),BlackboardValueType::Float3
+            properties["key"],BlackboardValueType::Float3
         };
 
-        float shot_interval = properties.value("shot_interval", 0.1f);
-        float attack_time = properties.value("attack_time", 1.0f);
+        float shot_interval = properties["shot_interval"];
+        float attack_time = properties["attack_time"];
 
         return std::make_unique<ShotAttackNode>(key, shot_interval, attack_time);
     }
@@ -77,11 +77,11 @@ BehaviorTreeFact::CreateNode(BTNodeType type, const json& node_data)
 
         BlackboardKey key
         {
-            properties.value("key",std::string{}),BlackboardValueType::Float3
+            properties["key"],BlackboardValueType::Float3
         };
 
-        float jump_scale = properties.value("jump_scale", 4.0f);
-        float base_dist = properties.value("base_dist", 40.0f);
+        float jump_scale = properties["jump_scale"];
+        float base_dist = properties["base_dist"];
 
         return std::make_unique<EscapeNode>(key, base_dist, jump_scale);
     }
@@ -93,13 +93,13 @@ BehaviorTreeFact::CreateNode(BTNodeType type, const json& node_data)
 
         BlackboardKey key
         {
-            properties.value("key",std::string{}),BlackboardValueType::Float3
+            properties["key"],BlackboardValueType::Float3
         };
 
         DistanceCompare compare = DistanceCompare::Greater;
 
-        float dist = properties.value("distance", 5.0f);
-        int compare_type = properties.value("compare", 2);
+        float dist = properties["distance"];
+        int compare_type = properties["compare"];
 
         switch (compare_type)
         {
