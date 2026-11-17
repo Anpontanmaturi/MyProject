@@ -35,6 +35,11 @@ EditorNode::EditorNode(int id, const std::string& name, NodeType type) :id(id), 
 		size = { 220, 140 };
 		break;
 
+	case NodeType::Escape:
+		data = EscapeData{};
+		size = { 220, 140 };
+		break;
+
 	default:
 		data = std::monostate{};
 		break;
@@ -207,6 +212,32 @@ void EditorNode::WriteNode()
 			ImGui::InputFloat("Shot Interval", &shot->shot_interval);
 			ImGui::InputFloat("Attack Time", &shot->attack_time);
 
+		}
+		ImGui::PopItemWidth();
+
+		ImGui::EndGroup();
+
+		break;
+	}
+
+	case NodeType::Escape: {
+		ImGui::SetCursorScreenPos(
+			ImVec2(p1.x + 10, p1.y + 35));
+
+		ImGui::BeginGroup();
+
+		ImGui::PushItemWidth(100.0f);
+
+		if (auto* to_escape = std::get_if<EscapeData>(&data))
+		{
+			DrawBlackboardKeyCombo(
+				"ToEscape",
+				to_escape->key,
+				{ BlackboardValueType::Float3 }
+			);
+
+			ImGui::SliderFloat("Jump Scale", &to_escape->jump_scale, 0.1f, 10.0f);
+			ImGui::InputFloat("Base Distance", &to_escape->base_dist);
 		}
 		ImGui::PopItemWidth();
 

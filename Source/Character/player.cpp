@@ -16,7 +16,7 @@ Player::Player(ID3D11Device* device)
 	this->mesh = std::make_unique<SkinnedMesh>(device, filename, true, 0.0f, axis_system::rhs_y_up);
 	animator = std::make_unique<Animator>(this->mesh.get());
 	this->device = device;
-	speed = move_speed;
+	speed = this->move_speed;
 
 	black_board.RegisterKey(BlackboardKeys::Player);
 	black_board.SetValue(BlackboardKeys::Player, this);

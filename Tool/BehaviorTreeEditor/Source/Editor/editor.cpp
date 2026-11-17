@@ -55,6 +55,10 @@ void BehaviorTreeEditor::Draw()
             if (ImGui::MenuItem("ShotStreight"))
                 graph.CreateNode(NodeType::ShotStreight, mouse_pos);
 
+
+            if (ImGui::MenuItem("Escape"))
+                graph.CreateNode(NodeType::Escape, mouse_pos);
+
             // èåèån
             if (ImGui::MenuItem("DistCondition"))
                 graph.CreateNode(NodeType::DistCondition, mouse_pos);

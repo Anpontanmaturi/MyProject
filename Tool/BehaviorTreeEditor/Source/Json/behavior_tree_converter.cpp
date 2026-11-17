@@ -236,6 +236,12 @@ bool BehaviorTreeConverter::Load(
 			break;
 		}
 
+		case NodeType::Escape: {
+			auto& data = std::get<EscapeData>(node->GetData());
+			data.key = node_data["properties"].value("key", std::string(""));
+			data.jump_scale = node_data["properties"].value("jump_scale", 4.0f);
+		}
+
 		case NodeType::DistCondition: {
 			auto& data = std::get<DistConditionData>(node->GetData());
 			data.key = node_data["properties"].value("key", std::string("PlayerPosition"));

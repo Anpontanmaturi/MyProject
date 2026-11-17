@@ -42,10 +42,6 @@ private:
 
 	void CollisionProjectilesVsPlayer(); // 自身の弾とプレイヤー
 	
-	float	move_speed = 5.0f;
-	float	turn_speed = DirectX::XMConvertToRadians(720);
-	float	jump_speed = 5.0f;
-
 	int		max_hp = 10;
 
 	bool use_behavior_tree = false;

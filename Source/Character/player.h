@@ -62,10 +62,7 @@ private:
 	std::unique_ptr<Animator>	animator;
 	
 	float	speed = {};
-	float	move_speed = 5.0f;
 	float	dash_speed = 15.0f;
-	float	turn_speed = DirectX::XMConvertToRadians(720);
-	float	jump_speed = 5.0f;
 	bool	move_otherback = false;
 	int		max_hp = 5;
 

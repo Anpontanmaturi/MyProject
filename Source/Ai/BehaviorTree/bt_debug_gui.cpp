@@ -23,12 +23,17 @@ void DrawBTDebugGui(
 			case BTNodeType::Root: node_name = "Root"; break;
 			case BTNodeType::Sequence: node_name = "Sequence"; break;
 			case BTNodeType::Selector: node_name = "Selector"; break;
+
 			case BTNodeType::Wait: node_name = "Wait"; break;
 			case BTNodeType::MoveTo: node_name = "MoveTo"; break;
 			case BTNodeType::MoveStop: node_name = "MoveStop"; break;
 			case BTNodeType::Idle: node_name = "Idle"; break;
 			case BTNodeType::ShotStreight: node_name = "ShotStreight"; break;
+
+			case BTNodeType::Escape: node_name = "Escape"; break;
+
 			case BTNodeType::DistCondition: node_name = "DistCondition"; break;
+
 			case BTNodeType::Inverter: node_name = "Inverter"; break;
 			case BTNodeType::Repeater: node_name = "Repeater"; break;
 			}

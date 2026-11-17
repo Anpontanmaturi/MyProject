@@ -62,8 +62,8 @@ void Sandbag::Update(float elapsed_time)
 		BlackboardKeys::PlayerPosition,
 		player->GetPosition());
 
-	context.move_speed = move_speed;
-	context.turn_speed = turn_speed;
+	context.move_speed = this->move_speed;
+	context.turn_speed = this->turn_speed;
 
 	if (use_behavior_tree)
 	{
@@ -250,6 +250,7 @@ void Sandbag::EscapeState::OnUpdate(float elapsed_time)
 	case Phase::Ready: {
 		DirectX::XMFLOAT3 center = {};
 		DirectX::XMFLOAT3 pos = owner->GetPosition();
+		DirectX::XMFLOAT3 player_pos = owner->player->GetPosition();
 
 		// 中心->敵
 		float dx = pos.x - center.x;
@@ -260,17 +261,26 @@ void Sandbag::EscapeState::OnUpdate(float elapsed_time)
 		{
 			target_pos = { center.x, pos.y, center.z + base_dist };
 			phase = Phase::Active;
-			owner->Jump(owner->jump_speed * 4.0f);
+			//owner->Jump(owner->jump_speed * 4.0f);
 			break;
 		}
 
-		// 反対へ
-		dx = -dx / len;
-		dz = -dz / len;
+		//// 反対へ
+		//dx = -dx / len;
+		//dz = -dz / len;
 
-		target_pos = { center.x + dx * base_dist, pos.y, center.z + dz * base_dist };
+		// 中心→プレイヤー
+		dx = player_pos.x - center.x;
+		dz = player_pos.z - center.z;
+		len = sqrtf(dx * dx + dz * dz);
+
+		// 離れる
+		dx /= len;
+		dz /= len;
+
+		target_pos = { center.x - dx * base_dist, pos.y, center.z - dz * base_dist };
 		phase = Phase::Active;
-		owner->Jump(owner->jump_speed * 4.0f);
+		//owner->Jump(owner->jump_speed * 4.0f);
 		break;
 	}
 	case Phase::Active: {

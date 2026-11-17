@@ -14,6 +14,8 @@ enum class BTNodeType
 	Idle,
 	ShotStreight,
 
+	Escape,
+
 	DistCondition, // ğŒŒn
 
 	Inverter, // ”½“]

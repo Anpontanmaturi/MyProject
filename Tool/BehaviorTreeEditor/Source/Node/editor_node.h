@@ -22,6 +22,7 @@ enum class NodeType
 	Idle,
 	ShotStreight,
 
+	Escape,
 
 	DistCondition, // ğŒŒn
 
@@ -53,6 +54,13 @@ struct DistConditionData
 	float dist = 5.0f;
 };
 
+struct EscapeData
+{
+	std::string key = {};
+	float base_dist = 40.0f;
+	float jump_scale = 4.0f;
+};
+
 using EditorNodeData = std::variant<
 	// ƒm[ƒh’Ç‰Á•ÏX
 	std::monostate,
@@ -61,6 +69,8 @@ using EditorNodeData = std::variant<
 	WaitData,
 	MoveToData,
 	ShotAttackData,
+
+	EscapeData,
 
 	// ğŒŒn
 	DistConditionData

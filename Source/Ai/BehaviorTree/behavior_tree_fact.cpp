@@ -12,6 +12,7 @@
 #include "Action/idle_node.h"
 #include "Action/dist_condition_node.h"
 #include "Action/shot_attack_node.h"
+#include "Action/escape_node.h"
 
 #include "Blackboard/blackboard_keys.h"
 
@@ -70,6 +71,21 @@ BehaviorTreeFact::CreateNode(BTNodeType type, const json& node_data)
 
         return std::make_unique<ShotAttackNode>(key, shot_interval, attack_time);
     }
+
+    case BTNodeType::Escape: {
+        const auto& properties = node_data["properties"];
+
+        BlackboardKey key
+        {
+            properties.value("key",std::string{}),BlackboardValueType::Float3
+        };
+
+        float jump_scale = properties.value("jump_scale", 4.0f);
+        float base_dist = properties.value("base_dist", 40.0f);
+
+        return std::make_unique<EscapeNode>(key, base_dist, jump_scale);
+    }
+
 
     case BTNodeType::DistCondition: {
         // ‰¼’u‚«

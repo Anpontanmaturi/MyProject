@@ -41,6 +41,9 @@ public:
 
 	Animator* GetAnimator()const { return animator.get(); } // 外部からアニメーターを使用した時に
 
+	float GetMoveSpeed() const { return move_speed; }
+	float GetTurnSpeed() const { return turn_speed; }
+	float GetJumpSpeed() const { return jump_speed; }
 
 	bool IsGround() const { return is_ground; }
 
@@ -49,6 +52,7 @@ public:
 	bool IsWallTouch() const { return is_wall_touch; }
 	void SetInvincible(bool is) { this->is_invincible_state = is; }
 	bool IsInvincible() const { return is_invincible_state; }
+
 
 	// AI用関数
 	void MoveTo(const DirectX::XMFLOAT3& target,
@@ -121,8 +125,11 @@ protected:
 	bool	is_ground = false;
 	float	invincible_timer = 1.0f; // 無敵時間
 	bool	is_invincible_state = false; // 無敵状態かどうか
-	float	jump_speed = 5.0f;
 	int		hp = 10;
+
+	float	move_speed = 5.0f;
+	float	turn_speed = DirectX::XMConvertToRadians(720);
+	float	jump_speed = 5.0f;
 
 	float	air_control = 0.8f;
 

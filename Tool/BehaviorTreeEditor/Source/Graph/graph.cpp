@@ -273,6 +273,9 @@ void EditorGraph::CreateNode(NodeType type, const ImVec2& position)
 	case NodeType::MoveStop:	  name = "MoveStop"; break;
 	case NodeType::Idle:          name = "Idle"; break;
 	case NodeType::ShotStreight:  name = "ShotStreight"; break;
+
+	case NodeType::Escape:		  name = "Escape"; break;
+
 	// èåèån
 	case NodeType::DistCondition: name = "DistCondition"; break;
 
