@@ -6,11 +6,12 @@
 #include "Weapon/projectile_straight.h"
 #include "projectile_manager.h"
 
-#include "Ai/BehaviorTree/Composite/sequence_node.h"
-#include "Ai/BehaviorTree/Composite/selector_node.h"
-#include "Ai/BehaviorTree/Node/wait_node.h"
-#include "Ai/BehaviorTree/Node/move_to_node.h"
-#include "Ai/BehaviorTree/Node/dist_condition_node.h"
+#include "Ai/behaviortree/composite/sequence_node.h"
+#include "Ai/behaviortree/composite/selector_node.h"
+#include "Ai/behaviortree/Action/wait_node.h"
+#include "Ai/behaviortree/Action/move_to_node.h"
+
+#include "Ai/behaviortree/condition/dist_condition_node.h"
 
 #include "Ai/BehaviorTree/behavior_tree_fact.h"
 #include "Ai/BehaviorTree/bt_debug_gui.h"
@@ -32,7 +33,10 @@ Sandbag::Sandbag(ID3D11Device* device)
 
 	black_board.RegisterKey(BlackboardKeys::PlayerPosition);
 	black_board.RegisterKey(BlackboardKeys::Enemy);
+	black_board.RegisterKey(BlackboardKeys::IsEscape);
+
 	black_board.SetValue(BlackboardKeys::Enemy, this);
+	black_board.SetValue<bool>(BlackboardKeys::IsEscape, false);
 
 	BuildBehaviorTree();
 

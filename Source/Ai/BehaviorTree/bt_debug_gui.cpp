@@ -33,6 +33,7 @@ void DrawBTDebugGui(
 			case BTNodeType::Escape: node_name = "Escape"; break;
 
 			case BTNodeType::DistCondition: node_name = "DistCondition"; break;
+			case BTNodeType::CheckBool:	node_name = "CheckBool"; break;
 
 			case BTNodeType::Inverter: node_name = "Inverter"; break;
 			case BTNodeType::Repeater: node_name = "Repeater"; break;

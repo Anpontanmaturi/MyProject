@@ -30,46 +30,68 @@ void BehaviorTreeEditor::Draw()
     {
         ImVec2 mouse_pos = ImGui::GetMousePos();
 
-        if (ImGui::BeginMenu("ÉmÅ[ÉhÇí«â¡"))
+        if (ImGui::BeginMenu("Add Node"))
         {
             // ÉmÅ[Éhí«â¡éûïœçXÇ∑ÇÈ
-            if (ImGui::MenuItem("Sequence"))
-                graph.CreateNode(NodeType::Sequence, mouse_pos);
 
-            if (ImGui::MenuItem("Selector"))
-                graph.CreateNode(NodeType::Selector, mouse_pos);
+            if (ImGui::BeginMenu("Composite"))
+            {
+                if (ImGui::MenuItem("Sequence"))
+                    graph.CreateNode(NodeType::Sequence, mouse_pos);
+
+                if (ImGui::MenuItem("Selector"))
+                    graph.CreateNode(NodeType::Selector, mouse_pos);
+
+                ImGui::EndMenu();
+            }
 
             // çsìÆån
-            if (ImGui::MenuItem("Wait"))
-                graph.CreateNode(NodeType::Wait, mouse_pos);
+            if (ImGui::BeginMenu("Action"))
+            {
+                if (ImGui::MenuItem("Wait"))
+                    graph.CreateNode(NodeType::Wait, mouse_pos);
 
-            if (ImGui::MenuItem("MoveTo"))
-                graph.CreateNode(NodeType::MoveTo, mouse_pos);
+                if (ImGui::MenuItem("MoveTo"))
+                    graph.CreateNode(NodeType::MoveTo, mouse_pos);
 
-            if (ImGui::MenuItem("MoveStop"))
-                graph.CreateNode(NodeType::MoveStop, mouse_pos);
+                if (ImGui::MenuItem("MoveStop"))
+                    graph.CreateNode(NodeType::MoveStop, mouse_pos);
 
-            if (ImGui::MenuItem("Idle"))
-                graph.CreateNode(NodeType::Idle, mouse_pos);
+                if (ImGui::MenuItem("Idle"))
+                    graph.CreateNode(NodeType::Idle, mouse_pos);
 
-            if (ImGui::MenuItem("ShotStreight"))
-                graph.CreateNode(NodeType::ShotStreight, mouse_pos);
+                if (ImGui::MenuItem("ShotStreight"))
+                    graph.CreateNode(NodeType::ShotStreight, mouse_pos);
 
 
-            if (ImGui::MenuItem("Escape"))
-                graph.CreateNode(NodeType::Escape, mouse_pos);
+                if (ImGui::MenuItem("Escape"))
+                    graph.CreateNode(NodeType::Escape, mouse_pos);
+
+                ImGui::EndMenu();
+            }
 
             // èåèån
-            if (ImGui::MenuItem("DistCondition"))
-                graph.CreateNode(NodeType::DistCondition, mouse_pos);
+            if (ImGui::BeginMenu("Condition"))
+            {
+                if (ImGui::MenuItem("DistCondition"))
+                    graph.CreateNode(NodeType::DistCondition, mouse_pos);
 
+                if (ImGui::MenuItem("CheckBool"))
+                    graph.CreateNode(NodeType::CheckBool, mouse_pos);
 
-            if (ImGui::MenuItem("Inverter"))
-                graph.CreateNode(NodeType::Inverter, mouse_pos);
+                ImGui::EndMenu();
+            }
 
-            if (ImGui::MenuItem("Repeater"))
-                graph.CreateNode(NodeType::Repeater, mouse_pos);
+            if (ImGui::BeginMenu("Decorator"))
+            {
+                if (ImGui::MenuItem("Inverter"))
+                    graph.CreateNode(NodeType::Inverter, mouse_pos);
 
+                if (ImGui::MenuItem("Repeater"))
+                    graph.CreateNode(NodeType::Repeater, mouse_pos);
+            
+                ImGui::EndMenu();
+            }
             ImGui::EndMenu();
         }
 

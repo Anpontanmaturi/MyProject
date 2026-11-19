@@ -51,6 +51,10 @@ std::string GetNodeName(NodeType type)// ƒ‰ƒxƒ‹‚Ì–¼‘Oİ’è
 	case NodeType::DistCondition:
 		return "DistCondition";
 
+	case NodeType::CheckBool:
+		return "CheckBool";
+
+
 	case NodeType::Inverter:
 		return "Inverter";
 
@@ -101,6 +105,13 @@ bool BehaviorTreeConverter::Save(
 			node_data["properties"]["key"] = data.key;
 			node_data["properties"]["compare"] = data.compare;
 			node_data["properties"]["distance"] = data.dist;
+			break;
+		}
+
+		case NodeType::CheckBool: {
+			const auto& data = std::get<CheckBoolData>(node->GetData());
+			CheckKey(data.key, GetNodeName(node->GetNodeType()), node->GetId());
+			node_data["properties"]["key"] = data.key;
 			break;
 		}
 
@@ -265,6 +276,12 @@ bool BehaviorTreeConverter::Load(
 			data.key = node_data["properties"]["key"];
 			data.compare = node_data["properties"]["compare"];
 			data.dist = node_data["properties"]["distance"];
+			break;
+		}
+
+		case NodeType::CheckBool: {
+			auto& data = std::get<CheckBoolData>(node->GetData());
+			data.key = node_data["properties"]["key"];
 			break;
 		}
 

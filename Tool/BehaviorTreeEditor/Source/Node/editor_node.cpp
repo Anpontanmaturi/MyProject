@@ -6,7 +6,9 @@ namespace
 	{
 		&BlackboardKeys::PlayerPosition,
 		&BlackboardKeys::Player,
-		&BlackboardKeys::Enemy
+		&BlackboardKeys::Enemy,
+
+		&BlackboardKeys::IsEscape,
 	};
 }
 
@@ -21,11 +23,6 @@ EditorNode::EditorNode(int id, const std::string& name, NodeType type) :id(id), 
 		data = WaitData{};
 		break;
 
-	case NodeType::DistCondition:
-		data = DistConditionData{};
-		size = { 180, 140 };
-		break;
-
 	case NodeType::MoveTo:
 		data = MoveToData{};
 		break;
@@ -38,6 +35,15 @@ EditorNode::EditorNode(int id, const std::string& name, NodeType type) :id(id), 
 	case NodeType::Escape:
 		data = EscapeData{};
 		size = { 220, 140 };
+		break;
+
+	case NodeType::DistCondition:
+		data = DistConditionData{};
+		size = { 180, 140 };
+		break;
+
+	case NodeType::CheckBool:
+		data = CheckBoolData{};
 		break;
 
 	default:
@@ -164,6 +170,26 @@ void EditorNode::WriteNode()
 		}
 
 		ImGui::PopItemWidth();
+
+		ImGui::EndGroup();
+
+		break;
+	}
+
+	case NodeType::CheckBool: {
+		ImGui::SetCursorScreenPos(
+			ImVec2(p1.x + 10, p1.y + 35));
+
+		ImGui::BeginGroup();
+
+		if (auto* c_bool = std::get_if<CheckBoolData>(&data))
+		{
+			DrawBlackboardKeyCombo(
+				"Select a Boolean value",
+				c_bool->key,
+				{ BlackboardValueType::Bool}
+			);
+		}
 
 		ImGui::EndGroup();
 

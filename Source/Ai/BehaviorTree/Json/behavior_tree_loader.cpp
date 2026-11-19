@@ -4,6 +4,7 @@
 #include "../behavior_tree_fact.h"
 #include "../bt_node.h"
 #include "../Composite/composite_node.h"
+#include "../Decorator/decorator_node.h"
 #include "../bt_node_type.h"
 
 #include <nlohmann/json.hpp>
@@ -61,11 +62,23 @@ BehaviorTreeLoader::Load(const char* filename)
 
 		if (from_it == nodes.end() || to_it == nodes.end()) continue;
 
-		auto* parent = dynamic_cast<CompositeNode*>(from_it->second.get());
+		auto* composite = dynamic_cast<CompositeNode*>(from_it->second.get());
+		auto* decorator = dynamic_cast<DecoratorNode*>(from_it->second.get());
 
-		if (!parent) continue;
+		if (composite)
+		{
+			composite->AddChild(std::move(to_it->second));
+		}
+		else if (decorator)
+		{
+			// Žqƒm[ƒh‚Í1‚Â
+			if (decorator->GetChild())
+			{
+				return nullptr;
+			}
 
-		parent->AddChild(std::move(to_it->second));
+			decorator->SetChild(std::move(to_it->second));
+		}
 	}
 
 	if (root_id < 0)return nullptr;

@@ -193,6 +193,13 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Ai\BehaviorTree\Action\escape_node.cpp" />
+    <ClCompile Include="Source\Ai\BehaviorTree\Action\idle_node.cpp" />
+    <ClCompile Include="Source\Ai\BehaviorTree\Action\move_stop_node.cpp" />
+    <ClCompile Include="Source\Ai\BehaviorTree\Action\move_to_node.cpp" />
+    <ClCompile Include="Source\Ai\BehaviorTree\Action\print_node.cpp" />
+    <ClCompile Include="Source\Ai\BehaviorTree\Action\shot_attack_node.cpp" />
+    <ClCompile Include="Source\Ai\BehaviorTree\Action\wait_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\behavior_tree.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\behavior_tree_fact.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Blackboard\blackboard.cpp" />
@@ -201,18 +208,12 @@
     <ClCompile Include="Source\Ai\BehaviorTree\Composite\composite_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Composite\selector_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Composite\sequence_node.cpp" />
+    <ClCompile Include="Source\Ai\BehaviorTree\Condition\check_bool_node.cpp" />
+    <ClCompile Include="Source\Ai\BehaviorTree\Condition\dist_condition_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Decorator\blackboard_decorator.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Decorator\decorator_node.cpp" />
+    <ClCompile Include="Source\Ai\BehaviorTree\Decorator\inverter_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Json\behavior_tree_loader.cpp" />
-    <ClCompile Include="Source\Ai\BehaviorTree\Node\check_bool_node.cpp" />
-    <ClCompile Include="Source\Ai\BehaviorTree\Node\dist_condition_node.cpp" />
-    <ClCompile Include="Source\Ai\BehaviorTree\Node\escape_node.cpp" />
-    <ClCompile Include="Source\Ai\BehaviorTree\Node\idle_node.cpp" />
-    <ClCompile Include="Source\Ai\BehaviorTree\Node\move_stop_node.cpp" />
-    <ClCompile Include="Source\Ai\BehaviorTree\Node\move_to_node.cpp" />
-    <ClCompile Include="Source\Ai\BehaviorTree\Node\print_node.cpp" />
-    <ClCompile Include="Source\Ai\BehaviorTree\Node\shot_attack_node.cpp" />
-    <ClCompile Include="Source\Ai\BehaviorTree\Node\wait_node.cpp" />
     <ClCompile Include="Source\Ai\Test\bt_test.cpp" />
     <ClCompile Include="Source\Camera\camera.cpp" />
     <ClCompile Include="Source\Camera\camera_controller.cpp" />
@@ -253,6 +254,14 @@
     <ClCompile Include="ThirdParty\imgui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Ai\BehaviorTree\Action\action_node.h" />
+    <ClInclude Include="Source\Ai\BehaviorTree\Action\escape_node.h" />
+    <ClInclude Include="Source\Ai\BehaviorTree\Action\idle_node.h" />
+    <ClInclude Include="Source\Ai\BehaviorTree\Action\move_stop_node.h" />
+    <ClInclude Include="Source\Ai\BehaviorTree\Action\move_to_node.h" />
+    <ClInclude Include="Source\Ai\BehaviorTree\Action\print_node.h" />
+    <ClInclude Include="Source\Ai\BehaviorTree\Action\shot_attack_node.h" />
+    <ClInclude Include="Source\Ai\BehaviorTree\Action\wait_node.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\behavior_tree.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\behavior_tree_fact.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\Blackboard\blackboard.h" />
@@ -266,20 +275,13 @@
     <ClInclude Include="Source\Ai\BehaviorTree\Composite\composite_node.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\Composite\selector_node.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\Composite\sequence_node.h" />
+    <ClInclude Include="Source\Ai\BehaviorTree\Condition\check_bool_node.h" />
+    <ClInclude Include="Source\Ai\BehaviorTree\Condition\condition_node.h" />
+    <ClInclude Include="Source\Ai\BehaviorTree\Condition\dist_condition_node.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\Decorator\blackboard_decorator.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\Decorator\decorator_node.h" />
+    <ClInclude Include="Source\Ai\BehaviorTree\Decorator\inverter_node.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\Json\behavior_tree_loader.h" />
-    <ClInclude Include="Source\Ai\BehaviorTree\Node\action_node.h" />
-    <ClInclude Include="Source\Ai\BehaviorTree\Node\check_bool_node.h" />
-    <ClInclude Include="Source\Ai\BehaviorTree\Node\condition_node.h" />
-    <ClInclude Include="Source\Ai\BehaviorTree\Node\dist_condition_node.h" />
-    <ClInclude Include="Source\Ai\BehaviorTree\Node\escape_node.h" />
-    <ClInclude Include="Source\Ai\BehaviorTree\Node\idle_node.h" />
-    <ClInclude Include="Source\Ai\BehaviorTree\Node\move_stop_node.h" />
-    <ClInclude Include="Source\Ai\BehaviorTree\Node\move_to_node.h" />
-    <ClInclude Include="Source\Ai\BehaviorTree\Node\print_node.h" />
-    <ClInclude Include="Source\Ai\BehaviorTree\Node\shot_attack_node.h" />
-    <ClInclude Include="Source\Ai\BehaviorTree\Node\wait_node.h" />
     <ClInclude Include="Source\Ai\Test\bt_test.h" />
     <ClInclude Include="Source\Camera\camera.h" />
     <ClInclude Include="Source\Camera\camera_controller.h" />

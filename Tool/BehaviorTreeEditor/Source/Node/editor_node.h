@@ -25,6 +25,7 @@ enum class NodeType
 	Escape = 50,
 
 	DistCondition, // ğŒŒn
+	CheckBool,
 
 	Inverter = 70, // ”½“]
 	Repeater, // ŒJ‚è•Ô‚µ
@@ -61,10 +62,13 @@ struct EscapeData
 	float jump_scale = 4.0f;
 };
 
+struct CheckBoolData
+{
+	std::string key = {};
+};
+
 using EditorNodeData = std::variant<
 	// ƒm[ƒh’Ç‰Á•ÏX
-	std::monostate,
-
 	// s“®Œn
 	WaitData,
 	MoveToData,
@@ -73,7 +77,11 @@ using EditorNodeData = std::variant<
 	EscapeData,
 
 	// ğŒŒn
-	DistConditionData
+	DistConditionData,
+	CheckBoolData,
+
+
+	std::monostate
 >;
 
 class EditorNode

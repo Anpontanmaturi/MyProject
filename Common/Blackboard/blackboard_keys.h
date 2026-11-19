@@ -39,10 +39,12 @@ namespace BlackboardKeys
         BlackboardValueType::Character
     };
 
+    // çsìÆån
     // ì¶ëñíÜÇ©Ç«Ç§Ç©
     inline const BlackboardKey IsEscape
     {
         "IsEscape",
         BlackboardValueType::Bool
     };
+
 }

@@ -6,13 +6,17 @@
 #include "Composite/sequence_node.h"
 #include "Composite/selector_node.h"
 
-#include "Node/wait_node.h"
-#include "Node/move_to_node.h"
-#include "Node/move_stop_node.h"
-#include "Node/idle_node.h"
-#include "Node/dist_condition_node.h"
-#include "Node/shot_attack_node.h"
-#include "Node/escape_node.h"
+#include "Action/wait_node.h"
+#include "Action/move_to_node.h"
+#include "Action/move_stop_node.h"
+#include "Action/idle_node.h"
+#include "Action/shot_attack_node.h"
+#include "Action/escape_node.h"
+
+#include "Condition/dist_condition_node.h"
+#include "Condition/check_bool_node.h"
+
+#include "Decorator/inverter_node.h"
 
 #include "Blackboard/blackboard_keys.h"
 
@@ -88,7 +92,6 @@ BehaviorTreeFact::CreateNode(BTNodeType type, const json& node_data)
 
 
     case BTNodeType::DistCondition: {
-        // ‰¼’u‚«
         const auto& properties = node_data["properties"];
 
         BlackboardKey key
@@ -122,6 +125,19 @@ BehaviorTreeFact::CreateNode(BTNodeType type, const json& node_data)
 
         return std::make_unique<DistConditionNode>(key, compare, dist);
     }
+
+    case BTNodeType::CheckBool: {
+        BlackboardKey key
+        {
+            node_data["properties"]["key"],BlackboardValueType::Bool
+        };
+        return std::make_unique<CheckBoolNode>(key);
+    }
+
+
+    case BTNodeType::Inverter:
+        return std::make_unique<InverterNode>();
+
 
     default:
         return nullptr;
@@ -181,10 +197,11 @@ BehaviorTreeFact::CreateTree(const json& data)
             node->SetNodeId(node_data["id"].get<int>());
 
             auto* composite = dynamic_cast<CompositeNode*>(node.get());
+            auto* decorator = dynamic_cast<DecoratorNode*>(node.get());
 
             auto it = children_map.find(id);
 
-            if (composite && it != children_map.end())
+            if (it != children_map.end())
             {
                 for (int child_id : it->second)
                 {
@@ -192,7 +209,17 @@ BehaviorTreeFact::CreateTree(const json& data)
 
                     if (!child) { return nullptr; }
 
-                    composite->AddChild(std::move(child));
+                    if (composite)
+                    {
+                        composite->AddChild(std::move(child));
+                    }
+                    else if (decorator)
+                    {
+                        // Žqƒm[ƒh‚Í‚P‚±
+                        if (decorator->GetChild()) return nullptr;
+
+                        decorator->SetChild(std::move(child));
+                    }
                 }
             }
 

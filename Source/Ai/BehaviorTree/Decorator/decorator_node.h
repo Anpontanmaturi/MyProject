@@ -11,6 +11,11 @@ public:
 
 	void SetChild(std::unique_ptr<BTNode> node);
 
+	BTNode* GetChild() const
+	{
+		return child.get();
+	}
+
 protected:
 	std::unique_ptr<BTNode> child;
 };

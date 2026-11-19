@@ -17,6 +17,7 @@ enum class BTNodeType
 	Escape = 50,
 
 	DistCondition, // ğŒŒn
+	CheckBool,
 
 	Inverter = 70, // ”½“]
 	Repeater, // ŒJ‚è•Ô‚µ

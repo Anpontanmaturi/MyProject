@@ -278,6 +278,7 @@ void EditorGraph::CreateNode(NodeType type, const ImVec2& position)
 
 	// ğŒŒn
 	case NodeType::DistCondition: name = "DistCondition"; break;
+	case NodeType::CheckBool:	  name = "CheckBool"; break;
 
 	case NodeType::Inverter:      name = "Inverter"; break;
 	case NodeType::Repeater:      name = "Repeater"; break;
