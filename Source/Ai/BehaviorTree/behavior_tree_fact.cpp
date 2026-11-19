@@ -6,13 +6,13 @@
 #include "Composite/sequence_node.h"
 #include "Composite/selector_node.h"
 
-#include "Action/wait_node.h"
-#include "Action/move_to_node.h"
-#include "Action/move_stop_node.h"
-#include "Action/idle_node.h"
-#include "Action/dist_condition_node.h"
-#include "Action/shot_attack_node.h"
-#include "Action/escape_node.h"
+#include "Node/wait_node.h"
+#include "Node/move_to_node.h"
+#include "Node/move_stop_node.h"
+#include "Node/idle_node.h"
+#include "Node/dist_condition_node.h"
+#include "Node/shot_attack_node.h"
+#include "Node/escape_node.h"
 
 #include "Blackboard/blackboard_keys.h"
 

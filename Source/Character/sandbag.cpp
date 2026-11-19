@@ -8,9 +8,9 @@
 
 #include "Ai/BehaviorTree/Composite/sequence_node.h"
 #include "Ai/BehaviorTree/Composite/selector_node.h"
-#include "Ai/BehaviorTree/Action/wait_node.h"
-#include "Ai/BehaviorTree/Action/move_to_node.h"
-#include "Ai/BehaviorTree/Action/dist_condition_node.h"
+#include "Ai/BehaviorTree/Node/wait_node.h"
+#include "Ai/BehaviorTree/Node/move_to_node.h"
+#include "Ai/BehaviorTree/Node/dist_condition_node.h"
 
 #include "Ai/BehaviorTree/behavior_tree_fact.h"
 #include "Ai/BehaviorTree/bt_debug_gui.h"

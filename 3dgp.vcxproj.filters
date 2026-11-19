@@ -183,9 +183,6 @@
     <ClCompile Include="Source\Ai\BehaviorTree\Decorator\blackboard_decorator.cpp">
       <Filter>Source\Ai\BehaviorTree\Decorator</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Ai\BehaviorTree\Action\print_node.cpp">
-      <Filter>Source\Ai\BehaviorTree\Node</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Ai\BehaviorTree\behavior_tree_fact.cpp">
       <Filter>Source\Ai\BehaviorTree</Filter>
     </ClCompile>
@@ -219,25 +216,31 @@
     <ClCompile Include="Source\Ai\BehaviorTree\bt_node.cpp">
       <Filter>Source\Ai\BehaviorTree</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Ai\BehaviorTree\Action\escape_node.cpp">
+    <ClCompile Include="Source\Ai\BehaviorTree\Node\print_node.cpp">
+      <Filter>Source\Ai\BehaviorTree\Node</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Ai\BehaviorTree\Node\escape_node.cpp">
       <Filter>Source\Ai\BehaviorTree\Node\Action</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Ai\BehaviorTree\Action\idle_node.cpp">
+    <ClCompile Include="Source\Ai\BehaviorTree\Node\idle_node.cpp">
       <Filter>Source\Ai\BehaviorTree\Node\Action</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Ai\BehaviorTree\Action\move_stop_node.cpp">
+    <ClCompile Include="Source\Ai\BehaviorTree\Node\move_stop_node.cpp">
       <Filter>Source\Ai\BehaviorTree\Node\Action</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Ai\BehaviorTree\Action\move_to_node.cpp">
+    <ClCompile Include="Source\Ai\BehaviorTree\Node\move_to_node.cpp">
       <Filter>Source\Ai\BehaviorTree\Node\Action</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Ai\BehaviorTree\Action\shot_attack_node.cpp">
+    <ClCompile Include="Source\Ai\BehaviorTree\Node\shot_attack_node.cpp">
       <Filter>Source\Ai\BehaviorTree\Node\Action</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Ai\BehaviorTree\Action\wait_node.cpp">
+    <ClCompile Include="Source\Ai\BehaviorTree\Node\wait_node.cpp">
       <Filter>Source\Ai\BehaviorTree\Node\Action</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Ai\BehaviorTree\Action\dist_condition_node.cpp">
+    <ClCompile Include="Source\Ai\BehaviorTree\Node\dist_condition_node.cpp">
+      <Filter>Source\Ai\BehaviorTree\Node\Condition</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Ai\BehaviorTree\Node\check_bool_node.cpp">
       <Filter>Source\Ai\BehaviorTree\Node\Condition</Filter>
     </ClCompile>
   </ItemGroup>
@@ -371,9 +374,6 @@
     <ClInclude Include="Source\Ai\BehaviorTree\Decorator\blackboard_decorator.h">
       <Filter>Source\Ai\BehaviorTree\Decorator</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Ai\BehaviorTree\Action\print_node.h">
-      <Filter>Source\Ai\BehaviorTree\Node</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Ai\BehaviorTree\bt_context.h">
       <Filter>Source\Ai\BehaviorTree</Filter>
     </ClInclude>
@@ -416,31 +416,37 @@
     <ClInclude Include="Source\Ai\BehaviorTree\bt_debug_gui.h">
       <Filter>Source\Ai\BehaviorTree</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Ai\BehaviorTree\Action\action_node.h">
+    <ClInclude Include="Source\Ai\BehaviorTree\Node\print_node.h">
+      <Filter>Source\Ai\BehaviorTree\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ai\BehaviorTree\Node\action_node.h">
       <Filter>Source\Ai\BehaviorTree\Node\Action</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Ai\BehaviorTree\Action\escape_node.h">
+    <ClInclude Include="Source\Ai\BehaviorTree\Node\escape_node.h">
       <Filter>Source\Ai\BehaviorTree\Node\Action</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Ai\BehaviorTree\Action\idle_node.h">
+    <ClInclude Include="Source\Ai\BehaviorTree\Node\idle_node.h">
       <Filter>Source\Ai\BehaviorTree\Node\Action</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Ai\BehaviorTree\Action\move_stop_node.h">
+    <ClInclude Include="Source\Ai\BehaviorTree\Node\move_stop_node.h">
       <Filter>Source\Ai\BehaviorTree\Node\Action</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Ai\BehaviorTree\Action\move_to_node.h">
+    <ClInclude Include="Source\Ai\BehaviorTree\Node\move_to_node.h">
       <Filter>Source\Ai\BehaviorTree\Node\Action</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Ai\BehaviorTree\Action\shot_attack_node.h">
+    <ClInclude Include="Source\Ai\BehaviorTree\Node\shot_attack_node.h">
       <Filter>Source\Ai\BehaviorTree\Node\Action</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Ai\BehaviorTree\Action\wait_node.h">
+    <ClInclude Include="Source\Ai\BehaviorTree\Node\wait_node.h">
       <Filter>Source\Ai\BehaviorTree\Node\Action</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Ai\BehaviorTree\Action\condition_node.h">
+    <ClInclude Include="Source\Ai\BehaviorTree\Node\condition_node.h">
       <Filter>Source\Ai\BehaviorTree\Node\Condition</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Ai\BehaviorTree\Action\dist_condition_node.h">
+    <ClInclude Include="Source\Ai\BehaviorTree\Node\dist_condition_node.h">
+      <Filter>Source\Ai\BehaviorTree\Node\Condition</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ai\BehaviorTree\Node\check_bool_node.h">
       <Filter>Source\Ai\BehaviorTree\Node\Condition</Filter>
     </ClInclude>
   </ItemGroup>
