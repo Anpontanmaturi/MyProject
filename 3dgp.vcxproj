@@ -214,6 +214,7 @@
     <ClCompile Include="Source\Ai\BehaviorTree\Decorator\decorator_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Decorator\inverter_node.cpp" />
     <ClCompile Include="Source\Ai\BehaviorTree\Json\behavior_tree_loader.cpp" />
+    <ClCompile Include="Source\Ai\BehaviorTree\Set\set_bool_node.cpp" />
     <ClCompile Include="Source\Ai\Test\bt_test.cpp" />
     <ClCompile Include="Source\Camera\camera.cpp" />
     <ClCompile Include="Source\Camera\camera_controller.cpp" />
@@ -282,6 +283,8 @@
     <ClInclude Include="Source\Ai\BehaviorTree\Decorator\decorator_node.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\Decorator\inverter_node.h" />
     <ClInclude Include="Source\Ai\BehaviorTree\Json\behavior_tree_loader.h" />
+    <ClInclude Include="Source\Ai\BehaviorTree\Set\set_bool_node.h" />
+    <ClInclude Include="Source\Ai\BehaviorTree\Set\set_node.h" />
     <ClInclude Include="Source\Ai\Test\bt_test.h" />
     <ClInclude Include="Source\Camera\camera.h" />
     <ClInclude Include="Source\Camera\camera_controller.h" />

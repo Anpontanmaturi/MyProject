@@ -1,80 +1,64 @@
 {
     "links": [
         {
-            "from": 4,
+            "from": 12,
             "to": 5
         },
         {
-            "from": 4,
-            "to": 6
+            "from": 0,
+            "to": 18
         },
         {
-            "from": 4,
-            "to": 7
+            "from": 18,
+            "to": 19
         },
         {
             "from": 0,
-            "to": 4
+            "to": 21
+        },
+        {
+            "from": 21,
+            "to": 5
+        },
+        {
+            "from": 21,
+            "to": 17
         },
         {
             "from": 0,
-            "to": 8
+            "to": 22
         },
         {
-            "from": 8,
-            "to": 2
+            "from": 22,
+            "to": 12
         },
         {
-            "from": 8,
-            "to": 3
+            "from": 18,
+            "to": 24
+        },
+        {
+            "from": 21,
+            "to": 25
+        },
+        {
+            "from": 22,
+            "to": 26
         }
     ],
     "nodes": [
         {
             "id": 0,
             "position": {
-                "x": 90.0,
-                "y": 275.0
+                "x": 50.0,
+                "y": 304.0
             },
             "type": 2
         },
         {
-            "id": 2,
-            "position": {
-                "x": 670.0,
-                "y": 44.0
-            },
-            "properties": {
-                "compare": 2,
-                "distance": 5.0,
-                "key": "PlayerPosition"
-            },
-            "type": 51
-        },
-        {
-            "id": 3,
-            "position": {
-                "x": 669.0,
-                "y": 212.0
-            },
-            "properties": {
-                "key": "PlayerPosition"
-            },
-            "type": 4
-        },
-        {
-            "id": 4,
-            "position": {
-                "x": 417.0,
-                "y": 412.0
-            },
-            "type": 1
-        },
-        {
             "id": 5,
             "position": {
-                "x": 672.0,
-                "y": 312.0
+                "x": 918.0,
+                "y": 358.0
             },
             "properties": {
                 "compare": 1,
@@ -84,18 +68,61 @@
             "type": 51
         },
         {
-            "id": 6,
+            "id": 12,
             "position": {
-                "x": 676.0,
-                "y": 459.0
+                "x": 646.0,
+                "y": 432.0
+            },
+            "type": 70
+        },
+        {
+            "id": 17,
+            "position": {
+                "x": 748.0,
+                "y": 290.0
             },
             "type": 5
         },
         {
-            "id": 7,
+            "id": 18,
             "position": {
-                "x": 678.0,
-                "y": 555.0
+                "x": 389.0,
+                "y": 129.0
+            },
+            "type": 1
+        },
+        {
+            "id": 19,
+            "position": {
+                "x": 597.0,
+                "y": 32.0
+            },
+            "properties": {
+                "key": "IsEscape"
+            },
+            "type": 52
+        },
+        {
+            "id": 21,
+            "position": {
+                "x": 382.0,
+                "y": 295.0
+            },
+            "type": 1
+        },
+        {
+            "id": 22,
+            "position": {
+                "x": 334.0,
+                "y": 505.0
+            },
+            "type": 1
+        },
+        {
+            "id": 24,
+            "position": {
+                "x": 805.0,
+                "y": 48.0
             },
             "properties": {
                 "base_dist": 40.0,
@@ -105,12 +132,29 @@
             "type": 50
         },
         {
-            "id": 8,
+            "id": 25,
             "position": {
-                "x": 406.0,
-                "y": 181.0
+                "x": 964.0,
+                "y": 212.0
             },
-            "type": 1
+            "properties": {
+                "key": "IsEscape",
+                "value": true
+            },
+            "type": 90
+        },
+        {
+            "id": 26,
+            "position": {
+                "x": 652.0,
+                "y": 526.0
+            },
+            "properties": {
+                "attack_time": 1.0,
+                "key": "PlayerPosition",
+                "shot_interval": 0.10000000149011612
+            },
+            "type": 7
         }
     ]
 }

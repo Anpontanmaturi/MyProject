@@ -7,7 +7,7 @@
 
 #include "../BehaviorTree/Composite/selector_node.h"
 #include "../BehaviorTree/Composite/sequence_node.h"
-#include "../BehaviorTree/Node/wait_node.h"
+#include "../BehaviorTree/Action/wait_node.h"
 
 
 class TestSuccessNode : public BTNode

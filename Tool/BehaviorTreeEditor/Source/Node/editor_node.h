@@ -29,6 +29,8 @@ enum class NodeType
 
 	Inverter = 70, // ”½“]
 	Repeater, // ŒJ‚è•Ô‚µ
+
+	SetBool = 90, // set
 };
 
 struct WaitData
@@ -67,6 +69,12 @@ struct CheckBoolData
 	std::string key = {};
 };
 
+struct SetBoolData
+{
+	std::string key = {};
+	bool value = false;
+};
+
 using EditorNodeData = std::variant<
 	// ƒm[ƒh’Ç‰ÁŽž•ÏX
 	// s“®Œn
@@ -80,6 +88,8 @@ using EditorNodeData = std::variant<
 	DistConditionData,
 	CheckBoolData,
 
+	// set
+	SetBoolData,
 
 	std::monostate
 >;

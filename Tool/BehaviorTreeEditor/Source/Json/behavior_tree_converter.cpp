@@ -55,6 +55,10 @@ std::string GetNodeName(NodeType type)// ƒ‰ƒxƒ‹‚Ì–¼‘Oİ’è
 		return "CheckBool";
 
 
+	case NodeType::SetBool:
+		return "SetBool";
+
+
 	case NodeType::Inverter:
 		return "Inverter";
 
@@ -108,10 +112,19 @@ bool BehaviorTreeConverter::Save(
 			break;
 		}
 
+
 		case NodeType::CheckBool: {
 			const auto& data = std::get<CheckBoolData>(node->GetData());
 			CheckKey(data.key, GetNodeName(node->GetNodeType()), node->GetId());
 			node_data["properties"]["key"] = data.key;
+			break;
+		}
+
+		case NodeType::SetBool: {
+			const auto& data = std::get<SetBoolData>(node->GetData());
+			CheckKey(data.key, GetNodeName(node->GetNodeType()), node->GetId());
+			node_data["properties"]["key"] = data.key;
+			node_data["properties"]["value"] = data.value;
 			break;
 		}
 
@@ -282,6 +295,13 @@ bool BehaviorTreeConverter::Load(
 		case NodeType::CheckBool: {
 			auto& data = std::get<CheckBoolData>(node->GetData());
 			data.key = node_data["properties"]["key"];
+			break;
+		}
+
+		case NodeType::SetBool: {
+			auto& data = std::get<SetBoolData>(node->GetData());
+			data.key = node_data["properties"]["key"];
+			data.value = node_data["properties"]["value"];
 			break;
 		}
 

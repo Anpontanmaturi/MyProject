@@ -264,24 +264,28 @@ void EditorGraph::CreateNode(NodeType type, const ImVec2& position)
 	// ÉmÅ[Éhí«â¡éûïœçXÇ∑ÇÈ
 	switch (type)
 	{
-	case NodeType::Root:          name = "Root"; break;
-	case NodeType::Sequence:      name = "Sequence"; break;
-	case NodeType::Selector:      name = "Selector"; break;
+	case NodeType::Root:			name = "Root"; break;
+	case NodeType::Sequence:		name = "Sequence"; break;
+	case NodeType::Selector:		name = "Selector"; break;
 	// çsìÆån 
-	case NodeType::Wait:          name = "Wait"; break;
-	case NodeType::MoveTo:        name = "MoveTo"; break;
-	case NodeType::MoveStop:	  name = "MoveStop"; break;
-	case NodeType::Idle:          name = "Idle"; break;
-	case NodeType::ShotStreight:  name = "ShotStreight"; break;
+	case NodeType::Wait:			name = "Wait"; break;
+	case NodeType::MoveTo:			name = "MoveTo"; break;
+	case NodeType::MoveStop:		name = "MoveStop"; break;
+	case NodeType::Idle:			name = "Idle"; break;
+	case NodeType::ShotStreight:	name = "ShotStreight"; break;
 
-	case NodeType::Escape:		  name = "Escape"; break;
+	case NodeType::Escape:			name = "Escape"; break;
 
 	// èåèån
-	case NodeType::DistCondition: name = "DistCondition"; break;
-	case NodeType::CheckBool:	  name = "CheckBool"; break;
+	case NodeType::DistCondition:	name = "DistCondition"; break;
+	case NodeType::CheckBool:		name = "CheckBool"; break;
 
-	case NodeType::Inverter:      name = "Inverter"; break;
-	case NodeType::Repeater:      name = "Repeater"; break;
+	case NodeType::Inverter:		name = "Inverter"; break;
+	case NodeType::Repeater:		name = "Repeater"; break;
+
+		// ílê›íËån
+	case NodeType::SetBool:			name = "SetBool"; break;
+
 	default: return;
 	}
 

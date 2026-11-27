@@ -18,7 +18,6 @@ protected:
 	virtual void OnEnter(BTContext& context) {}
 	virtual BTState OnTick(BTContext& context, float elapsed_time) = 0;
 	virtual void OnExit(BTContext& context, BTState result) {}
-	// ‰¼’u‚«
 	virtual void OnBreak(BTContext& context){}
 
 private:

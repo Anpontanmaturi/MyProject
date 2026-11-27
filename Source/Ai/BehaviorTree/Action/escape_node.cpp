@@ -10,7 +10,6 @@ void EscapeNode::OnEnter(BTContext& context)
 {
 	phase = Phase::Ready;
 	context.owner->SetInvincible(true);
-	context.blackboard->SetValue<bool>(BlackboardKeys::IsEscape, true);
 }
 
 BTState EscapeNode::OnTick(BTContext& context, float elapsed_time)

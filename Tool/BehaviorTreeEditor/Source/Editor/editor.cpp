@@ -82,6 +82,15 @@ void BehaviorTreeEditor::Draw()
                 ImGui::EndMenu();
             }
 
+            // ílê›íËån
+            if (ImGui::BeginMenu("SetValue"))
+            {
+                if (ImGui::MenuItem("SetBool"))
+                    graph.CreateNode(NodeType::SetBool, mouse_pos);
+
+                ImGui::EndMenu();
+            }
+
             if (ImGui::BeginMenu("Decorator"))
             {
                 if (ImGui::MenuItem("Inverter"))

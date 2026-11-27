@@ -18,4 +18,6 @@ public:
 
 protected:
 	std::unique_ptr<BTNode> child;
+
+	void OnBreak(BTContext& context)override;
 };

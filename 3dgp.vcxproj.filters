@@ -64,6 +64,9 @@
     <Filter Include="Source\Ai\BehaviorTree\Condition">
       <UniqueIdentifier>{eff1fc66-3316-4aeb-b416-76d5758f4af2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Ai\BehaviorTree\Set">
+      <UniqueIdentifier>{46f0b435-c11d-4c30-b4b8-4491b038c483}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp">
@@ -242,6 +245,9 @@
     </ClCompile>
     <ClCompile Include="Source\Ai\BehaviorTree\Decorator\inverter_node.cpp">
       <Filter>Source\Ai\BehaviorTree\Decorator</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Ai\BehaviorTree\Set\set_bool_node.cpp">
+      <Filter>Source\Ai\BehaviorTree\Set</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -451,6 +457,12 @@
     </ClInclude>
     <ClInclude Include="Source\Ai\BehaviorTree\Decorator\inverter_node.h">
       <Filter>Source\Ai\BehaviorTree\Decorator</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ai\BehaviorTree\Set\set_bool_node.h">
+      <Filter>Source\Ai\BehaviorTree\Set</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ai\BehaviorTree\Set\set_node.h">
+      <Filter>Source\Ai\BehaviorTree\Set</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

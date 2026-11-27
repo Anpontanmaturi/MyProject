@@ -37,6 +37,8 @@ void DrawBTDebugGui(
 
 			case BTNodeType::Inverter: node_name = "Inverter"; break;
 			case BTNodeType::Repeater: node_name = "Repeater"; break;
+
+			case BTNodeType::SetBool: node_name = "SetBool"; break;
 			}
 
 			//if (state == BTDebugState::Run)

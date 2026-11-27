@@ -46,4 +46,5 @@ protected:
 	ProjectileManager*		manager = nullptr;
 	float					radius = 0.2f;
 	Character*				owner = nullptr;
+	bool					destroy_requested = false;
 };

@@ -26,15 +26,23 @@ void ProjectileManager::Update(float elapsed_time)
 		projectile->Update(elapsed_time);
 	}
 
-	for (Projectile* projectile : removes)
+	std::vector<Projectile*> pending;
+	pending.swap(removes);
+
+	for (Projectile* projectile : pending)
 	{
-		std::vector<Projectile*>::iterator it = std::find(projectiles.begin(), projectiles.end(), projectile);
+		auto it = std::find(
+			projectiles.begin(),
+			projectiles.end(),
+			projectile
+		);
+
+		// “o˜^‚µ‚Ä‚éê‡íœ
 		if (it != projectiles.end())
 		{
 			projectiles.erase(it);
+			delete projectile;
 		}
-
-		delete projectile;
 	}
 	removes.clear();
 }
@@ -74,5 +82,29 @@ void ProjectileManager::Clear()
 // ’eŠÛíœ
 void ProjectileManager::Remove(Projectile* projectile)
 {
+	if (!projectile)
+		return;
+
+	// “o˜^‚³‚ê‚Ä‚¢‚È‚¢’eŠÛ‚Í–³‹
+	auto it = std::find(
+		projectiles.begin(),
+		projectiles.end(),
+		projectile
+	);
+
+	if (it == projectiles.end())
+		return;
+
+	// ‚·‚Å‚Éíœ—\–ñ‚³‚ê‚Ä‚¢‚éê‡‚Í–³‹
+	auto remove_it = std::find(
+		removes.begin(),
+		removes.end(),
+		projectile
+	);
+
+	if (remove_it != removes.end())
+		return;
+
+
 	removes.emplace_back(projectile);
 }

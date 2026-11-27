@@ -46,6 +46,11 @@ EditorNode::EditorNode(int id, const std::string& name, NodeType type) :id(id), 
 		data = CheckBoolData{};
 		break;
 
+	case NodeType::SetBool:
+		data = SetBoolData{};
+		size = { 180, 100 };
+		break;
+
 	default:
 		data = std::monostate{};
 		break;
@@ -196,6 +201,28 @@ void EditorNode::WriteNode()
 		break;
 	}
 
+	case NodeType::SetBool: {
+		ImGui::SetCursorScreenPos(
+			ImVec2(p1.x + 10, p1.y + 35));
+
+		ImGui::BeginGroup();
+
+		if (auto* setbool = std::get_if<SetBoolData>(&data))
+		{
+			DrawBlackboardKeyCombo(
+				"Select a Boolean value",
+				setbool->key,
+				{ BlackboardValueType::Bool }
+			);
+
+			ImGui::Checkbox("set bool", &setbool->value);
+		}
+
+		ImGui::EndGroup();
+
+		break;
+	}
+
 	case NodeType::MoveTo: {
 
 		ImGui::SetCursorScreenPos(
@@ -295,6 +322,8 @@ bool EditorNode::CanAddTo() const
 	{
 	case NodeType::Sequence:
 	case NodeType::Selector:
+	case NodeType::Inverter:
+	//case NodeType::Repeater:
 		return true;
 
 	default:

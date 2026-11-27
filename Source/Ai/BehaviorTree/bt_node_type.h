@@ -21,4 +21,6 @@ enum class BTNodeType
 
 	Inverter = 70, // ”½“]
 	Repeater, // ŒJ‚è•Ô‚µ
+
+	SetBool = 90, // setŒn
 };

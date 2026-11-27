@@ -61,5 +61,9 @@ void Projectile::UpdateTransform()
 
 void Projectile::Destroy()
 {
+	if (destroy_requested)
+		return;
+
+	destroy_requested = true;
 	manager->Remove(this);
 }

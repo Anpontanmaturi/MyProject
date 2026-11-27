@@ -14,4 +14,6 @@ public:
 
 protected:
 	std::vector<std::unique_ptr<BTNode>> children;
+
+	void OnBreak(BTContext& context)override;
 };

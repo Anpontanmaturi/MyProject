@@ -19,7 +19,6 @@ BTState BTNode::Tick(BTContext& context, float elapsed_time)
 	return result;
 }
 
-// ‰¼’u‚«
 void BTNode::Break(BTContext& context)
 {
 	if (once)

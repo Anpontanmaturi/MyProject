@@ -18,6 +18,8 @@
 
 #include "Decorator/inverter_node.h"
 
+#include "Set/set_bool_node.h"
+
 #include "Blackboard/blackboard_keys.h"
 
 #include <functional>
@@ -132,6 +134,17 @@ BehaviorTreeFact::CreateNode(BTNodeType type, const json& node_data)
             node_data["properties"]["key"],BlackboardValueType::Bool
         };
         return std::make_unique<CheckBoolNode>(key);
+    }
+
+    case BTNodeType::SetBool: {
+        const auto& properties = node_data["properties"];
+        BlackboardKey key
+        {
+            properties["key"],BlackboardValueType::Bool
+        };
+
+        bool value = properties["value"];
+        return std::make_unique<SetBoolNode>(key, value);
     }
 
 

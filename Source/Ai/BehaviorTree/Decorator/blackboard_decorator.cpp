@@ -10,6 +10,10 @@ BTState BlackboardDecorator::Tick(BTContext& context, float elapsed_time)
 {
 	if (!blackboard->GetValue<bool>(key))
 	{
+		if (child)
+		{
+			child->Break(context);
+		}
 		return BTState::Failure;
 	}
 

@@ -20,6 +20,7 @@ void ProjectileStraight::Update(float elapsed_time)
 	{
 		// Ž©g‚ðíœ
 		Destroy();
+		return;
 	}
 	// ˆÚ“®
 	float speed = this->speed * elapsed_time;
@@ -41,6 +42,8 @@ void ProjectileStraight::Launch(const DirectX::XMFLOAT3& direction, const Direct
 {
 	this->direction = direction;
 	this->position = position;
+
+	UpdateTransform();
 }
 
 void ProjectileStraight::ChargeLaunch(const DirectX::XMFLOAT3& direction, const DirectX::XMFLOAT3& position)
